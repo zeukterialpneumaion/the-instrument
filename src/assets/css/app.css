@@ -1,0 +1,11 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* This file is for your main application CSS */
+#startbutton {
+    position: absolute;
+    left: 30px; /* X coordinate, adjust as needed */
+    top: 30px; /* Y coordinate, idem */
+    z-index: 10; /* This should be needed only if the #webgl container has already some z-index value*/
+  }
