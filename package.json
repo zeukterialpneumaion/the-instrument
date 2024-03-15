@@ -2,6 +2,7 @@
   "name": "the-instrument",
   "private": true,
   "version": "1.0.0",
+  "homepage": "https://zeukterialpneumaion.github.io/the-instrument/",
   "type": "module",
   "scripts": {
     "dev": "vite",
