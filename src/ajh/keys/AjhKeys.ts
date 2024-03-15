@@ -97,9 +97,9 @@ export default class AjhKeys {
     constructor(
         rows:number = 1,
         cols:number = 12,
-        keysType : String,
-        musicalscale : String,
-        octaveToStartFrom : number
+        keysType : String = "piano",
+        musicalscale : String = "chromatic",
+        octaveToStartFrom : number = 3
     ){
 
 

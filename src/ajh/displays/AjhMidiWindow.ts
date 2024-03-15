@@ -200,15 +200,15 @@ export default class AjhMidiWindow {
 
     addListeners(){
 
-        this.modelInstance.keyEventEmitter
+        this.modelInstance.noteEventEmitter
         .on(
             "touched",
             this.touchListener.bind(this)
         );
         
-        this.modelInstance.keyEventEmitter
+        this.modelInstance.noteEventEmitter
         .on(
-            "no longer touched",
+            "touched",
             this.noLongerTouchedListener.bind(this)
         );
 

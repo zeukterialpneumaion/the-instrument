@@ -1,17 +1,16 @@
-import AjhKeyboardTypes from "./AJhKeyBoardTypes";
 import AjhKeys from "./AjhKeys";
 
 export default class AjhCircleKeys extends AjhKeys{
 
-    rows: number = 10, 
-    cols: number = 10, 
-    keysType: AjhKeyboardTypes;
+    // rows: number = 10;
+    // cols: number = 10; 
+    // keysType: AjhKeyboardTypes;
 
-    constructor( rows: number = 10, cols: number = 10, keysType: AjhKeyboardTypes){
-        super(rows, cols, keysType);
-        this.rows = rows;
-    }
+    // constructor( rows: number = 10, cols: number = 10, keysType: AjhKeyboardTypes){
+    //     super(rows, cols, keysType);
+    //     this.rows = rows;
+    // }
 
-    override createKeys(){};
-    override positionKeys(){};
+    // override createKeys(){};
+    // override positionKeys(){};
 }

@@ -345,7 +345,7 @@ function addObjects(){
     roughness: 0.7,
   })
 
-  ajhkeys = new AjhKeys(1,48);
+  ajhkeys = new AjhKeys(1,48,"","",2);
 
   fullscreenobject 
   = 

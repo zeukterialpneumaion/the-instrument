@@ -1,6 +1,5 @@
 import * as Tone from "tone";
 import AjhModel from "../datamodels/AjhModel";
-import AjhInstruments from "../sonics/AjhInstruments";
 
 export default class AjhStartButton {
 
@@ -66,8 +65,8 @@ export default class AjhStartButton {
 
                     //Transport.start();
                     console.log("starting Tone");
-                    this.modelInstance.voices = new AjhInstruments();
-                    this.modelInstance.voices.playAChord();
+                   // this.modelInstance.voices = new AjhInstruments();
+                   // this.modelInstance.voices.playAChord();
 
                 }
             );
