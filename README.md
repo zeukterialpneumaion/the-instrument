@@ -2,7 +2,7 @@
 
 A playable music application consisting of an interactive user interface that triggers synthesizer instruments in realtime.
 
-- [view in browser](https://zeukterialpheumaion/the-instrument/)
+- [view in browser]([https://zeukterialpheumaion/the-instrument/](https://zeukterialpneumaion.github.io/the-instrument/))
 
 
 ### 🌟 features 
@@ -144,5 +144,22 @@ export default {
 }
 
  ```
+
+ ---
+
+ #### updating process
+ ---
+
+ - to update from local repository when changes are made, 
+ - follow this process:
+
+````
+ - git add .
+ - git commit -m "ajh - adding some info to readme"
+ - git push -u origin main
+ - npm run deploy
+
+````
+
 
 <sub> ajh. march 2024. jezhoughton@proton.me </sub>
