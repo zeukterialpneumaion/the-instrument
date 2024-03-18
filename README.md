@@ -2,7 +2,7 @@
 
 A playable music application consisting of an interactive user interface that triggers synthesizer instruments in realtime.
 
-- [view in browser]([https://zeukterialpheumaion/the-instrument/](https://zeukterialpneumaion.github.io/the-instrument/))
+- [view in browser](https://zeukterialpneumaion.github.io/the-instrument/)
 
 
 ### 🌟 features 
