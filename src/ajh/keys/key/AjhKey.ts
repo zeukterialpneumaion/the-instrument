@@ -1,5 +1,5 @@
 
-import { Color, Mesh, MeshStandardMaterial, Object3D, Vector2, Vector3, WebGLRenderer } from "three";
+import { Color, Mesh, MeshMatcapMaterial, Object3D, Vector2, Vector3, WebGLRenderer } from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import { Filter } from "tone";
 import AjhModel from "../../datamodels/AjhModel";
@@ -125,7 +125,8 @@ export default class AjhKey {
                 this.darkMaterial
             );
 
-            this.baseColor = this.darkMaterial.color;
+            this.KeyState.View.Colours.baseColour = this.darkMaterial.color;
+            this.KeyState.View.Colours.createHighLightColourFromBaseColour();
         
         } else{
             
@@ -136,7 +137,8 @@ export default class AjhKey {
                 this.lightMaterial
             );
 
-            this.baseColor = this.lightMaterial.color;
+            this.KeyState.View.Colours.baseColour = this.lightMaterial.color;
+            this.KeyState.View.Colours.createHighLightColourFromBaseColour();
 
         }
 
@@ -145,41 +147,32 @@ export default class AjhKey {
         /////////////////////////////////////////////////////
         // set colour //
         /////////////////////////////////////////////////////
-        
+
+        let material 
+        = 
+        (
+            this.KeyState.View.Body as Mesh
+        )
+        .material as MeshMatcapMaterial;
+    
         // this.darkMaterial.needsUpdate = true;
         if(this.modelInstance.useSpectrumColours){
             
-            (
-                (
-                    this.KeyState.View.Body as Mesh
-                )
-                .material as MeshStandardMaterial
-            )
-            .color 
+            material.color 
             =
             this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
+            
+            material.needsUpdate = true;
 
-            this.lightMaterial.needsUpdate = true;
-            (
-                (
-                    this.KeyState.View.Body as Mesh
-                )
-                .material as MeshStandardMaterial
-            ).needsUpdate = true;
+            this.KeyState.View.Colours.baseColour = this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
 
-            this.baseColor = this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
-
-
+            this.KeyState.View.Colours.createHighLightColourFromBaseColour();
+            
         }
 
         ////////////////////////////////////////////////////////
 
-        (
-
-            (this.KeyState.View.Body as Mesh)
-            .material as MeshStandardMaterial
-
-        ).needsUpdate = true;
+        material.needsUpdate = true;
 
         this.KeyState.View.Body.position.y = 0.5;
 
@@ -347,7 +340,7 @@ export default class AjhKey {
 
         (
             (this.KeyState.View.Body as Mesh)
-            .material as MeshStandardMaterial
+            .material as MeshMatcapMaterial
         )
         .color 
         = 
@@ -362,18 +355,24 @@ export default class AjhKey {
     public highlightKey(toggle:boolean){
 
         const mesh = this.KeyState.View.Body as Mesh
-        const material = mesh.material as MeshStandardMaterial
+        const material = mesh.material as MeshMatcapMaterial
 
         if(toggle == true){
-    
+
+            if(this.modelInstance.showColourMessages){
+
+                console.log( "HIGHLIGHT : KEY : " + this.KeyState.Id )
+
+            };
+
+            material.color = this.KeyState.View.Colours.highlightColour;
             material.needsUpdate = true;
-            material.emissive.set("white")
-            material.emissiveIntensity = 0.25;
      
         } else{
+
+            material.color = this.KeyState.View.Colours.baseColour;
             material.needsUpdate = true;    
-            material.emissive.set('black')
-            material.emissiveIntensity = 0.05;
+
         }
 
     }
@@ -605,7 +604,6 @@ private onPointerOutListener(pointerid : number, id:number, uuid: string){
             }
             else {
 
-
                 this.lightMaterial.needsUpdate = true;
                // (this.State.View.Body as Mesh).material = this.lightMaterial;
 
@@ -716,111 +714,85 @@ public repaintBody(){
 
     console.log("REPAINTING MY BODY : "+ this.KeyState.Id);
 
+    let material 
+    =  
+    ((this.KeyState.View.Body as Mesh)
+    .material as MeshMatcapMaterial);
+
     if( this.KeyState.Sonics.IsSharpOrFlat ){    
             
-        // this.State.View.Body
-        // = 
-        // new Mesh(
-        //     this.modelInstance.geometries.keyGeometry, 
-        //     this.darkMaterial
-        // );
-
         if(this.modelInstance.useSpectrumColours){
-        
-            // (this.State.View.Body as Mesh).material
-            // = this.lightMaterial;
-         //   let material =  ((this.State.View.Body as Mesh).material as MeshStandardMaterial).clone();
-          // let colour =  ((this.State.View.Body as Mesh).material as MeshStandardMaterial).color.clone(); 
-          // material.color =
-           // this.modelInstance.colours.spectrumArray[this.colId%12];
 
-           ((this.KeyState.View.Body as Mesh)
-            .material as MeshStandardMaterial).color 
-           = 
-           this.modelInstance.colours.spectrumArray[this.colId%12];
+            material.color 
+            = 
+            this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
 
-           ( 
-                (this.KeyState.View.Body as Mesh)
-                .material as MeshStandardMaterial
-
-            ).needsUpdate = true;
+            material.needsUpdate = true;
 
         } else {
 
-            ((this.KeyState.View.Body as Mesh).material as MeshStandardMaterial).color 
+            material.color 
             = 
             new Color('#462C07');
 
         }
     
     } else {
-        
-        // this.State.View.Body 
-        // = 
-        // new Mesh(
-        //     this.modelInstance.geometries.keyGeometry, 
-        //     this.lightMaterial
-        // );
-        
-        let mat 
-        =  
-        ((this.KeyState.View.Body as Mesh).material as MeshStandardMaterial);
 
         if(this.modelInstance.useSpectrumColours){
             
-            mat.color 
+            material.color 
             =
-            this.modelInstance.colours.spectrumArray[this.colId%12];
-
+            this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
             
-            mat.needsUpdate = true;
-
+            material.needsUpdate = true;
 
         }
         else{
 
-            (
-                (this.KeyState.View.Body as Mesh)
-                .material as MeshStandardMaterial
-            ).color 
+            material.color 
             = 
             new Color('#f69f1f');
 
         }
 
     }
+
+    this.KeyState.View.Colours.baseColour = material.color;
+
+    this.KeyState.View.Colours.createHighLightColourFromBaseColour();
+
 }
     
-
 /////////////////////////////////////////////////////////////////////////////////
 
 public darkMaterial 
-= new MeshStandardMaterial({
+= new MeshMatcapMaterial({
     color: '#462C07',
-    metalness: 0.35,
-    roughness: 0.41,
+   // metalness: 0.35,
+   // roughness: 0.41,
     // emissive:
     });
 
 public lightMaterial 
-= new MeshStandardMaterial({
+= new MeshMatcapMaterial({
     color: '#f69f1f',
-    metalness: 0.35,
-    roughness: 0.41,
+  //  metalness: 0.35,
+   // roughness: 0.41,
     });
 
     public darkOnMaterial 
-= new MeshStandardMaterial({
+= new MeshMatcapMaterial({
     color: '#DDA960',
-    metalness: 0.35,
-    roughness: 0.1,
+  //  metalness: 0.35,
+  //  roughness: 0.1,
     });
 
 public lighOntMaterial 
-= new MeshStandardMaterial({
+= new MeshMatcapMaterial({
     color: '#F4DA93',
-    metalness: 0.35,
-    roughness: 0.1,
+   // metalness: 0.35,
+   // roughness: 0.1,
     });
 
 ////////////////////////////////////////////////////////////////
@@ -1024,16 +996,10 @@ public lighOntMaterial
 
     }
 
-    private _defaultScale = 0.8;
-    private _touchedScale = 1.8;
-    private _selectedScale = 2.0;
 
-    private _isOnScale = 1.6;
-    private _isOffScale = 0.8;
 
     private _note: AjhNamedNote;
     private _id: number
-    private _keyMeshInstance: Mesh
 
     private _positionInKeyboardArray: number;
 
@@ -1068,13 +1034,6 @@ public lighOntMaterial
     }
 
     private _modelInstance: AjhModel = AjhModel.Instance ;
-
-
-
-    // private _touched: boolean = false;
-    // private _playing: boolean = false;
-    // private _selected: boolean = false;
-    // private _isOn: boolean = true;
 
     private _colours: AjhKeyColours;
   

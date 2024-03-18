@@ -1,5 +1,5 @@
 import * as Tone from "tone";
-import { Channel, DuoSynth, Filter, Frequency, MembraneSynth, PluckSynth, PolySynth, Reverb, Synth } from "tone";
+import { Channel, Destination, DuoSynth, Filter, Frequency, MembraneSynth, PluckSynth, PolySynth, Reverb, Synth, Volume } from "tone";
 import AjhModel from "../datamodels/AjhModel";
 import AjhSynthDefinition from "./AjhSynthDefinition";
 import AjhSynths from "./AjhSynths";
@@ -22,6 +22,14 @@ export default class AjhInstruments{
         this._currentInstrument = value;
     }
 
+    private _volume: Volume;
+    public get volume(): Volume {
+        return this._volume;
+    }
+    public set volume(value: Volume) {
+        this._volume = value;
+    }
+
 ///////////////////////////////////////////////////////////////////////////
 
     public synths : AjhSynths = new AjhSynths();
@@ -30,14 +38,18 @@ export default class AjhInstruments{
 
     constructor(){
 
-        this.channel 
-        =
-        new Channel({
-            pan: 0.0,
-            volume: 0.1,
-            mute: false,
-            solo: false
-        });
+       // this.volume = new Volume(-24);
+
+       this.setVolume(0.7);
+
+        // this.channel 
+        // =
+        // new Channel({
+        //     pan: 0.0,
+        //     volume: 0.1,
+        //     mute: false,
+        //     solo: false
+        // });
 
         this.ajhReverb 
         = new Reverb( 
@@ -80,6 +92,13 @@ export default class AjhInstruments{
     }
 
 ///////////////////////////////////////////////////////////////////////////
+    
+    setVolume(vol : number ){
+
+        Destination.volume.value = (1 - vol ) * (-36);
+        
+    }
+    
 
 ///////////////////////////////////////////////////////////////////////////   
 
@@ -87,7 +106,7 @@ export default class AjhInstruments{
         instrument
         .connect(this._lpFilter)
         .connect(this.ajhReverb)
-       // .connect(this.channel)
+       // .connect(this.volume)
         .toDestination();
 
     }

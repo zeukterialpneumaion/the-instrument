@@ -578,12 +578,21 @@ export interface IKeyState {
     IsPointerMove: boolean;
     IsPointerOut: boolean;
 
+    PointerRayIds: Array<number>;
+
+
+
    // setIsPlaying(state:boolean) : void ;
     setIsActive(state:boolean) : void ;
     setIsRayTouched(state:boolean) : void ;
     setIsPointerDown(state:boolean) : void ;
     setIsPointerMove(state:boolean) : void ;
     setIsPointerOut(state:boolean) : void ;
+    
+    addPointerRayIdIfNotExisting(value:number, log:boolean);
+    getNumberOfPointerRays():number;
+    removePointerRayById(id:number, log:boolean );
+    checkIfPointerRayExistsById(id:number, log:boolean) : number | null;
      
     setAllKeyStateValues(
 
@@ -602,7 +611,13 @@ export class KeyState implements IKeyState {
 
     // ========================================================================== //
    
-    
+    private _PointerRayIds: Array<number> = new Array<number>();
+    public get PointerRayIds(): Array<number> {
+        return this._PointerRayIds;
+    }
+    public set PointerRayIds(value: Array<number>) {
+        this._PointerRayIds = value;
+    }
    
     private _IsPointerDown: boolean;
     public get IsPointerDown(): boolean {
@@ -711,6 +726,149 @@ export class KeyState implements IKeyState {
         this.IsPointerOut = IsPointerOut;
 
     }
+
+    addPointerRayIdIfNotExisting(id:number, log:boolean = false){
+
+        let exists = this.checkIfPointerRayExistsById(id,log);
+
+        if(exists == null){
+
+            this.PointerRayIds.push(id);
+
+        } else {
+
+        }
+
+        console.log(
+
+            " PointerRayChecks : adding if ray is registered :"
+            +
+            exists
+
+        );
+        
+
+    };
+
+    getNumberOfPointerRays():number {
+
+        return this.PointerRayIds.length;
+    };
+
+    checkIfPointerRayExistsById(id:number, log:boolean = false) : number | null {
+
+        let foundPointerRay = null;
+
+        for (
+            let index = 0; 
+            index < this.PointerRayIds.length; 
+            index++
+        ) {
+
+            const element = this.PointerRayIds[index];
+
+            if(element == id){
+
+                foundPointerRay = index;
+
+            }
+            
+        }
+
+        if(log){
+
+            console.log(
+
+                "PointerRayChecks : checking if ray EXISTING ID: "
+                +
+                foundPointerRay
+
+            );
+
+        };
+
+        return foundPointerRay;
+
+    };
+
+    removePointerRayById(id:number, log:boolean = false) : boolean {
+
+        let foundPointerRayIndex :number;
+        let foundAndRemoved : boolean = false;
+
+        if(log){
+        
+            console.log(
+
+                "PointerRayChecks : removing ray ATTEMPT : NumberOfRegisteredPointerRays : "
+                +
+                this.PointerRayIds.length
+                +
+                " : "
+                +
+                id
+            )
+        
+        };
+
+        for (
+            let index = 0; 
+            index < this.PointerRayIds.length; 
+            index++
+        ) {
+
+            const element = this.PointerRayIds[index];
+
+            if(element == id){
+
+                foundPointerRayIndex = index;
+
+            }
+            
+        }
+
+      if(foundPointerRayIndex != undefined){
+
+           
+            this.PointerRayIds.splice(foundPointerRayIndex, 1);
+            foundAndRemoved = true;
+
+            if(log){
+
+                console.log(
+
+                    "PointerRayChecks : removing FOUND RAY: "
+                    +
+                    foundPointerRayIndex
+                    + 
+                    " : "
+                    + 
+                    foundAndRemoved
+
+                );
+        
+            };
+
+
+        };
+
+        if(log){
+            console.log(
+
+                " PointerRayChecks : removing ray if ray is registered :"
+                +
+                foundPointerRayIndex
+                + 
+                " : "
+                + 
+                foundAndRemoved
+
+            );
+        }
+
+        return foundAndRemoved;
+
+    };
 
     // ========================================================================== //
 

@@ -269,12 +269,21 @@ export default class AjhKeyHandlerFunctions{
     
     // set the ray touch to true
 
-            this.keyInstance.KeyState.State.IsRayTouched = true;
+            this.keyInstance.KeyState.State.IsRayTouched = true;  
+
+            //highlightkey::
+            this.keyInstance.highlightKey(true);
+            
+    // register Pointer Ray in the KEY Pointer Ray Array : 
+            
+            this.keyInstance.KeyState.State.addPointerRayIdIfNotExisting(rayid, true);
+
     // do a little logging
             if(
                 this.keyInstance.modelInstance.showMusicalKeyMessages
             ){
                 
+              
                 console.log(
 
                     this.keyInstance.KeyState.Sonics.NoteName
@@ -284,10 +293,19 @@ export default class AjhKeyHandlerFunctions{
                     " KEY IS Intersected by ray id : "
                     +
                     rayid
-                    
+                    +
+                    " added to KEY:PointerRays if not already registered "
                 );
 
             }
+
+            console.log(
+
+                " KEY IS Intersected by ray id :getNumberOfPointerRays: "
+                +
+                this.keyInstance.KeyState.State.getNumberOfPointerRays()
+               
+            );
 
     // now, check if key is playing a note
             if(this.keyInstance.KeyState.Sonics.IsPlaying){
@@ -312,11 +330,25 @@ export default class AjhKeyHandlerFunctions{
 
     //  the key is not intersected by the raycaster .....
 
+    this.keyInstance.highlightKey(false);
+
+    // remover Pointer Ray from the KEY Pointer Ray Array : 
+            
+        this.keyInstance.KeyState.State.removePointerRayById(rayid, true);
+
             if(this.keyInstance.modelInstance.pointerDown){
 
-    // but the pointer is down, if was playing then i need to stop if the pointerId is the same as mine...
+    // ... the pointer is down, 
+    // if was playing then i need to stop IF the pointerId is registered...
     
-                if( !this.keyInstance.KeyState.Sonics.IsPlaying ){
+                if(
+
+                    !this.keyInstance.KeyState.Sonics.IsPlaying 
+                    &&
+                    this.keyInstance.KeyState.State.checkIfPointerRayExistsById(rayid, true) 
+                        != null
+
+                ){
 
                     this.keyInstance.modelInstance.instruments
                     .stopToPlayANote(

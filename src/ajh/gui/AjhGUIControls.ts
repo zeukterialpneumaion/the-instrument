@@ -1,3 +1,4 @@
+import { Destination } from "tone";
 import AjhModel from "../datamodels/AjhModel";
 import AjhSynths from "../sonics/AjhSynths";
 
@@ -56,8 +57,31 @@ export default class AjhGUIControls {
 
 populateGUI( drag:boolean = false )  {
 
+    let volObj = { volume: 0.7 }
+    this.modelInstance.gui.add(
 
-   
+        volObj,
+         "volume"
+    )
+    .min(0)
+    .max(1)
+    .step(0.01)
+    .name("volume")
+    .onChange(
+        function( v ) {
+
+            console.log("VOLUME:" + v);
+            Destination.volume.value = (1 - v ) * (-36);
+            
+        }
+    );
+
+    //this.modelInstance.gui.add(
+
+        //this.modelInstance.instruments.volume,
+        //"mute"
+
+    //);
     
         const soundsFolder =  this.modelInstance.gui.addFolder('sound controls').close();
        // let vol:Channel = this.modelInstance.instruments.channel as Channel;
@@ -160,7 +184,8 @@ populateGUI( drag:boolean = false )  {
                         'CMajor', 
                         'EbMinor', 
                         'CircleOfFifths',
-                        'MinorThirds' 
+                        'MinorThirds',
+                        "BlackKeys"
                     ]
                 ).name("choose scale (TODO!)").onChange(function(evt){});
 
@@ -177,7 +202,7 @@ populateGUI( drag:boolean = false )  {
         ).name("toggle KeyColours").onChange(
             function(evt){
 
-
+                // this._modelInstance.currentKeyBoard.createKeys();
                 this._modelInstance.currentKeyBoard.repaintKeyBodies();
 
             }.bind(this)
@@ -230,24 +255,25 @@ populateGUI( drag:boolean = false )  {
             const controlsFolder =   this.modelInstance.gui.addFolder('Controls');
             controlsFolder.add(this.modelInstance.dragControls, 'enabled').name('drag controls');
 
+            const lightsFolder =   this.modelInstance.gui.addFolder('Lights').close();
+
+            lightsFolder.add(this.modelInstance.pointLights[0], 'visible').name('point light');
+            lightsFolder.add(this.modelInstance.ambientLight, 'visible').name('ambient light');
+        
+            // const helpersFolder =  this.modelInstance.gui.addFolder('Helpers');
+            // helpersFolder.add(this.axesHelper, 'visible').name('axes');
+            // helpersFolder.add(this.modelInstance.pointLightHelper, 'visible').name('pointLight');
+        
+            const cameraFolder =   this.modelInstance.gui.addFolder('camera').close();
+        // cameraFolder.add( this.modelInstance.cameraOrbitControls, 'autoRotate');
+            cameraFolder.add( this.modelInstance.cameraOrbitControls, 'enabled').onChange(
+                function(evt){
+                this.modelInstance.toggleOrbitCameraEnabled(this.modelInstance.cameraOrbitControls.enabled)
+                }.bind(this)
+            )
+
         };
 
-        const lightsFolder =   this.modelInstance.gui.addFolder('Lights').close();
-
-        lightsFolder.add(this.modelInstance.pointLights[0], 'visible').name('point light');
-        lightsFolder.add(this.modelInstance.ambientLight, 'visible').name('ambient light');
-    
-        // const helpersFolder =  this.modelInstance.gui.addFolder('Helpers');
-        // helpersFolder.add(this.axesHelper, 'visible').name('axes');
-        // helpersFolder.add(this.modelInstance.pointLightHelper, 'visible').name('pointLight');
-    
-        const cameraFolder =   this.modelInstance.gui.addFolder('camera').close();
-       // cameraFolder.add( this.modelInstance.cameraOrbitControls, 'autoRotate');
-        cameraFolder.add( this.modelInstance.cameraOrbitControls, 'enabled').onChange(
-            function(evt){
-            this.modelInstance.toggleOrbitCameraEnabled(this.modelInstance.cameraOrbitControls.enabled)
-            }.bind(this)
-        )
 
         // let functionobj 
         // = 
@@ -281,8 +307,10 @@ populateGUI( drag:boolean = false )  {
           localStorage.removeItem('guiState')
            this.modelInstance.gui.reset()
         }
-         this.modelInstance.gui.add({ resetGui }, 'resetGui').name('RESET to Defaults')
-    
+
+        let stateFolder = this.modelInstance.gui.addFolder("state")
+        stateFolder.add({ resetGui }, 'resetGui').name('reset local storage')
+        stateFolder.close();
          this.modelInstance.gui.close()
 
     }

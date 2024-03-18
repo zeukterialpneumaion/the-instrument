@@ -57,6 +57,7 @@ import AjhScales from "../sonics/AjhScales";
 
 export default class AjhModel {
 
+    public showColourMessages: boolean = true;
     public showMusicalKeyMessages: boolean = false;
     public showKeyBoardMessages: boolean = false;
     public showSequenceMessages: boolean = false;

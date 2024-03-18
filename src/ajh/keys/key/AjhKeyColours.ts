@@ -32,7 +32,8 @@ export default class AjhKeyColours {
     ) {
 
         this._baseColour = baseColour
-        this._highlightColour = highlightColour
+        this.createHighLightColourFromBaseColour();
+        //this._highlightColour = highlightColour
         this._onColour = onColour
         this._offColour = offColour
         this._playingColour 
@@ -51,6 +52,36 @@ export default class AjhKeyColours {
     //////////////////////////////////////////////////
     // internal functions //
     //////////////////////////////////////////////////
+
+    public createHighLightColourFromBaseColour(){
+            
+        let hslColor:any = new Object(); 
+
+        this._baseColour.getHSL(hslColor);
+
+        hslColor.l = 0.55;
+       // hslColor.s = 0.25;
+
+        this.highlightColour = new Color(0xFF00000);
+        //this.highlightColour.copy( this._baseColour );
+
+        //HSL is a degree (360) / percentage ,percentage value ::  0-100%
+        this.highlightColour
+        .setHSL(
+            hslColor.h,
+            hslColor.s,
+            hslColor.l
+        );
+
+        // this.highlightColour
+        // .setHSL(
+        //     .60, .8182, .74314
+        // );
+
+        // let amount = 1;
+        // this.highlightColour.lerp( new Color(0xff0000), amount )
+
+    }
 
     private generateColourFromBaseColour(base:Color, brightness = 0.3) {
 

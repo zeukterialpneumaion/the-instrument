@@ -5,11 +5,11 @@ import {
     DoubleSide,
     MeshLambertMaterial,
     MeshLambertMaterialParameters,
+    MeshMatcapMaterial,
     MeshPhongMaterial,
     MeshPhongMaterialParameters,
     MeshPhysicalMaterial,
     MeshPhysicalMaterialParameters,
-    MeshStandardMaterial,
     MeshToonMaterial,
     MeshToonMaterialParameters,
     ShaderMaterial,
@@ -19,21 +19,21 @@ import {
   
 export default class AjhMaterials {
 
-    private _avatarMaterial: MeshStandardMaterial 
-    = new MeshStandardMaterial(
+    private _avatarMaterial: MeshMatcapMaterial 
+    = new MeshMatcapMaterial(
         {
             flatShading: true,
             color: 0xff9800,
-            emissive: 0xff9800,
+        //    emissive: 0xff9800,
             polygonOffset: true,
             polygonOffsetUnits: 1,
             polygonOffsetFactor: 1
         }
     );
-    public get avatarMaterial(): MeshStandardMaterial {
+    public get avatarMaterial(): MeshMatcapMaterial {
         return this._avatarMaterial;
     }
-    public set avatarMaterial(value: MeshStandardMaterial) {
+    public set avatarMaterial(value: MeshMatcapMaterial) {
         this._avatarMaterial = value;
     }
 
@@ -122,19 +122,19 @@ export default class AjhMaterials {
             transparent: true
         });
 
-        this.enterButtonMaterial = new MeshStandardMaterial({
+        this.enterButtonMaterial = new MeshMatcapMaterial({
             color: '#C08715',
-            metalness: 0.5,
-            roughness: 0.7,
+        //    metalness: 0.5,
+        //    roughness: 0.7,
             })
 
         this.backgroundMaterial
         = 
-        new MeshStandardMaterial(
+        new MeshMatcapMaterial(
             {
                 color: '#5CF61F',
-                metalness: 0.5,
-                roughness: 0.7,
+            //    metalness: 0.5,
+            //    roughness: 0.7,
             }
         );
 
@@ -143,19 +143,19 @@ export default class AjhMaterials {
 
     /////////////////////////////////////////////////////////////////
 
-    private _backgroundMaterial: MeshStandardMaterial;
-    public get backgroundMaterial(): MeshStandardMaterial {
+    private _backgroundMaterial: MeshMatcapMaterial;
+    public get backgroundMaterial(): MeshMatcapMaterial {
         return this._backgroundMaterial;
     }
-    public set backgroundMaterial(value: MeshStandardMaterial) {
+    public set backgroundMaterial(value: MeshMatcapMaterial) {
         this._backgroundMaterial = value;
     }
 
-    private _enterButtonMaterial: MeshStandardMaterial;
-    public get enterButtonMaterial(): MeshStandardMaterial {
+    private _enterButtonMaterial: MeshMatcapMaterial;
+    public get enterButtonMaterial(): MeshMatcapMaterial {
         return this._enterButtonMaterial;
     }
-    public set enterButtonMaterial(value: MeshStandardMaterial) {
+    public set enterButtonMaterial(value: MeshMatcapMaterial) {
         this._enterButtonMaterial = value;
     }
 

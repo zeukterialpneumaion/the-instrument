@@ -1,4 +1,4 @@
-import { Mesh, MeshStandardMaterial, Object3D, Raycaster, Vector2, WebGLRenderer } from "three";
+import { Mesh, MeshMatcapMaterial, Object3D, Raycaster, Vector2, WebGLRenderer } from "three";
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import "../../assets/css/AjhFonts.css";
 import AjhModel from "../datamodels/AjhModel";
@@ -17,7 +17,7 @@ export default class AjhInitialScreen {
     = 
     this.modelInstance.geometries.roundedCubeGeometry;
 
-    private enterButtonMaterial : MeshStandardMaterial
+    private enterButtonMaterial : MeshMatcapMaterial
     = this.modelInstance.materials.enterButtonMaterial;
 
     private _enterButton: Mesh;
@@ -102,7 +102,7 @@ export default class AjhInitialScreen {
     public set enterButtonClicked(value: boolean) {
         this._enterButtonClicked = value;
          
-      this.beginTheSound();
+      //this.beginTheSound();
     }
 
     private pointermovelistener : any;
@@ -420,11 +420,11 @@ export default class AjhInitialScreen {
     enterButtonOnPointerDownListener(event:PointerEvent){
 
         console.log("BUTTON OUTSIDECLICKED!!!!")
-        //if(this.enterButtonIsTouched){
+        if(this.enterButtonIsTouched){
 
-                this.enterButtonIsTouched = true;
+                this.beginTheSound();
 
-       // }
+       }
 
     }
 
@@ -433,17 +433,23 @@ export default class AjhInitialScreen {
         console.log("BUTTON OUTSIDECLICKED!!!!");
         //if(this.enterButtonIsTouched){
 
-                console.log("BUTTON UP!!!!");
+            console.log("BUTTON UP!!!!");
+            
+            this.enterButtonIsTouched = false;
+            
+            this.enterButtonClicked = true;
+            
+            this._fullscreenobject.body.removeFromParent();
+            
+            this.enterButton.removeFromParent();
+            
+            // this.modelInstance.ajhGuiControls = new AjhGUIControls();
+
+            // if(this.enterButtonIsTouched){
+
+            this.beginTheSound();
                 
-                this.enterButtonIsTouched = false;
-                
-                this.enterButtonClicked = true;
-               
-                this._fullscreenobject.body.removeFromParent();
-               
-                this.enterButton.removeFromParent();
-               
-                this.modelInstance.ajhGuiControls = new AjhGUIControls();
+        // }
             
     }
 
@@ -457,6 +463,8 @@ export default class AjhInitialScreen {
             console.log("starting Tone");
             
             this.modelInstance.instruments = new AjhInstruments();
+
+            this.modelInstance.ajhGuiControls = new AjhGUIControls();
             
             this.modelInstance.ajhGuiControls.populateGUI();
             
@@ -503,7 +511,7 @@ export default class AjhInitialScreen {
 
         (this.enterButton as Mesh).geometry.dispose();
 
-        ((this.enterButton as Mesh).material as MeshStandardMaterial).dispose();
+        ((this.enterButton as Mesh).material as MeshMatcapMaterial).dispose();
         
        (this.modelInstance.renderer as WebGLRenderer)
        .renderLists.dispose();
@@ -546,11 +554,11 @@ raycastingEnterButton() {
     //     this.enterButtonIsTouched = true;
     //      console.log("FOUND BUTTON!!!");
     //      if(this.enterButtonIsTouched){
-	// 	((intersects[ i ].object as Mesh).material as MeshStandardMaterial)
+	// 	((intersects[ i ].object as Mesh).material as MeshMatcapMaterial)
     //     .color.set( 0xff0000 );
     // }
     // else{
-    //     ((intersects[ i ].object as Mesh).material as MeshStandardMaterial)
+    //     ((intersects[ i ].object as Mesh).material as MeshMatcapMaterial)
     //     .color.set( 0x0000ff );
 
     // }
@@ -570,9 +578,9 @@ raycastingEnterButton() {
     if ( this.INTERSECTED == null ) {
 
         //not touched
-       // (this.enterButton.material as MeshStandardMaterial).color.setHex( 0x00FF00 );
+       // (this.enterButton.material as MeshMatcapMaterial).color.setHex( 0x00FF00 );
 
-       // (this.enterButton.material as MeshStandardMaterial).emissive.setHex( 0xFF0000 );
+       // (this.enterButton.material as MeshMatcapMaterial).emissive.setHex( 0xFF0000 );
 
       //this.INTERSECTED.currentHex
         console.log("INTERSECTED????");
@@ -607,16 +615,16 @@ raycastingEnterButton() {
 
           for ( let i = 0; i < intersects.length; i ++ ) {
 
-              //  this.enterButtonIsTouched = true;
+            this.enterButtonIsTouched = true;
                  console.log("FOUND BUTTON!!!");
             if(this.enterButtonIsTouched){
-            	((intersects[ i ].object as Mesh).material as MeshStandardMaterial)
+            	((intersects[ i ].object as Mesh).material as MeshMatcapMaterial)
                 .color.set( 0xff0000 );
             }
             else{
-                ((intersects[ i ].object as Mesh).material as MeshStandardMaterial)
+                ((intersects[ i ].object as Mesh).material as MeshMatcapMaterial)
                 .color.set( 0x0000ff );
-              //  (this.enterButton.material as MeshStandardMaterial).emissive.setHex( 0x00FF00 );
+              //  (this.enterButton.material as MeshMatcapMaterial).emissive.setHex( 0x00FF00 );
         
             }
 
