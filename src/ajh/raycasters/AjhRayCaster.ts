@@ -1,5 +1,5 @@
 import { Intersection, Raycaster } from "three";
-import AjhModel from "./AjhModel";
+import AjhModel from "../datamodels/AjhModel";
 
 export default class AjhRayCaster {
 
@@ -49,7 +49,7 @@ export default class AjhRayCaster {
             
     }
 
-    findInstrumentKeysFromRaycastFromMouseCoords() {
+    findInstrumentKeysFromRaycast() {
 
         let intersects : Intersection[] ;
 
@@ -73,14 +73,14 @@ export default class AjhRayCaster {
                     if ( this.INTERSECTED ) {
 
                        //  this.INTERSECTED.material.emissive.setHex( this.INTERSECTED.currentHex );
-
-                         this.modelInstance.musicalKeyEventEmitter.emit(
-                            "touched", 
-                            false,
-                            this.modelInstance.selectedKeys.getSelectedKeyByRayCasterId(this.id).bodyName,
-                            this.modelInstance.selectedKeys.getSelectedKeyByRayCasterId(this.id).bodyId ,
-                            this.modelInstance.selectedKeys.getSelectedKeyByRayCasterId(this.id).bodyUUID
-                        )
+                     //  touched: boolean,  rayid:number, id:number, uuid: string 
+                        //  this.modelInstance.musicalKeyEventEmitter.emit(
+                        //     "touchedByRay", 
+                        //     false,
+                        //     this.id,
+                        //     this.modelInstance.selectedKeys.getSelectedKeyByRayCasterId(this.id).bodyId ,
+                        //     this.modelInstance.selectedKeys.getSelectedKeyByRayCasterId(this.id).bodyUUID
+                        // )
                         console.log("INTERSECTED????");
                     }
 
@@ -103,45 +103,20 @@ export default class AjhRayCaster {
 
                     this.INTERSECTED = intersects[ 0 ].object;
 
-                  //  this.INTERSECTED.material.emissive.setHex( 0xFFFFFF);
+                    //this.INTERSECTED.material.emissive.setHex( 0xFFFFFF);
 
-                    //set selected object //
-                    // let selectedItem 
-                    // =  
-                   
-                    this.modelInstance.selectedKeys
-                    .removeSelectedKeyByRayCasterId( this.id );
-
-                    // if(
-                    //     selectedItem
-                    //     != 
-                    //     null
-                    // ) {
-
-                        console.log("RAY IS NOW TOUCHING " + this.INTERSECTED.uuid );
-                        this.modelInstance.selectedKeys
-
-                        //    selectedItem.bodyId = this.INTERSECTED.id, // bodyId: any, 
-                        //    selectedItem.bodyName = this.INTERSECTED.name, // bodyName: any, 
-                        //    selectedItem.bodyUUID =  this.INTERSECTED.uuid, //bodyUUID: any, 
-                        //    selectedItem.keyId = this.modelInstance.currentKeyBoard.getKeyByBodyUUID( this.INTERSECTED.uuid).id, // this.INTERSECTED., // keyId: any, 
-                        //    selectedItem.keyboardId = this.modelInstance.currentKeyBoard.id, // this.INTERSECTED.id, //keyboardId: any, 
-                        //    selectedItem.raycasterId = this.id, // raycasterId: any, 
-                        //    selectedItem.selectedKey = this.modelInstance.currentKeyBoard.getKeyByBodyUUID( this.INTERSECTED.uuid) // selectedKey: any
-
-                   // }
-
-                  //  else {
-
+                    // this.modelInstance.selectedKeys
+                    // .removeSelectedKeyByRayCasterId( this.id );
+                 
                         console.log("RAY IS NOW TOUCHING " + this.INTERSECTED.uuid+" : "+ this.modelInstance
-                        .currentKeyBoard.getKeyByBodyUUID( this.INTERSECTED.uuid).id);
-                        this.modelInstance.selectedKeys.addNewSelectedKey(
+                        .currentKeyBoard.getKeyByBodyUUID( this.INTERSECTED.uuid).KeyState.Id);
+                        this.modelInstance.selectedKeys.checkIfExistsAndUpdateOrCreateNewSelectedKey(
 
                             this.INTERSECTED.id, // bodyId: any, 
                             this.INTERSECTED.name, // bodyName: any, 
                             this.INTERSECTED.uuid, //bodyUUID: any, 
                             this.modelInstance
-                            .currentKeyBoard.getKeyByBodyUUID( this.INTERSECTED.uuid).id, // this.INTERSECTED., // keyId: any, 
+                            .currentKeyBoard.getKeyByBodyUUID( this.INTERSECTED.uuid).KeyState.Id, // this.INTERSECTED., // keyId: any, 
                             this.modelInstance.currentKeyBoard.id, // this.INTERSECTED.id, //keyboardId: any, 
                             this.id, // touchId: any, 
                             this.modelInstance.currentKeyBoard.getKeyByBodyUUID( this.INTERSECTED.uuid) // selectedKey: any
@@ -150,15 +125,20 @@ export default class AjhRayCaster {
 
 
                     this.modelInstance.musicalKeyEventEmitter.emit(
-                        "touched", 
+                        "touchedByRay", 
                         true,
-                        this.modelInstance.selectedKeys.getSelectedKeyByRayCasterId(this.id).bodyName,
+                        this.id,
                         this.modelInstance.selectedKeys.getSelectedKeyByRayCasterId(this.id).bodyId ,
                         this.modelInstance.selectedKeys.getSelectedKeyByRayCasterId(this.id).bodyUUID
              
                     )
 
-                    this.modelInstance.infoScreen.setDataFieldText( this.modelInstance.selectedKeys.getSelectedKeyByRayCasterId(this.id).selectedKey.noteName);
+                    this.modelInstance.infoScreen
+                    .setDataFieldText( 
+                        this.modelInstance.selectedKeys
+                        .getSelectedKeyByRayCasterId(this.id)
+                        .selectedKey.KeyState.Sonics.NoteName
+                    );
                     //ended
 
                   //  console.log(" NO SELECTED KEY EXISTED SO A NEW ONE WAS ADDED but RAY IS NOW TOUCHING " + this.INTERSECTED.uuid + " " );

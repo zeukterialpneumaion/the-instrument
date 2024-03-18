@@ -1,6 +1,6 @@
 import AjhModel from "../datamodels/AjhModel";
-import AjhRayCaster from "../datamodels/AjhRayCaster";
-import AjhRayPointer from "../datamodels/AjhRayPointer";
+import AjhRayCaster from "../raycasters/AjhRayCaster";
+import AjhRayPointer from "../raycasters/AjhRayPointer";
 
 
 
@@ -74,6 +74,8 @@ implements AjhPointerEventHandlersInterface {
     
     private onPointerDownHandler(evt : PointerEvent){
 
+
+        this._modelInstance.pointerDown = true;
 
         let selfReference = this._modelInstance.pointerEventsInstance.ajhPointerEventHandlers;
        
@@ -208,18 +210,22 @@ implements AjhPointerEventHandlersInterface {
 
         }
       
-        this._modelInstance.raycasters.getRayCasterByID(evt.pointerId).findInstrumentKeysFromRaycastFromMouseCoords();
+        this._modelInstance.raycasters.getRayCasterByID(evt.pointerId)
+        .findInstrumentKeysFromRaycast();
      
     };
 
     
     private onPointerUpHandler(evt : PointerEvent){
+
+        this._modelInstance.pointerDown = false;
      
         let selfReference = this._modelInstance.pointerEventsInstance.ajhPointerEventHandlers;
        
             
         evt.stopPropagation();
        // evt.preventDefault();
+
             // set my pointer id to that of the pointerId
             if(selfReference.getPointerEventById(evt.pointerId) == null){
                 selfReference.addPointerEvent(evt.pointerId);
@@ -238,25 +244,25 @@ implements AjhPointerEventHandlersInterface {
            // null
         ){
 
-            //set coords
-            this._modelInstance.mouseCoordinates.x
-            =
-            evt.clientX;
+            // //set coords
+            // this._modelInstance.mouseCoordinates.x
+            // =
+            // evt.clientX;
             
-            this._modelInstance.mouseCoordinates.y
-            =
-            evt.clientY;
+            // this._modelInstance.mouseCoordinates.y
+            // =
+            // evt.clientY;
             
         try{
 
-                    this._modelInstance.musicalKeyEventEmitter.emit(
-                        "onPointerUp", 
-                        this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyName,
-                        this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
-                        this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
-                    )
+                this._modelInstance.musicalKeyEventEmitter.emit(
+                    "onPointerUp", 
+                    evt.pointerId,
+                    this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
+                    this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
+                )
 
-               console.log("pointerup  >> id: " + evt.pointerId)
+                console.log("pointerup  >> id: " + evt.pointerId)
 
             }
             catch(e){
@@ -268,15 +274,6 @@ implements AjhPointerEventHandlersInterface {
         }
         else{
 
-            console.log(
-
-                "MouseClickOutside:: id: "
-                + this._modelInstance.selectedKey.keyId
-                + ", name: "
-                + this._modelInstance.selectedKey.bodyName
-
-            );
-
         }
 
 
@@ -284,25 +281,64 @@ implements AjhPointerEventHandlersInterface {
 
     private onPointerCancelHandler(evt : PointerEvent){
 
+        console.log("Pointer cancelled"+(evt as PointerEvent).pointerId);
+        try{
+
+            this._modelInstance.musicalKeyEventEmitter.emit(
+                "onPointerCancel", 
+                evt.pointerId,
+                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
+                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
+            )
+
+        console.log("pointercancel  >> id: " + evt.pointerId)
+
+        }
+        catch(e){
+
+            console.log(e);
+
+        }
     };
 
     private onPointerOverHandler(evt : PointerEvent){
 
+        console.log("Pointer Over"+(evt as PointerEvent).pointerId);
+        try{
+
+            this._modelInstance.musicalKeyEventEmitter.emit(
+                "onPointerOver", 
+                evt.pointerId,
+                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
+                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
+                evt.pointerId,
+            )
+
+        console.log("pointerout  >> id: " + evt.pointerId)
+
+        }
+        catch(e){
+
+            console.log(e);
+
+        }
     };
 
     private onPointerOutHandler(evt){
+
+       // this._modelInstance.pointerDown = false;
 
         console.log("Pointer out"+(evt as PointerEvent).pointerId);
         try{
 
             this._modelInstance.musicalKeyEventEmitter.emit(
-                "onPointerUp", 
-                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyName,
+                "onPointerOut", 
+                evt.pointerId,
                 this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
                 this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
             )
 
-       console.log("pointerup  >> id: " + evt.pointerId)
+       console.log("pointerout  >> id: " + evt.pointerId)
 
     }
     catch(e){
@@ -316,13 +352,48 @@ implements AjhPointerEventHandlersInterface {
     private onPointerEnterHandler(evt : PointerEvent){
 
         console.log("Pointer Enter"+(evt as PointerEvent).pointerId);
+        
+        try{
 
+            this._modelInstance.musicalKeyEventEmitter.emit(
+                "onPointerEnter", 
+                evt.pointerId,
+                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
+                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
+            )
+
+        console.log("pointerleave  >> id: " + evt.pointerId)
+
+        }
+        catch(e){
+
+            console.log(e);
+
+        }
     };
 
     private onPointerLeaveHandler(evt){
 
-        console.log("Pointer left"+(evt as PointerEvent).pointerId);
+        this._modelInstance.pointerDown = false;
 
+        console.log("Pointer left"+(evt as PointerEvent).pointerId);
+        try{
+
+            this._modelInstance.musicalKeyEventEmitter.emit(
+                "onPointerLeave", 
+                evt.pointerId,
+                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
+                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
+            )
+
+        console.log("pointerleave  >> id: " + evt.pointerId)
+
+        }
+        catch(e){
+
+            console.log(e);
+
+        }
     };
 
     // ================================================================= //

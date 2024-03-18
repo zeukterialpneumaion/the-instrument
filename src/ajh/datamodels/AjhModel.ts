@@ -19,7 +19,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import * as Tone from "tone";
 
-import AjhSelectedKey from "../keys/AjhSelectedKey";
+import AjhSelectedKey from "../keys/key/AjhSelectedKey";
 
 import AjhGUIControls from "../gui/AjhGUIControls";
 import AjhGeometries from "../helpers/AjhGeometries";
@@ -39,19 +39,19 @@ import AjhPointerEvents from "../ajhevents/AjhPointerEvents";
 import AjhColours from "../colours/AjhColours";
 import AjhColourSchemeOptions from "../configs/options/AjhColourSchemeOptions";
 import AjhInstrumentOptions from "../configs/options/AjhInstrumentOptions";
-import AjhKeyInterfaceOptions from "../configs/options/AjhKeyInterfaceOptions";
 import AjhScaleOptions from "../configs/options/AjhScaleOptions";
 import AjhInformationWindow from "../displays/AjhInformationWindow";
 import AjhInitialScreen from "../displays/AjhInitialScreen";
 import AjhFullScreenObject from "../helpers/AjhFullScreenObject";
-import AjhKeyboardTypes from "../keys/AJhKeyBoardTypes";
-import AjhKeys from "../keys/AjhKeys";
-import AjhSelectedKeys from "../keys/AjhSelectedKeys";
+import AjhKeyInterfaceOptions from "../keys/key/AjhKeyInterfaceOptions";
+import AjhSelectedKeys from "../keys/key/AjhSelectedKeys";
+import AjhKeyboardTypes from "../keys/keyboards/AJhKeyBoardTypes";
+import AjhKeys from "../keys/keyboards/AjhKeyBoard";
+import AjhRayCasters from "../raycasters/AjhRayCasters";
+import AjhRayPointers from "../raycasters/AjhRayPointers";
 import AjhInstruments from "../sonics/AjhInstruments";
 import AjhScaleTypes from "../sonics/AjhScaleTypes";
 import AjhScales from "../sonics/AjhScales";
-import AjhRayCasters from "./AjhRayCasters";
-import AjhRayPointers from "./AjhRayPointers";
 
 // ============================================================ //
 
@@ -61,7 +61,7 @@ export default class AjhModel {
     public showKeyBoardMessages: boolean = false;
     public showSequenceMessages: boolean = false;
     public showAudioMessages: boolean = false;
-    public useSpectrumColours : boolean = false;
+    public useSpectrumColours : boolean = true;
 
     private _fullScreenObject: AjhFullScreenObject;
     public get fullScreenObject(): AjhFullScreenObject {
@@ -131,6 +131,14 @@ export default class AjhModel {
         this._keyInterfaceOptions = value;
     }
 
+    private _pointerDown: boolean = false;
+    public get pointerDown(): boolean {
+        return this._pointerDown;
+    }
+    public set pointerDown(value: boolean) {
+        this._pointerDown = value;
+    }
+
     private _count: number = 0;
 
     private _colours: AjhColours;
@@ -181,8 +189,6 @@ export default class AjhModel {
     private constructor() {
 
         console.log("MODEL Instantiated");
-
-  
 
         this._colours 
         = 
@@ -252,9 +258,15 @@ export default class AjhModel {
 
     public getCameraViewSizeXY() : Vector2 {
 
+
+        const cameraOffset = 0.7;
         const target = new Vector2(); // create once and reuse it
 
-        (this.camera as PerspectiveCamera).getViewSize( this.camera.position.y, target ); // result written to target
+        (this.camera as PerspectiveCamera)
+        .getViewSize( 
+            this.camera.position.y-cameraOffset, 
+            target 
+        ); // result written to target
 
         return target;
 

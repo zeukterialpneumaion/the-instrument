@@ -11,7 +11,7 @@ import {
 
 import { Object3D } from "three";
 import AjhModel from "../datamodels/AjhModel";
-import AjhKey from "../keys/AjhKey";
+import AjhKey from "../keys/key/AjhKey";
 
 export default class AjhSoundObject3D {
 

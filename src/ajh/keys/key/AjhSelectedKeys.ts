@@ -27,7 +27,7 @@ export default class {
         }
     };
 
-    addNewSelectedKey( 
+    checkIfExistsAndUpdateOrCreateNewSelectedKey( 
         bodyId,
         bodyName,
         bodyUUID,
@@ -37,24 +37,26 @@ export default class {
         selectedKey
      ){
 
-        // let alreadyExists : boolean = false;
-        // for (  
-        //     let index = 0; 
-        //     index < this._selectedKeys.length; 
-        //     index++
-        // ) {
+        let alreadyExists : boolean = false;
+        let existingSelectedKey : AjhSelectedKey;
+        for (  
+            let index = 0; 
+            index < this._selectedKeys.length; 
+            index++
+        ) {
 
-        //     const element = this._selectedKeys[ index ];
+            const element = this._selectedKeys[ index ];
 
-        //     if(element.raycasterId == raycasterId){
+            if(element.raycasterId == raycasterId){
 
-        //         alreadyExists = true;
+                existingSelectedKey = element;
+                alreadyExists = true;
 
-        //     }
+            }
       
-        // }
+        }
 
-        // if(!alreadyExists){
+        if(!alreadyExists){
 
             let newselectedkey = new AjhSelectedKey();
             newselectedkey.bodyId = bodyId;
@@ -67,7 +69,19 @@ export default class {
         
             this._selectedKeys.push(newselectedkey);
         
-        // };
+         }
+         else{
+
+            
+            existingSelectedKey.bodyId = bodyId;
+            existingSelectedKey.bodyName = bodyName;
+            existingSelectedKey.bodyUUID = bodyUUID;
+            existingSelectedKey.keyId = keyId;
+            existingSelectedKey.keyboardId = keyboardId;
+            existingSelectedKey.raycasterId = raycasterId;
+            existingSelectedKey.selectedKey = selectedKey;
+
+         }
 
     };
 

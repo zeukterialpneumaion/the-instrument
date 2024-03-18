@@ -28,19 +28,19 @@ export default class AjhInitialScreen {
         this._enterButton = value;
     }
 
-    private _titleField;
-    public get titleField() {
+    private _titleField: HTMLDivElement;
+    public get titleField() : HTMLDivElement{
         return this._titleField;
     }
-    public set titleField(value) {
+    public set titleField(value: HTMLDivElement) {
         this._titleField = value;
     }
 
     private _InformationWindowInstance: HTMLDivElement;
-    public get InformationWindowInstance(): any {
+    public get InformationWindowInstance(): HTMLDivElement {
         return this._InformationWindowInstance;
     }
-    public set InformationWindowInstance(value: any) {
+    public set InformationWindowInstance(value: HTMLDivElement) {
         this._InformationWindowInstance = value;
     }
 
@@ -52,23 +52,23 @@ export default class AjhInitialScreen {
         this._fullscreenobject = value;
     }
 
-    private _dataField;
-    public get dataField() {
+    private _dataField: HTMLDivElement;
+    public get dataField() : HTMLDivElement{
         return this._dataField;
     }
-    public set dataField(value) {
+    public set dataField(value: HTMLDivElement) {
         this._dataField = value;
     }
 
-    private _messageField;
-    public get messageField() {
+    private _messageField: HTMLDivElement;
+    public get messageField() : HTMLDivElement{
         return this._messageField;
     }
-    public set messageField(value) {
+    public set messageField(value: HTMLDivElement) {
         this._messageField = value;
     }
 
-    private _width: number = 250;
+    private _width: number = 200;
     public get width(): number {
         return this._width;
     }
@@ -76,7 +76,7 @@ export default class AjhInitialScreen {
         this._width = value;
     }
     
-    private _height: number = 170;
+    private _height: number = 100;
     public get height(): number {
         return this._height;
     }
@@ -122,13 +122,21 @@ export default class AjhInitialScreen {
         this.raycaster.layers.set(2);
 
         this.modelInstance.infoScreen = this;
+
         this.modelInstance.gui.hide();
+
         this.createInformationWindow();
+
         this.updateAllFields();
+
         this.showInformationWindow();
-        this.createEnterButton(this.body)
-        this.createfullScreenBackground(this.body)
+
+        this.createEnterButton(this.body);
+
+        this.createfullScreenBackground(this.body);
+
         this.modelInstance.scene.add( this.body );
+
         this.addListeners();
 
     }
@@ -160,28 +168,63 @@ export default class AjhInitialScreen {
 
         document.body.style.margin = "0px";
         document.body.style.boxSizing = "border-box";
-       
+
+        // ===================================================== //
+               
         this._InformationWindowInstance 
         = document.createElement('div');
+        this._InformationWindowInstance;//.disable();
 
+        this._InformationWindowInstance.style.padding = "0px";
+        this._InformationWindowInstance.style.height = "max-content";//"100" + "px";
+        this._InformationWindowInstance.style.width = "max-content";
+        
+        // ===================================================== //
+        
         this._titleField 
         = document.createElement('div');
+        
+       // this._titleField.style.maxHeight = "10" + "px";//..disable();
+        this._titleField.style.height = "max-content";//"100" + "px";
+        this._titleField.style.width = "max-content";
+        this._titleField.style.lineHeight = "13" + "px";
         this._InformationWindowInstance
         .appendChild(this._titleField);
-        this._titleField.style.color = "#ff9800";
 
+        this._titleField.style.color = "#ff9800";
+        this._titleField.style.padding = "0px";
+        this._titleField.style.top = "10px";
+
+        // ===================================================== //
+        
         this._messageField 
         = document.createElement('div');
+
+        this._messageField.style.height = "max-content";//"100" + "px";
+        this._messageField.style.width = "max-content";
+       // this._messageField.style.maxHeight = "10" + "px";//..disable();
+       //this._messageField.style.top = "15px"; 
+       this._messageField.style.lineHeight = "13" + "px";
         this._InformationWindowInstance
         .appendChild(this._messageField);
-        this._messageField.style.color = "#91c91a";
+        this._messageField.style.color = "#77D8FF";
+
+        // ===================================================== //
 
         this._dataField 
         = document.createElement('div');
+        this._dataField.style.height = "max-content";//"100" + "px";
+        this._dataField.style.width = "max-content";
+        this._dataField;//..disable();
+        //this._dataField.style.maxHeight = "10" + "px";//..disable();
+        this._dataField.style.lineHeight = "13" + "px";
+        this._dataField.style.top = "5px"; 
         this._InformationWindowInstance
         .appendChild(this._dataField);
         this._dataField.style.color = "#91c91a";
 
+        // ===================================================== //
+        
         this._InformationWindowInstance.style.fontFamily 
         = "Consolas";
         //Arial";
@@ -198,7 +241,7 @@ export default class AjhInitialScreen {
         this._InformationWindowInstance.style.maxWidth 
         = 
         //this._width
-        400
+        250
         + "px";
 
         this._InformationWindowInstance.style.maxHeight 
@@ -218,26 +261,12 @@ export default class AjhInitialScreen {
     setInformationWindowPosition(){
 
         this._InformationWindowInstance.style.left 
-        = "5px";
+        = "0px";
 
         this._InformationWindowInstance.style.top 
-        =  ( window.innerHeight - this.height )
-       // ( window.innerHeight - this._InformationWindowInstance.height )
+        =  
+        ( window.innerHeight - this._height*0.75 )
         + "px";
-
-        this._InformationWindowInstance.style.maxWidth 
-        =
-        this._InformationWindowInstance.style.width
-        =
-        //((window.innerWidth/2)-46) + "px";
-        (400) + "px";
-
-        this._InformationWindowInstance.style.maxHeight 
-        =
-        this._InformationWindowInstance.style.height
-        =
-        //((window.innerWidth/2)-46) + "px";
-        (100) + "px";
 
     }
 
@@ -249,14 +278,6 @@ export default class AjhInitialScreen {
 
         this.setInformationWindowPosition();
 
-        // this.moveToMouseCoords(
-
-        //     this.modelInstance.mouseCoordinates.x,
-        //     this.modelInstance.mouseCoordinates.y
-            
-        // );
-        //
-
         if (!this._InformationWindowInstance.parentNode){
 
             document.body.appendChild(
@@ -266,8 +287,6 @@ export default class AjhInitialScreen {
             );
         
         }
-
-        
 
     }
 
@@ -282,13 +301,14 @@ export default class AjhInitialScreen {
             );
         
         }
+
     }
 
     updateAllFields(
 
         title:string = "THE INSTRUMENT",
-        message:string = "doubleclick for fullscreen",
-        data:string = "touch the spinning cube to begin",
+        message:string = "touch the spinning cube to begin",
+        data:string = "doubleclick for fullscreen",
         
     ){
 
@@ -300,7 +320,7 @@ export default class AjhInitialScreen {
 
     // =========================================================== //
 
-    public setDataFieldText(text:String){
+    public setDataFieldText(text:string){
             this._dataField.innerText = text;
     }
 
@@ -376,8 +396,8 @@ export default class AjhInitialScreen {
 
     removeListeners(){
        
-        
         console.log("REMOVE ENTER LISTENERS");
+
         this.modelInstance.canvas.removeEventListener( 
             'pointermove', 
             this.pointermovelistener
@@ -398,6 +418,7 @@ export default class AjhInitialScreen {
     };
 
     enterButtonOnPointerDownListener(event:PointerEvent){
+
         console.log("BUTTON OUTSIDECLICKED!!!!")
         //if(this.enterButtonIsTouched){
 
@@ -408,37 +429,43 @@ export default class AjhInitialScreen {
     }
 
     enterButtonOnPointerUpListener(event:PointerEvent){
-        console.log("BUTTON OUTSIDECLICKED!!!!")
+
+        console.log("BUTTON OUTSIDECLICKED!!!!");
         //if(this.enterButtonIsTouched){
 
-                console.log("BUTTON UP!!!!")
+                console.log("BUTTON UP!!!!");
+                
                 this.enterButtonIsTouched = false;
+                
                 this.enterButtonClicked = true;
-               this._fullscreenobject.body.removeFromParent();
-               this.enterButton.removeFromParent();
-               this.modelInstance.ajhGuiControls = new AjhGUIControls();
-            //   this.modelInstance.ajhGuiControls.populateGUI();
-              
-
-       // }
-
+               
+                this._fullscreenobject.body.removeFromParent();
+               
+                this.enterButton.removeFromParent();
+               
+                this.modelInstance.ajhGuiControls = new AjhGUIControls();
+            
     }
 
     async startAudio() {
+
         await Tone.start()
         .then(() => {
+            
             //Transport.start();
+            
             console.log("starting Tone");
+            
             this.modelInstance.instruments = new AjhInstruments();
+            
             this.modelInstance.ajhGuiControls.populateGUI();
-           // this.modelInstance.currentInstrument = this.modelInstance.instruments.duoSynth;
+            
             this.modelInstance.instruments.playAChord(2);//.playAChord();
-            this.modelInstance.instruments.currentInstrument =
-                                this.modelInstance.instruments.instruments[5];
-              ///
-              this.modelInstance.gui.show();
+           
+            this.modelInstance.gui.show();
 
         });
+
     }
 
 
@@ -454,14 +481,18 @@ export default class AjhInitialScreen {
         console.log("BUTTON PARENT : " + this.enterButton.parent);
 
         if(! this.enterButtonClicked){
+
                 if( this.enterButton.parent == null){
 
-                    this.body.add( this.enterButton )
-                        this.enterButton.layers.enable( 1 );
+                    this.body.add( this.enterButton );
+
+                    this.enterButton.layers.enable( 1 );
 
                 } else 
                 {
+
                     this.enterButton.layers.enable( 1 );
+
                 }
 
             } else {this.enterButton.layers.disable( 1 );}
@@ -469,7 +500,9 @@ export default class AjhInitialScreen {
     }
 
     disposeOfEnterButton(){
+
         (this.enterButton as Mesh).geometry.dispose();
+
         ((this.enterButton as Mesh).material as MeshStandardMaterial).dispose();
         
        (this.modelInstance.renderer as WebGLRenderer)

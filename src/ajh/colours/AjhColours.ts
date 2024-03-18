@@ -72,7 +72,7 @@ export default class AjhColours {
     //
     constructor(
         id : number,
-        amountOfColours: number = 132
+        amountOfColours: number = 24
     ) {
         
         this._id = id;

@@ -1,6 +1,6 @@
 import AjhTypedEventEmitter from '../ajhevents/ajh_typed_events/AjhTypedEventEmitter';
-import AjhKey from '../keys/AjhKey';
-import AjhSelectedKey from '../keys/AjhSelectedKey';
+import AjhKey from '../keys/key/AjhKey';
+import AjhSelectedKey from '../keys/key/AjhSelectedKey';
 export interface AjhMusicalKeyEvents {
 
     'SelectionIdChanged': (
@@ -46,9 +46,17 @@ export interface AjhMusicalKeyEvents {
     'on_off': [on_off: boolean, id : number]
     'playing': [id : number, note_name: string]
     'repaint': [isTrue: boolean, id:number]
-    'touched': [ touched: boolean, name: string, id:number, uuid: string  ]
-    'onPointerDown': [  name: string, id:number, uuid: string  ]
-    'onPointerUp': [  name: string, id:number, uuid: string  ]
+    'touchedByRay': [ touched: boolean, rayid:number,  id:number, uuid: string  ]
+    
+    'onPointerDown': [  pointerid:number,  id:number, uuid: string  ]
+    'onPointerUp': [  pointerid:number,  id:number, uuid: string  ]
+    'onPointerEnter': [  pointerid:number,  id:number, uuid: string  ]
+    'onPointerOver': [  pointerid:number,  id:number, uuid: string  ]
+    'onPointerOut': [  pointerid:number,  id:number, uuid: string  ]
+    'onPointerCancel': [  pointerid:number, id:number, uuid: string  ]
+    'onPointerLeave': [  pointerid:number, id:number, uuid: string  ]
+    
+   
     'selected': [ selected: boolean, id:number,uuid: string  ]
     'toggle': [ key: AjhKey, id:number ]
 

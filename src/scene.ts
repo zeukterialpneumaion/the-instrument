@@ -32,7 +32,7 @@ import AjhModel from './ajh/datamodels/AjhModel'
 import * as animations from './ajh/helpers/AjhAnimations'
 import AjhFullScreenObject from './ajh/helpers/AjhFullScreenObject'
 import { resizeRendererToDisplaySize } from './ajh/helpers/AjhResponsiveness'
-import AjhKeys from './ajh/keys/AjhKeys'
+import AjhKeys from './ajh/keys/keyboards/AjhKeyBoard'
 import './style.css'
 
 const CANVAS_ID = 'scene';

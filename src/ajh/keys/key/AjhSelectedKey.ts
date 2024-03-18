@@ -1,4 +1,4 @@
-import AjhModel from "../datamodels/AjhModel";
+import AjhModel from "../../datamodels/AjhModel";
 import AjhKey from "./AjhKey";
 
 export default class AjhSelectedKey {
@@ -13,6 +13,10 @@ export default class AjhSelectedKey {
     public set raycasterId(value: number) {
         this._raycasterId = value;
     }
+
+    
+    private _pointerId: number;
+   
 
     private _bodyName: string;
     public get bodyName(): string {
@@ -30,6 +34,14 @@ export default class AjhSelectedKey {
     public set bodyId(value: any) {
         this._bodyId = value;
         this.selectedKey;
+    }
+    
+    private _bodyUUID: String;
+    public get bodyUUID(): String {
+        return this._bodyUUID;
+    }
+    public set bodyUUID(value: String) {
+        this._bodyUUID = value;
     }
    
     private _keyId: number;
@@ -54,14 +66,6 @@ export default class AjhSelectedKey {
     }
     public set selectedKey(value: AjhKey) {
         this._selectedKey = value;
-    }
-
-    private _bodyUUID: String;
-    public get bodyUUID(): String {
-        return this._bodyUUID;
-    }
-    public set bodyUUID(value: String) {
-        this._bodyUUID = value;
     }
 
     constructor() {

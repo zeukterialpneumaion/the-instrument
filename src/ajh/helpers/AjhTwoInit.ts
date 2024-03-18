@@ -45,7 +45,7 @@ import AjhFullScreenObject from "./AjhFullScreenObject";
 
 // ============================================================ //
 
-export default class AjhThreeInit{
+export default class AjhTwoInit{
 
     // instance variables //
 
@@ -112,13 +112,12 @@ export default class AjhThreeInit{
 
             this.addControls();
             
-            // this.addGui(); 
+           // this.addGui(); 
 
-            this._modelInstance.pointerEventsInstance 
-            = new AjhPointerEvents();
+           this._modelInstance.pointerEventsInstance 
+           = new AjhPointerEvents();
            
-            this.modelInstance.pointerEventsInstance
-                .addAllListeners( this.modelInstance.canvas );
+           this.modelInstance.pointerEventsInstance.addAllListeners( document );
 
             this.addFullScreenAndResizeListeners();
           
@@ -150,7 +149,7 @@ export default class AjhThreeInit{
         //modelInstance.toneInstance = TONE;
   
         let canvas 
-        = this.modelInstance.canvas;
+        = this.modelInstance.canvas; //document.querySelector(`canvas#${CANVAS_ID}`);
   
         this.modelInstance.renderer 
         = 
@@ -190,9 +189,7 @@ export default class AjhThreeInit{
         = 
         new PerspectiveCamera(
           50, 
-          this.modelInstance.canvas.clientWidth 
-          / 
-          this.modelInstance.canvas.clientHeight, 
+          this.modelInstance.canvas.clientWidth / this.modelInstance.canvas.clientHeight, 
           0.1, 
           10000
         );
@@ -206,8 +203,55 @@ export default class AjhThreeInit{
 // ============================================================ //
                                                                
     addRayCaster(){
+
+        // this.modelInstance.scene = new Scene();
+        
+        // this.modelInstance.scene.background 
+        // = 
+        // new Color(0x1a0600);
+        
+        // this.modelInstance.camera 
+        // = 
+        // new PerspectiveCamera(
+        //     75, 
+        //     window.innerWidth / window.innerHeight, 
+        //     0.1, 
+        //     1000
+        // );
+        
+        // //camera.position.set(0, 0, 1000);
+        
+        // this.modelInstance.camera.position.z = -19;
+        
+        // this.modelInstance.renderer 
+        // = 
+        // new WebGLRenderer({ antialias: true });
+        
+        // this.modelInstance.renderer.setSize(innerWidth, innerHeight);
+    
+        // (this.modelInstance.renderer as WebGLRenderer)
+        // .shadowMap.type = PCFSoftShadowMap;
+    
+        // (this.modelInstance.renderer as WebGLRenderer)
+        // .shadowMap.enabled = true; 
+    
+        // this.modelInstance.renderer
+        // .setSize( window.innerWidth, window.innerHeight );
+    
+        // (this.modelInstance.renderer as WebGLRenderer)
+        // .setPixelRatio( window.devicePixelRatio * 1.0 );
+        
+        // where.appendChild(this.modelInstance.renderer.domElement);
     
         this.modelInstance.raycaster = new Raycaster();
+
+        // this.modelInstance.controls 
+        // = new OrbitControls(
+        //     this.modelInstance.camera, 
+        //     this.modelInstance.renderer.domElement
+        // );
+        
+        // this.modelInstance.controls.enableDamping = true;
 
     }
 
@@ -428,14 +472,7 @@ export default class AjhThreeInit{
         const width = window.innerWidth;
         const height = window.innerHeight;
 
-        this.modelInstance.renderer.setSize( width, height );
-
-        this.modelInstance.infoScreen.setInformationWindowPosition();
-        this.modelInstance.infoScreen.fullscreenobject.resizeToScreenSize();
         this.modelInstance.fullScreenObject.resizeToScreenSize();
-        this.modelInstance.currentKeyBoard.changeKeyWidthsAndLengthsToFitScreenSize();
-    
-       
 
         (this.modelInstance.camera as PerspectiveCamera)
         .aspect 
@@ -444,7 +481,9 @@ export default class AjhThreeInit{
         (this.modelInstance.camera as PerspectiveCamera)
         .updateProjectionMatrix();
 
-          // this.modelInstance.camera.lookAt(new Vector3(0,-4,0));
+        this.modelInstance.renderer.setSize( width, height );
+
+        this.modelInstance.currentKeyBoard.changeKeyWidthsAndLengthsToFitScreenSize();
 
     }
 
@@ -743,7 +782,7 @@ onPointerMove( event ) {
         camera, 
         controls, 
         selection, 
-        fitOffset = 1.0
+        fitOffset = 1.2
     ) {
   
         const size = new Vector3();
@@ -815,7 +854,7 @@ onPointerMove( event ) {
                 16,
                 this.modelInstance.keyboardTypes.HorizontalKeys,
                 this.modelInstance.scaleTypes.Chromatic,
-                4
+                3
             );
             this.modelInstance.currentKeyBoard = this.ajhkeys;
         
@@ -830,7 +869,7 @@ onPointerMove( event ) {
             //this controls the full screen resizing of the keyboards
             this.modelInstance.fullScreenObject = new AjhFullScreenObject(1,1);
             this.modelInstance.fullScreenObject.resizeToScreenSize();
-           this.modelInstance.scene.add(this.modelInstance.fullScreenObject.body)
+          //  this.modelInstance.scene.add(this.fullscreenobject.body)
   
     }
 

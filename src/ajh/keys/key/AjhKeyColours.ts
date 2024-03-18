@@ -12,7 +12,8 @@ export default class AjhKeyColours {
     private _mutedColour: Color;
     
 
-    private _seedColours: Array<Color> = [
+    private _seedColours: Array<Color> 
+    = [
 
         new Color(0xffff00),
         new Color(0xff0000),
@@ -29,6 +30,7 @@ export default class AjhKeyColours {
         onColour: Color = new Color(0x00ff00),
         offColour: Color = new Color(0x00ff00)
     ) {
+
         this._baseColour = baseColour
         this._highlightColour = highlightColour
         this._onColour = onColour
@@ -36,11 +38,14 @@ export default class AjhKeyColours {
         this._playingColour 
         = 
         this.generateColourFromBaseColour(
+
             this._baseColour,
             0.6
+            
         );
 
         this._inactiveColour = new Color(0x707070);
+
     }
 
     //////////////////////////////////////////////////

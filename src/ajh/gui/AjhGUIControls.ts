@@ -1,4 +1,5 @@
 import AjhModel from "../datamodels/AjhModel";
+import AjhSynths from "../sonics/AjhSynths";
 
 ///////////////////////////////////////////////////
 
@@ -27,22 +28,22 @@ export default class AjhGUIControls {
 
             constructor(){
 
+           ///////////////////////////////////////////////////
+      
+            // const setItem = localStorage.setItem;
+            // localStorage.constructor.prototype.setItem = (key, value) => setItem.apply(localStorage, [location.pathname + ':' + key, value])
+
+            // const getItem = localStorage.getItem;
+            // localStorage.constructor.prototype.getItem = (key) => getItem.apply(localStorage, [location.pathname + ':' + key]);
+
+            // const removeItem = localStorage.removeItem;
+            // localStorage.constructor.prototype.removeItem = (key) => removeItem.apply(localStorage, [location.pathname + ':' + key]);
+
+            
+             ///////////////////////////////////////////////////
                 
-            const setItem = localStorage.setItem;
-            localStorage.constructor.prototype.setItem = (key, value) => setItem.apply(localStorage, [location.pathname + ':' + key, value])
+              this._modelInstance = AjhModel.Instance;
 
-            const getItem = localStorage.getItem;
-            localStorage.constructor.prototype.getItem = (key) => getItem.apply(localStorage, [location.pathname + ':' + key]);
-
-            const removeItem = localStorage.removeItem;
-            localStorage.constructor.prototype.removeItem = (key) => removeItem.apply(localStorage, [location.pathname + ':' + key]);
-
-            //  this.modelInstance.gui = new GUI();
-               this._modelInstance = AjhModel.Instance;
-
-             // this.populateGUI( false );
-
-               // this._gui =  this.modelInstance.gui;
             }
 
         ///////////////////////////////////////////////////
@@ -74,74 +75,72 @@ populateGUI( drag:boolean = false )  {
                     'instrument', 
                     [ 
                         
-                       // 'PluckedSynth', 
+                        // 'SquareEightSynth', 
                         'PolySynth', 
                         'PhatPolySynth',
                         'FatOscillator', 
-                       // 'DuoSynth',
-                       // 'MembraneSynth'
+                        'Triangle',
+                        'Square',
+
                     ]
                 )
                 .onChange(
                     function( v ) {
 
-                        try{
+                    //     try{
 
-                            this._modelInstance.musicalKeyEventEmitter.emit(
-                                "onPointerUp", 
-                                this._modelInstance.selectedKeys.selectedKeys[0].bodyName,
-                                this._modelInstance.selectedKeys.selectedKeys[0].bodyId,
-                                this._modelInstance.selectedKeys.selectedKeys[0].bodyUUID,
-                            )
+                    //         this._modelInstance.musicalKeyEventEmitter.emit(
+                    //             "onPointerUp", 
+                    //             this._modelInstance.selectedKeys.selectedKeys[0].bodyName,
+                    //             this._modelInstance.selectedKeys.selectedKeys[0].bodyId,
+                    //             this._modelInstance.selectedKeys.selectedKeys[0].bodyUUID,
+                    //         )
                 
-                       console.log("pointerup  >> id: " + 0)
+                    //    console.log("pointerup  >> id: " + 0)
                 
-                    }
-                    catch(e){
+                    // }
+                    // catch(e){
                 
-                        console.log(e);
+                    //     console.log(e);
                 
-                    }
+                    // }
                 
                     
-                        console.log( 'The value is now ' + v );
-                        switch (v) {
-                            case 'FatOscillator':
-                                this.modelInstance.instruments.currentInstrument =
-                                this.modelInstance.instruments.instruments[0];
-                                this.modelInstance.instruments.currentInstrumentType =  'FatOscillator';
-                                break;
-  // _fatOsc,_membraneOsc,pluckedSynth,duoSynth,phatPolySynth,polySynth);
-                                case 'MembraneSynth':
-                                    this.modelInstance.instruments.currentInstrument =
-                                    this.modelInstance.instruments.instruments[1];
-                                    this.modelInstance.instruments.currentInstrumentType =  'MembraneSynth';
-                                    break;
-    
+                        console.log( 'The current synth is now a ' + v );
 
-                            case 'PluckedSynth':
-                                this.modelInstance.instruments.currentInstrument =
-                                this.modelInstance.instruments.instruments[2];
-                                this.modelInstance.instruments.currentInstrumentType =  'PluckedSynth';
+  // _fatOsc,_membraneOsc,pluckedSynth,duoSynth,phatPolySynth,polySynth);
+
+                        switch (v) {
+                            
+                            case 'FatOscillator':
+                                this.modelInstance.instruments.currentInstrument  =
+                                (this.modelInstance.instruments.synths as AjhSynths).fatoscillator 
+                                 break;
+
+                            // case 'SquareEightSynth':
+                            //     this.modelInstance.instruments.currentInstrument  =
+                            //      (this.modelInstance.instruments.synths as AjhSynths).square8synth; 
+                            //      break;
+
+                            case 'Square':
+                                this.modelInstance.instruments.currentInstrument  =
+                                (this.modelInstance.instruments.synths as AjhSynths).squaresynth; 
                                 break;
 
                         
-                            case 'DuoSynth':
-                                this.modelInstance.instruments.currentInstrument =
-                                this.modelInstance.instruments.instruments[3];
-                                this.modelInstance.instruments.currentInstrumentType =  'DuoSynth';
+                            case 'Triangle':
+                                this.modelInstance.instruments.currentInstrument  =
+                                (this.modelInstance.instruments.synths as AjhSynths).trianglesynth; 
                                 break;        
 
                             case 'PhatPolySynth':
-                                this.modelInstance.instruments.currentInstrument =
-                                this.modelInstance.instruments.instruments[4];
-                                this.modelInstance.instruments.currentInstrumentType =  'PhatPolySynth';
+                                this.modelInstance.instruments.currentInstrument  =
+                                (this.modelInstance.instruments.synths as AjhSynths).phatpolysynth; 
                                 break;
 
                             case 'PolySynth':
-                                this.modelInstance.instruments.currentInstrument =
-                                this.modelInstance.instruments.instruments[5];
-                                this.modelInstance.instruments.currentInstrumentType =  'PolySynth';
+                                this.modelInstance.instruments.currentInstrument  =
+                                (this.modelInstance.instruments.synths as AjhSynths).polysynth; 
                                 break;
 
 
@@ -190,23 +189,23 @@ populateGUI( drag:boolean = false )  {
             8,32,1
         ).name("number of keys").onChange(function(evt){
 
-                try{
+            //     try{
 
-                    this._modelInstance.musicalKeyEventEmitter.emit(
-                        "onPointerUp", 
-                        this._modelInstance.selectedKeys.selectedKeys[0].bodyName,
-                        this._modelInstance.selectedKeys.selectedKeys[0].bodyId,
-                        this._modelInstance.selectedKeys.selectedKeys[0].bodyUUID,
-                    )
+            //         this._modelInstance.musicalKeyEventEmitter.emit(
+            //             "onPointerUp", 
+            //             this._modelInstance.selectedKeys.selectedKeys[0].bodyName,
+            //             this._modelInstance.selectedKeys.selectedKeys[0].bodyId,
+            //             this._modelInstance.selectedKeys.selectedKeys[0].bodyUUID,
+            //         )
         
-               console.log("pointerup  >> id: " + 0)
+            //    console.log("pointerup  >> id: " + 0)
         
-            }
-            catch(e){
+            // }
+            // catch(e){
         
-                console.log(e);
+            //     console.log(e);
         
-            }
+            // }
         
             console.log("setting key columns:"+ evt.value);
            this._modelInstance.currentKeyBoard.createKeys();
@@ -258,14 +257,20 @@ populateGUI( drag:boolean = false )  {
         // this.modelInstance.gui.add(functionobj,"fun").name('reset camera position');
     
         // // persist GUI state in local storage on changes
-        //   this.modelInstance.gui.onFinishChange(() => {
+        this.modelInstance.gui.onFinishChange(
+            () => {
 
-        //   const guiState =   this.modelInstance.gui.save();
-        //   localStorage.setItem('guiState', JSON.stringify(guiState));
+                const guiState 
+                =   
+                this.modelInstance.gui.save();
 
-        // })
-    
-
+                localStorage.setItem( 
+                    'guiState', 
+                    JSON.stringify(guiState) 
+                );
+            
+            }
+        );
 
         // load GUI state if available in local storage
         const guiState = localStorage.getItem('guiState')

@@ -18,6 +18,4 @@ export default class AjhScaleTypes {
 
     createScale(){}
 
-
-
 }
