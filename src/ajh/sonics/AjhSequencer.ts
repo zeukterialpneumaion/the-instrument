@@ -12,8 +12,6 @@ const makeSynths = (count) => {
 	// I'll be using a one octive F minor pentatonic scale
   // so I'll need 6 synths
   for (let i = 0; i < count; i++) {
-    // Documentation for Tone.Synth can be found here:
-    // https://tonejs.github.io/docs/r13/Synth
 
     // I'm using an oscillator with a square wave and 8 partials
     // because I like how it sounds.
