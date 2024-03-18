@@ -173,7 +173,7 @@ export default class AjhInitialScreen {
                
         this._InformationWindowInstance 
         = document.createElement('div');
-        this._InformationWindowInstance;//.disable();
+        this._InformationWindowInstance.style.userSelect =  "none";//.disable();
 
         this._InformationWindowInstance.style.padding = "0px";
         this._InformationWindowInstance.style.height = "max-content";//"100" + "px";
@@ -185,6 +185,7 @@ export default class AjhInitialScreen {
         = document.createElement('div');
         
        // this._titleField.style.maxHeight = "10" + "px";//..disable();
+        this._titleField.style.userSelect =  "none";
         this._titleField.style.height = "max-content";//"100" + "px";
         this._titleField.style.width = "max-content";
         this._titleField.style.lineHeight = "13" + "px";
@@ -199,7 +200,7 @@ export default class AjhInitialScreen {
         
         this._messageField 
         = document.createElement('div');
-
+        this._messageField.style.userSelect =  "none";
         this._messageField.style.height = "max-content";//"100" + "px";
         this._messageField.style.width = "max-content";
        // this._messageField.style.maxHeight = "10" + "px";//..disable();
@@ -213,6 +214,7 @@ export default class AjhInitialScreen {
 
         this._dataField 
         = document.createElement('div');
+        this._dataField.style.userSelect =  "none";
         this._dataField.style.height = "max-content";//"100" + "px";
         this._dataField.style.width = "max-content";
         this._dataField;//..disable();
