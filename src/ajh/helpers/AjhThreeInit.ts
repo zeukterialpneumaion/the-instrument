@@ -812,7 +812,7 @@ onPointerMove( event ) {
             this.ajhkeys 
             = new AjhKeys(
                 1,
-                16,
+                12,
                 this.modelInstance.keyboardTypes.HorizontalKeys,
                 this.modelInstance.scaleTypes.Chromatic,
                 4

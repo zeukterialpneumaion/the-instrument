@@ -330,12 +330,13 @@ export default class AjhKeyHandlerFunctions{
 
     //  the key is not intersected by the raycaster .....
 
-    this.keyInstance.highlightKey(false);
-
-    // remover Pointer Ray from the KEY Pointer Ray Array : 
+       // remover Pointer Ray from the KEY Pointer Ray Array : 
             
         this.keyInstance.KeyState.State.removePointerRayById(rayid, true);
 
+    if(this.keyInstance.KeyState.State.getNumberOfPointerRays() == 0){
+        this.keyInstance.highlightKey(false);
+    }
             if(this.keyInstance.modelInstance.pointerDown){
 
     // ... the pointer is down, 
