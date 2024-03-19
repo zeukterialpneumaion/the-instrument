@@ -258,8 +258,10 @@ export default class AjhThreeInit{
     addFullScreenAndResizeListeners(){
 
         window.addEventListener(
+
             "resize", 
             this.onWindowResizeHandler.bind(this)
+
         );
 
         this.addFullScreenToggleOnDoubleClick();
@@ -835,7 +837,7 @@ onPointerMove( event ) {
             //this controls the full screen resizing of the keyboards
             this.modelInstance.fullScreenObject = new AjhFullScreenObject(1,1);
             this.modelInstance.fullScreenObject.resizeToScreenSize();
-           this.modelInstance.scene.add(this.modelInstance.fullScreenObject.body)
+           //this.modelInstance.scene.add(this.modelInstance.fullScreenObject.body)
   
     }
 

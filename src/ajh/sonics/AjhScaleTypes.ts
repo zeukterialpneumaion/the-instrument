@@ -273,4 +273,24 @@ export default class AjhScaleTypes {
 
     }
 
+    getNoteIndexFromName(name: string) : number | null {
+
+        let noteIndex : number = null;
+        for (
+            let index = 0; 
+            index < this._noteNamesOneOctave.length; 
+            index++
+        ) {
+            const element = this._noteNamesOneOctave[index];
+
+            if(element == name){
+                noteIndex = index;
+            }
+            
+        }
+
+        return noteIndex;
+
+    }
+
 }

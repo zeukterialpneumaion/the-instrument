@@ -240,7 +240,7 @@ export default class AjhKey {
             this.KeyState.View.Height, 
             this.KeyState.View.Length,
             7,
-            0.05
+            0.65
         );
 
     }
@@ -410,7 +410,13 @@ export default class AjhKey {
                 = 
                 this.modelInstance
                     .colours
-                    .spectrumArray[this.KeyState.View.ColId%12];
+                    .spectrumArray[
+                        this.modelInstance
+                        .scaleTypes
+                        .getNoteIndexFromName(this.KeyState.Sonics.NoteName)
+                        
+                        // this.KeyState.View.ColId%12
+                    ];
 
                 material.needsUpdate = true;
 

@@ -84,7 +84,7 @@ export default class AjhGeometries {
             1, 
             1,
             7,
-            0.2
+            0.82
         );
 
         this.cubeGeometry 

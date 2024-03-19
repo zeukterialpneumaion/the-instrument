@@ -1,4 +1,4 @@
-import { Mesh, Scene, Vector3, WebGLRenderer } from 'three';
+import { Mesh, MeshMatcapMaterial, Scene, Vector3, WebGLRenderer } from 'three';
 import AjhModel from '../../datamodels/AjhModel';
 import { deepDispose } from '../../helpers/scene/ajhThreeDisposal';
 import AjhScaleDefinition from '../../sonics/AjhScaleDefinition';
@@ -11,6 +11,44 @@ export default class AjhKeyBoard {
 
     
 //////////////////////////////////////////////////////////////
+
+
+public darkMaterial 
+= new MeshMatcapMaterial({
+    color: '#006786',
+// metalness: 0.35,
+// roughness: 0.41,
+    // emissive:
+    });
+
+public lightMaterial 
+= new MeshMatcapMaterial({
+    color: '#00A8A0',
+//  metalness: 0.35,
+// roughness: 0.41,
+    });
+
+    public darkOnMaterial 
+= new MeshMatcapMaterial({
+    color: '#DDA960',
+//  metalness: 0.35,
+//  roughness: 0.1,
+    });
+
+public lighOntMaterial 
+= new MeshMatcapMaterial({
+    color: '#F4DA93',
+// metalness: 0.35,
+// roughness: 0.1,
+    });
+
+
+public BaseMaterial 
+= new MeshMatcapMaterial({
+    color: '#F4DA93',
+// metalness: 0.35,
+// roughness: 0.1,
+    });
 
 //////////////////////////////////////////////////////////////
 
@@ -242,148 +280,284 @@ routeToCorrectFunctionsForKeySetType(){
 
     createKeys(keyboardType){
 
-        console.log("CREATING KEYS::"+ this.scaleType.name);
-       // this.setToCurrentKeyboard()
-
-        // let generatedScale 
-        // = 
-        // this.modelInstance.ScalesCreation
-        // .getNoteNamesForScale(scaletype.scale,0);
-
-        let rand = Math.round(Math.random()*100);
-       
-
-        if( this._keys){
-            this.destroyKeys();
-        }
-
-        this._keys = new Array< AjhKey>();
-
-        for (
-            let rowIndex = 0; 
-            rowIndex < this.numberOfRows; 
-            rowIndex++
-        ) {
-            
-            const rowElement = this._keyRows[rowIndex];
-
-            for (
-
-                let colIndex = 0; 
-                colIndex < this.numberOfColumns; 
-                colIndex++
-
-            ) {
-                
-                let colElement = this._keys[colIndex];
-
-                // colElement 
-                // = rowElement[colIndex]
-                let isBlackKey = false;
-
-                if( 
-                    this.scaleType.scale[
-                        colIndex % this.scaleType.scale.length
-                    ].length 
-                    == 
-                    2 
-                ){
-
-                    isBlackKey = true;
-
-                }
-
-                // if( 
-                //     colIndex%12 == 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
-                //     || colIndex%12 == 3 
-                //     || colIndex%12 == 6 
-                //     || colIndex%12 == 8                                                                         
-                //     || colIndex%12 == 10 
-                // ){
-                //     isBlackKey = true;
-                // }
-                
-
-                let octave 
-                = 
-                this.octaveToStartFrom 
-                +
-                rowIndex
-                +
-                Math.floor(
-                    ( colIndex )
-                    /
-                    this.scaleType.scale.length
-                );
-
-                let keywidth =
-                (window.innerWidth/this.numberOfColumns)
-                -
-                ((window.innerWidth/this.numberOfColumns)
-                /this.numberOfColumns);
-
-                    // set scale ::
-
-                this._keys.push( 
-
-                    new AjhKey(
-
-                        ( (rowIndex) * this.numberOfColumns ) + colIndex,
-                        rowIndex,
-                        colIndex,
-                        ( window.innerWidth/this.numberOfColumns ) 
-                        / 
-                        this.modelInstance.camera.position.y,
-                        0.5,
-                        keywidth / this.modelInstance.camera.position.y,
-                        isBlackKey,
-                        this.scaleType.scale[ 
-                            ( 
-                                colIndex 
-                            )
-                            % 
-                            this.scaleType.scale.length 
-                        ],
-                        octave,
-                        this,
-                        this.keys.length-1
-
-                    )
-
-                );
-                
-             
-                console.log(
-
-                    rand
-                    +
-                    "KEY NOTE:: " 
-                    + 
-                    this.modelInstance.ScalesCreation.noteNamesOneOctave[colIndex%12] 
-                    + 
-                    Math.round( octave + colIndex/12 ).toString()
-
-                );
-
-            }
-            
-        }
-
-        this.modelInstance.keyBodies
-        =
-        this.getKeyBodies();
-
-        this.positionKeys();
-
-        this.addKeysToScene( this.modelInstance.scene ); 
+       this.createVerticalKeys();
+       //  this.createHorizontalKeys();
 
     }
 
 //////////////////////////////////////////////////////////////
 
+createHorizontalKeys(){
+
+    
+    console.log("CREATING KEYS::"+ this.scaleType.name);
+    // this.setToCurrentKeyboard()
+
+     // let generatedScale 
+     // = 
+     // this.modelInstance.ScalesCreation
+     // .getNoteNamesForScale(scaletype.scale,0);
+
+     let rand = Math.round(Math.random()*100);
+    
+
+     if( this._keys){
+         this.destroyKeys();
+     }
+
+     this._keys = new Array< AjhKey>();
+
+     for (
+         let rowIndex = 0; 
+         rowIndex < this.numberOfRows; 
+         rowIndex++
+     ) {
+         
+         const rowElement = this._keyRows[rowIndex];
+
+         for (
+
+             let colIndex = 0; 
+             colIndex < this.numberOfColumns; 
+             colIndex++
+
+         ) {
+             
+             let colElement = this._keys[colIndex];
+
+             let isBlackKey = false;
+
+             if( 
+                 this.scaleType.scale[
+                     colIndex % this.scaleType.scale.length
+                 ].length 
+                 == 
+                 2 
+             ){
+
+                 isBlackKey = true;
+
+             }
+
+             let octave 
+             = 
+             this.octaveToStartFrom 
+             +
+             rowIndex
+             +
+             Math.floor(
+                 ( colIndex )
+                 /
+                 this.scaleType.scale.length
+             );
+
+             let keywidth = window.innerWidth;
+            //  (window.innerWidth/this.numberOfColumns)
+            //  -
+            //  ((window.innerWidth/this.numberOfColumns)
+            //  /this.numberOfColumns);
+
+                 // set scale ::
+
+             this._keys.push( 
+
+                 new AjhKey(
+
+                     ( (rowIndex) * this.numberOfColumns ) + colIndex,
+                     rowIndex,
+                     colIndex,
+                     keywidth 
+                     / 
+                     this.modelInstance.camera.position.y,
+                     0.5,
+                     ( window.innerWidth/this.numberOfColumns )  / this.modelInstance.camera.position.y,
+                     isBlackKey,
+                     this.scaleType.scale[ 
+                         ( 
+                             colIndex 
+                         )
+                         % 
+                         this.scaleType.scale.length 
+                     ],
+                     octave,
+                     this,
+                     this.keys.length-1
+
+                 )
+
+             );
+             
+          
+             console.log(
+
+                 rand
+                 +
+                 "KEY NOTE:: " 
+                 + 
+                 this.modelInstance.ScalesCreation.noteNamesOneOctave[colIndex%12] 
+                 + 
+                 Math.round( octave + colIndex/12 ).toString()
+
+             );
+
+         }
+         
+     }
+
+     this.modelInstance.keyBodies
+     =
+     this.getKeyBodies();
+
+   //  this.positionHorizontalKeys();
+
+     this.addKeysToScene( this.modelInstance.scene );
+
+}
+
 //////////////////////////////////////////////////////////////
 
-    positionKeys(){
+createVerticalKeys(){
+
+    
+    console.log("CREATING KEYS::"+ this.scaleType.name);
+    // this.setToCurrentKeyboard()
+
+     // let generatedScale 
+     // = 
+     // this.modelInstance.ScalesCreation
+     // .getNoteNamesForScale(scaletype.scale,0);
+
+     let rand = Math.round(Math.random()*100);
+    
+
+     if( this._keys){
+         this.destroyKeys();
+     }
+
+     this._keys = new Array< AjhKey>();
+
+     for (
+         let rowIndex = 0; 
+         rowIndex < this.numberOfRows; 
+         rowIndex++
+     ) {
+         
+         const rowElement = this._keyRows[rowIndex];
+
+         for (
+
+             let colIndex = 0; 
+             colIndex < this.numberOfColumns; 
+             colIndex++
+
+         ) {
+             
+             let colElement = this._keys[colIndex];
+
+             // colElement 
+             // = rowElement[colIndex]
+             let isBlackKey = false;
+
+             if( 
+                 this.scaleType.scale[
+                     colIndex % this.scaleType.scale.length
+                 ].length 
+                 == 
+                 2 
+             ){
+
+                 isBlackKey = true;
+
+             }
+
+             // if( 
+             //     colIndex%12 == 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+             //     || colIndex%12 == 3 
+             //     || colIndex%12 == 6 
+             //     || colIndex%12 == 8                                                                         
+             //     || colIndex%12 == 10 
+             // ){
+             //     isBlackKey = true;
+             // }
+             
+
+             let octave 
+             = 
+             this.octaveToStartFrom 
+             +
+             rowIndex
+             +
+             Math.floor(
+                 ( colIndex )
+                 /
+                 this.scaleType.scale.length
+             );
+
+             let keywidth =
+             (window.innerWidth/this.numberOfColumns)
+             -
+             ((window.innerWidth/this.numberOfColumns)
+             /this.numberOfColumns);
+
+                 // set scale ::
+
+             this._keys.push( 
+
+                 new AjhKey(
+
+                     ( (rowIndex) * this.numberOfColumns ) + colIndex,
+                     rowIndex,
+                     colIndex,
+                     ( window.innerWidth/this.numberOfColumns ) 
+                     / 
+                     this.modelInstance.camera.position.y,
+                     0.5,
+                     keywidth / this.modelInstance.camera.position.y,
+                     isBlackKey,
+                     this.scaleType.scale[ 
+                         ( 
+                             colIndex 
+                         )
+                         % 
+                         this.scaleType.scale.length 
+                     ],
+                     octave,
+                     this,
+                     this.keys.length-1
+
+                 )
+
+             );
+             
+          
+             console.log(
+
+                 rand
+                 +
+                 "KEY NOTE:: " 
+                 + 
+                 this.modelInstance.ScalesCreation.noteNamesOneOctave[colIndex%12] 
+                 + 
+                 Math.round( octave + colIndex/12 ).toString()
+
+             );
+
+         }
+         
+     }
+
+     this.modelInstance.keyBodies
+     =
+     this.getKeyBodies();
+
+     this.positionVerticalKeys();
+
+     this.addKeysToScene( this.modelInstance.scene ); 
+
+}
+//////////////////////////////////////////////////////////////
+
+    positionVerticalKeys(){
 
         let screenXY = this.modelInstance.getCameraViewSizeXY();
 
@@ -454,7 +628,75 @@ routeToCorrectFunctionsForKeySetType(){
     }
 
 //////////////////////////////////////////////////////////////
+positionHorizontalKeys(){
 
+    let screenXY = this.modelInstance.getCameraViewSizeXY();
+
+    let xOffset = screenXY.x / 2; 
+
+    for (
+        let keyIndex = 0; 
+        keyIndex < this.keys.length; 
+        keyIndex++
+    ) {
+        
+        const keyElement = this.keys[keyIndex];
+
+            keyElement.KeyState.View.Body.position.z 
+            = 
+            (
+                ( 
+                
+                    (keyElement.KeyState.View.ColId) 
+                
+                    * 
+                
+                    (keyElement.KeyState.View.Width +this.spaceBetweenKeys) 
+            
+                ) 
+            
+                - (xOffset)
+            
+            )
+            
+            + 
+            
+            ( keyElement.KeyState.View.Width / 2 );
+
+            //now the z position
+            //let zOffset =  -( keyElement.keyHeight / 2 );//0;//screenXY.y/2; //(window.innerHeight/this.numberOfRows) / this.modelInstance.camera.position.y;
+            //let zOffset = window.innerHeight/this.numberOfRows;//screenXY.y / this._numberOfRows; 
+            let zOffset = -screenXY.y/this.numberOfRows;// window.innerHeight/2;//0;//-screenXY.y / this._numberOfRows; 
+            
+            keyElement.KeyState.View.Body.position.x 
+            =  0;//
+
+           - (
+                ( 
+                    (keyElement.KeyState.View.RowId) 
+               
+                    * 
+
+                    ( (keyElement.KeyState.View.Height* ((this.numberOfRows))))
+
+                    // (window.innerHeight/this.numberOfRows) 
+                    // ( keyElement.keyHeight * this.numberOfRows ) ) + ( keyElement.keyHeight ) 
+                    //this.spaceBetweenRows)
+                    //-( ( (window.innerHeight/this.numberOfRows) / this.modelInstance.camera.position.y )/2 ) 
+                )
+
+              // - (zOffset)
+
+            )
+
+            +
+            
+            ( keyElement.KeyState.View.Height * ((this.numberOfRows/2)))
+            - (zOffset);
+        
+    }
+
+}
 //////////////////////////////////////////////////////////////
 
     addKeysToScene(scene:Scene){
@@ -491,7 +733,7 @@ routeToCorrectFunctionsForKeySetType(){
 
         }
     
-        this.positionKeys();
+        this.positionVerticalKeys();
 
     }
 
