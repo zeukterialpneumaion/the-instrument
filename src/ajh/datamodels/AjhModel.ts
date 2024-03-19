@@ -64,6 +64,14 @@ export default class AjhModel {
     public showAudioMessages: boolean = false;
     public useSpectrumColours : boolean = true;
 
+    private _Stats: Stats;
+    public get Stats(): Stats {
+        return this._Stats;
+    }
+    public set Stats(value: Stats) {
+        this._Stats = value;
+    }
+    
     private _ScalesCreation: AjhScaleCreation = new AjhScaleCreation();
     public get ScalesCreation(): AjhScaleCreation {
         return this._ScalesCreation;

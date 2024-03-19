@@ -51,7 +51,6 @@ implements AjhPointerEventHandlersInterface {
             this.pointercancelHandler,
             this.gotpointercaptureHandler, 
             this.lostpointercaptureHandler
-            
 
         ]
         
@@ -74,17 +73,17 @@ implements AjhPointerEventHandlersInterface {
     
     private onPointerDownHandler(evt : PointerEvent){
 
-
         this._modelInstance.pointerDown = true;
 
         let selfReference = this._modelInstance.pointerEventsInstance.ajhPointerEventHandlers;
-       
             
         evt.stopPropagation();
        // evt.preventDefault();
             // set my pointer id to that of the pointerId
             if(selfReference.getPointerEventById(evt.pointerId) == null){
+                
                 selfReference.addPointerEvent(evt.pointerId);
+
             }
             else{
                 
@@ -93,11 +92,11 @@ implements AjhPointerEventHandlersInterface {
 
         //if the selectedkey is not undefined then setcoords of mouse
         if (
-          this._modelInstance.selectedKeys.selectedKeys[evt.pointerId]
+
+            this._modelInstance.selectedKeys.selectedKeys[evt.pointerId]
             != 
-            undefined 
-            // | 
-           // null
+            undefined
+
         ){
 
             //set coords
@@ -111,12 +110,12 @@ implements AjhPointerEventHandlersInterface {
             
         try{
 
-                    this._modelInstance.musicalKeyEventEmitter.emit(
-                        "onPointerDown", 
-                        this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyName,
-                        this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
-                        this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
-                    )
+                this._modelInstance.musicalKeyEventEmitter.emit(
+                    "onPointerDown", 
+                    this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyName,
+                    this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
+                    this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
+                )
 
                console.log("pointerdown  >> id: " + evt.pointerId)
 
@@ -152,7 +151,9 @@ implements AjhPointerEventHandlersInterface {
         evt.preventDefault();
 
       // console.log( test());//getPointerEventById(evt.pointerId) );
-        let selfReference = this._modelInstance.pointerEventsInstance.ajhPointerEventHandlers;
+        let selfReference 
+        = 
+        this._modelInstance.pointerEventsInstance.ajhPointerEventHandlers;
        
         if(selfReference.getPointerEventById(evt.pointerId) == null){
             selfReference.addPointerEvent(evt.pointerId);

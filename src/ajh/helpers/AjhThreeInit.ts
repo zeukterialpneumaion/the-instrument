@@ -132,10 +132,13 @@ export default class AjhThreeInit{
   
     addStatsAndClock(){
 
-            this.modelInstance.clock = new Clock()
-            this.stats = new Stats()
-           // document.body.appendChild(this.stats.dom)
-           // this.stats.dom.
+            this.modelInstance.clock = new Clock();
+            this.modelInstance.Stats = new Stats();
+
+            this.modelInstance.Stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+           
+           // document.body.appendChild(this.modelInstance.Stats.dom)
+           // this.modelInstance.Stats.dom.
         
 
     }
@@ -271,7 +274,7 @@ export default class AjhThreeInit{
 
     requestAnimationFrame( this.animate.bind(this) );
     
-        this.stats.update();
+        this.modelInstance.Stats.update();
 
         //TWEEN.update();;
 
@@ -373,7 +376,7 @@ export default class AjhThreeInit{
         
 	   // this.renderComposition();
 
-        this.stats.update();
+        this.modelInstance.Stats.update();
   
         //TWEEN.update();;
       
@@ -818,7 +821,7 @@ onPointerMove( event ) {
                 0,
                 3
             );
-            
+
             this.modelInstance.currentKeyBoard = this.ajhkeys;
         
             this.enterScreen 

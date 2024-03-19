@@ -250,11 +250,13 @@ populateGUI( drag:boolean = false )  {
             // }
         
             console.log("setting key columns:"+ evt.value);
-            
+
             this.modelInstance.currentKeyBoard
-                    .createKeys( 
+                    .createKeys(
+
                         "",
                         this.modelInstance.currentKeyBoard.scaleType
+
                     );
 
         }.bind(this));
@@ -331,6 +333,25 @@ populateGUI( drag:boolean = false )  {
         }
 
         let stateFolder = this.modelInstance.gui.addFolder("state")
+
+        let statsShow = { show : false }
+        stateFolder.add(statsShow, "show",).name("stats").onChange(
+
+            function(evt){
+
+                if(evt){
+
+                    document.body.appendChild(this.modelInstance.Stats.dom);
+
+                } else {
+
+                    document.body.removeChild(this.modelInstance.Stats.dom);
+
+                }
+       
+            }.bind(this)
+
+        )
         stateFolder.add({ resetGui }, 'resetGui').name('reset local storage')
         stateFolder.close();
          this.modelInstance.gui.close()
