@@ -83,29 +83,32 @@ export default class AjhKey {
         )
 
         this.KeyHandlers = new AjhKeyHandlerFunctions(this);
+
         // generate random note :
 
-        let noteRefId = 
-            Math.round(
-                Math.random()
-                *
-                (
-                    this.modelInstance.scales.
-                    noteNamesWithOctaveRegister.length-1
-                )
-            );
+        // let noteRefId = 
+        //     Math.round(
+        //         Math.random()
+        //         *
+        //         (
+        //             this.modelInstance.ScalesCreation.
+        //             noteNamesWithOctaveRegister.length-1
+        //         )
+        //     );
 
-        this._note = 
-            new AjhNamedNote(
-                this.modelInstance.scales.noteNamesWithOctaveRegister[
-                noteRefId
-                ],
-                noteRefId
-            );
+        // this._note 
+        // = 
+        // new AjhNamedNote(
+        //     this.modelInstance.ScalesCreation
+        //     .noteNamesWithOctaveRegister[
+        //         noteRefId
+        //     ],
+        //     noteRefId
+        // );
 
-            this.createKeyBody();
+        this.createKeyBody();
 
-            this.changeKeySizeToFitScreenSize();
+        this.changeKeySizeToFitScreenSize();
 
         
         this.addListeners();
@@ -161,10 +164,14 @@ export default class AjhKey {
             material.color 
             =
             this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
+            // this.modelInstance.colours.spectrumArray[this.KeyState.PositionInKeyboard%12];
             
             material.needsUpdate = true;
 
-            this.KeyState.View.Colours.baseColour = this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
+            this.KeyState.View.Colours.baseColour 
+            = 
+            // this.modelInstance.colours.spectrumArray[this.KeyState.PositionInKeyboard%12];
+            this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
 
             this.KeyState.View.Colours.createHighLightColourFromBaseColour();
             

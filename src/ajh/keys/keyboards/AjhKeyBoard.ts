@@ -1,6 +1,7 @@
 import { Mesh, Scene, Vector3, WebGLRenderer } from 'three';
 import AjhModel from '../../datamodels/AjhModel';
 import { deepDispose } from '../../helpers/scene/ajhThreeDisposal';
+import AjhScaleDefinition from '../../sonics/AjhScaleDefinition';
 import AjhKey from '../key/AjhKey';
 import AjhKeyboardTypes from './AJhKeyBoardTypes';
 
@@ -18,6 +19,22 @@ export default class AjhKeyBoard {
     }
     public set id(value: number) {
         this._id = value;
+    }
+
+    private _scaleType: AjhScaleDefinition;
+    public get scaleType(): AjhScaleDefinition {
+        return this._scaleType;
+    }
+    public set scaleType(value: AjhScaleDefinition) {
+        this._scaleType = value;
+    }
+
+    private _semitoneOffset: number;
+    public get semitoneOffset(): number {
+        return this._semitoneOffset;
+    }
+    public set semitoneOffset(value: number) {
+        this._semitoneOffset = value;
     }
 
     private _modelInstance: AjhModel;
@@ -104,6 +121,14 @@ export default class AjhKeyBoard {
 
     public KeysetTypeDefinitions :AjhKeyboardTypes = new AjhKeyboardTypes();
 
+    private _KeyBoardNoteNames: Array<string> = new Array<string>();
+    public get KeyBoardNoteNames(): Array<string> {
+        return this._KeyBoardNoteNames;
+    }
+    public set KeyBoardNoteNames(value: Array<string>) {
+        this._KeyBoardNoteNames = value;
+    }
+
     private _keysetTypeInstance: String;
     public get KeyBoardTypeInstance(): String {
         return this._keysetTypeInstance;
@@ -117,14 +142,15 @@ export default class AjhKeyBoard {
 //////////////////////////////////////////////////////////////
 
     constructor(
+
         rows:number = 1,
         cols:number = 12,
-        keysType : String = "pianogrid",
-        musicalscale : String = "chromatic",
+        keysType : string = "pianogrid",
+        scaleType : AjhScaleDefinition,
+        semitoneOffset :number = 0,
         octaveToStartFrom : number = 3
+
     ){
-
-
         
         this._modelInstance = AjhModel.Instance;
 
@@ -132,9 +158,12 @@ export default class AjhKeyBoard {
         this.numberOfColumns = cols;
 
         this.octaveToStartFrom = octaveToStartFrom;
+        this.semitoneOffset = semitoneOffset;
 
         this.spaceBetweenKeys = 0;//0.025;
-        this.spaceBetweenRows = 0.5;
+        this.spaceBetweenRows = 0;
+
+        this.scaleType = scaleType;
 
         this.divisor = 100;
 
@@ -149,8 +178,10 @@ export default class AjhKeyBoard {
 
 //////////////////////////////////////////////////////////////
     
-    setToCurrentKeyboard(){
-        this.modelInstance.currentKeyBoard =
+    setThisToCurrentKeyboard(){
+
+        this.modelInstance.currentKeyBoard 
+        =
         this;
     }
 
@@ -161,13 +192,19 @@ routeToCorrectFunctionsForKeySetType(){
 
             case this.KeysetTypeDefinitions.HorizontalKeys:
             
-            this.createKeys(this.KeysetTypeDefinitions.HorizontalKeys);
+            this.createKeys(
+                this.KeysetTypeDefinitions.HorizontalKeys, 
+                this.scaleType, //modelInstance.ScalesCreation.Chromatic 
+            );
 
             break;
 
             case this.KeysetTypeDefinitions.VerticalKeys:
             
-            this.createKeys(this.KeysetTypeDefinitions.VerticalKeys);
+            this.createKeys(
+                this.KeysetTypeDefinitions.VerticalKeys,
+                this.scaleType
+            );
 
             break;
 
@@ -198,15 +235,22 @@ routeToCorrectFunctionsForKeySetType(){
 }
 //////////////////////////////////////////////////////////////
 
-    createKeys(keyboardType){
+    createKeys(keyboardType, scaletype : AjhScaleDefinition){
 
 
-        console.log("CREATING KEYS::CURRENT KEYBOARD");
+        console.log("CREATING KEYS::"+ scaletype.name);
        // this.setToCurrentKeyboard()
 
-       if(this._keys){
+        // let generatedScale 
+        // = 
+        // this.modelInstance.ScalesCreation
+        // .getNoteNamesForScale(scaletype.scale,0);
+
+       
+
+        if( this._keys){
             this.destroyKeys();
-       }
+        }
 
         this._keys = new Array< AjhKey>();
 
@@ -231,14 +275,24 @@ routeToCorrectFunctionsForKeySetType(){
                 let isBlackKey = false;
 
                 if( 
-                    colIndex%12 == 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
-                    || colIndex%12 == 3 
-                    || colIndex%12 == 6 
-                    || colIndex%12 == 8                                                                         
-                    || colIndex%12 == 10 
+                    scaletype.scale[
+                        colIndex % scaletype.scale.length
+                    ].length 
+                    == 
+                    2 
                 ){
                     isBlackKey = true;
                 }
+
+                // if( 
+                //     colIndex%12 == 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                //     || colIndex%12 == 3 
+                //     || colIndex%12 == 6 
+                //     || colIndex%12 == 8                                                                         
+                //     || colIndex%12 == 10 
+                // ){
+                //     isBlackKey = true;
+                // }
                 
 
                 let octave 
@@ -246,29 +300,35 @@ routeToCorrectFunctionsForKeySetType(){
                     this.octaveToStartFrom 
                     +
                     rowIndex
-                    + Math.floor(colIndex/12);
+                    + 
+                    Math.floor(colIndex/scaletype.scale.length);
 
                     let keywidth =
                     (window.innerWidth/this.numberOfColumns)
                     -
                     ((window.innerWidth/this.numberOfColumns)
-                    /this.numberOfColumns)
+                    /this.numberOfColumns);
+
+                    // set scale ::
 
                 this._keys.push( 
 
                     new AjhKey(
 
-                        ((rowIndex)*this.numberOfColumns)+colIndex,
+                        ( (rowIndex) * this.numberOfColumns ) + colIndex,
                         rowIndex,
                         colIndex,
-                        (window.innerWidth/this.numberOfColumns) / this.modelInstance.camera.position.y,
+                        ( window.innerWidth/this.numberOfColumns ) 
+                        / 
+                        this.modelInstance.camera.position.y,
                         0.5,
                         keywidth / this.modelInstance.camera.position.y,
                         isBlackKey,
-                        this.modelInstance.scales.noteNamesOneOctave[colIndex%12],
+                        scaletype.scale[ colIndex % scaletype.scale.length ],
                         octave,
                         this,
                         this.keys.length-1
+
                     )
 
                 );
@@ -277,9 +337,9 @@ routeToCorrectFunctionsForKeySetType(){
 
                     "KEY NOTE:: " 
                     + 
-                    this.modelInstance.scales.noteNamesOneOctave[colIndex%12] 
+                    this.modelInstance.ScalesCreation.noteNamesOneOctave[colIndex%12] 
                     + 
-                    Math.round(octave + colIndex/12).toString()
+                    Math.round( octave + colIndex/12 ).toString()
 
                 );
 
@@ -287,12 +347,13 @@ routeToCorrectFunctionsForKeySetType(){
             
         }
 
-        this.modelInstance.keyBodies =
+        this.modelInstance.keyBodies
+        =
         this.getKeyBodies();
 
         this.positionKeys();
 
-        this.addKeysToScene(this.modelInstance.scene)
+        this.addKeysToScene( this.modelInstance.scene ); 
 
     }
 
@@ -342,7 +403,7 @@ routeToCorrectFunctionsForKeySetType(){
                 
                 keyElement.KeyState.View.Body.position.z 
                 =  0;//
-                
+
                - (
                     ( 
                         (keyElement.KeyState.View.RowId) 

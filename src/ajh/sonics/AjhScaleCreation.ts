@@ -1,57 +1,9 @@
 import AjhScaleTypes from "./AjhScaleTypes";
 
-export default class AjhScales{
+export default class AjhScaleCreation{
 
     public scaleTypes : AjhScaleTypes = new AjhScaleTypes();
 
-    private _Majors: Array<number> = [0, 2, 4, 5, 6, 8, 10];
-    public get Majors(): Array<number> {
-        return this._Majors;
-    }
-    public set Majors(value: Array<number>) {
-        this._Majors = value;
-    }
-
-    private _MelodicMinors: Array<number> = [0, 2, 3, 5, 7, 8, 11];
-    public get MelodicMinors(): Array<number> {
-        return this._MelodicMinors;
-    }
-    public set MelodicMinors(value: Array<number>) {
-        this._MelodicMinors = value;
-    }
-
-    private _HarmonicicMinors: Array<number> = [0, 2, 3, 5, 7, 8, 10];
-    public get HarmonicicMinors(): Array<number> {
-        return this._HarmonicicMinors;
-    }
-    public set HarmonicicMinors(value: Array<number>) {
-        this._HarmonicicMinors = value;
-    }
-
-    private _MinorThirdFifthSeventh: Array<number> = [0, 3, 7, 10];
-    public get MinorThirdFifthSeventh(): Array<number> {
-        return this._MinorThirdFifthSeventh;
-    }
-    public set MinorThirdFifthSeventh(value: Array<number>) {
-        this._MinorThirdFifthSeventh = value;
-    }
-
-    private _CircleOfFifths: Array<number> 
-    = [0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77];
-    public get CircleOfFifths(): Array<number> {
-        return this._CircleOfFifths;
-    }
-    public set CircleOfFifths(value: Array<number>) {
-        this._CircleOfFifths = value;
-    }
-
-    private _MinorPentatonic: Array<number> = [ 0,3,5,7,11 ];
-    public get MinorPentatonic(): Array<number> {
-        return this._MinorPentatonic;
-    }
-    public set MinorPentatonic(value: Array<number>) {
-        this._MinorPentatonic = value;
-    }
 
     constructor(){
 
@@ -267,5 +219,30 @@ export default class AjhScales{
             ];
 
     // ============================================================ //
+
+    public getNoteNamesForScale( notesInScale, semitoneOffset: number ) : Array<string> {
+
+        let scalenotes = new Array<string>();
+        
+        for (let index = 0; index < notesInScale.length; index++) {
+        
+            const element 
+            = 
+            notesInScale[index];
+
+            scalenotes.push(
+                this.noteNamesOneOctave[
+                    (element + semitoneOffset) % notesInScale.length
+                ]
+            );
+            
+        }
+
+        return scalenotes;
+    
+    }
+    
+    // ============================================================ //
+
 
 }

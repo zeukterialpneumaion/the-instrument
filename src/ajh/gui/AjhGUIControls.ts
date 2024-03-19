@@ -175,21 +175,38 @@ populateGUI( drag:boolean = false )  {
                     } .bind(this)
                 );
         
-                let scalesObj = { scale: 'chromatic' }
+                let scalesObj = { scale: 'chromatic' };
+
                 soundsFolder.add(
+
                     scalesObj, 
                     'scale', 
-                    [ 
-                        'Chromatic', 
-                        'CMajor', 
-                        'EbMinor', 
-                        'CircleOfFifths',
-                        'MinorThirds',
-                        "BlackKeys"
-                    ]
-                ).name("choose scale (TODO!)").onChange(function(evt){});
+                    [
 
-                
+                        'Chromatic', 
+                        'Major', 
+                        'MelodicMinor',
+                        'HarmonicMinor',
+                        'MinorThirdFifthSeventh',
+                        'MinorPentatonic',
+                        "BlackKeys",
+                        'CircleOfFifths',
+
+                    ]
+
+                )
+                .name("scale")
+                .onChange(function(evt){
+
+                    this.modelInstance.currentKeyBoard
+                    .createKeys( 
+                        "",
+                        this.modelInstance.scaleTypes.getScaleFromName(evt)
+                    );
+
+                }.bind(this));
+
+               
       //      });
        // });
 
@@ -233,7 +250,12 @@ populateGUI( drag:boolean = false )  {
             // }
         
             console.log("setting key columns:"+ evt.value);
-           this._modelInstance.currentKeyBoard.createKeys();
+            
+            this.modelInstance.currentKeyBoard
+                    .createKeys( 
+                        "",
+                        this.modelInstance.currentKeyBoard.scaleType
+                    );
 
         }.bind(this));
 

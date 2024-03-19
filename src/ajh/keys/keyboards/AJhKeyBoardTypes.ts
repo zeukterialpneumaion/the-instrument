@@ -1,22 +1,22 @@
 export default class AjhKeyboardTypes {
 
-    public HorizontalKeys : String = "horizontal";
+    public HorizontalKeys : string = "horizontal";
 
 
-    public VerticalKeys : String = "vertical";
+    public VerticalKeys : string = "vertical";
 
 
-    public CirclesOfKeys : String = "circular";
+    public CirclesOfKeys : string = "circular";
 
 
-    public RandomlyPlacedKeys : String = "random";
+    public RandomlyPlacedKeys : string = "random";
 
 
-    public ThreeDimensionalKeys : String = "threedimensionalkeys";
+    public ThreeDimensionalKeys : string = "threedimensionalkeys";
 
     
-    public Voronoi : String = "voronoi"; 
+    public Voronoi : string = "voronoi"; 
 
-    public EffectsXY : String = "effectsxy"; 
+    public EffectsXY : string = "effectsxy"; 
 
 }

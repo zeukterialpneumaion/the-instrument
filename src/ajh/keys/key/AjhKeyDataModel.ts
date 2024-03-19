@@ -1,4 +1,5 @@
 import { InstancedMesh, Mesh, Vector2, Vector3 } from "three";
+import AjhSynthDefinition from "../../sonics/AjhSynthDefinition";
 import AjhKeyBoard from "../keyboards/AjhKeyBoard";
 import AjhKeyColours from "./AjhKeyColours";
 
@@ -10,6 +11,7 @@ import AjhKeyColours from "./AjhKeyColours";
         Id:number,
         KeyboardInstance: AjhKeyBoard;
         PositionInKeyboard : number;
+
         State:KeyState;
         View:KeyView;
         Sonics:KeySonics;
@@ -195,8 +197,9 @@ import AjhKeyColours from "./AjhKeyColours";
 
 
                     this.Id = IdNewValue;
-                   
                     this.KeyboardInstance = keyboardInstance;
+                    this.PositionInKeyboard = PositionInKeyboard;
+                    
                     
                         //set All KeyStateValues
 
@@ -252,15 +255,19 @@ import AjhKeyColours from "./AjhKeyColours";
         IsSharpOrFlat : boolean;
 
         IsPlaying : boolean;
+        
+        Synth : AjhSynthDefinition;
 
         setIsSharpOrFlat(state:boolean) : void;
+        setSynth(synth:AjhSynthDefinition) : void;
 
         setAllKeySonicsValues(
 
                 NoteNameNewValue:string,
                 OctaveNewValue:number,
                 IsSharpOrFlatState:boolean,
-                IsPlayingState:boolean
+                IsPlayingState:boolean,
+                Synth : AjhSynthDefinition
             
             ) : void;
 
@@ -288,7 +295,14 @@ export class KeySonics implements IKeySonics {
         this._Octave = value;
     }
 
-
+    private _Synth: AjhSynthDefinition;
+    public get Synth(): AjhSynthDefinition {
+        return this._Synth;
+    }
+    public set Synth(value: AjhSynthDefinition) {
+        this._Synth = value;
+    }
+     
     private _NoteName: string;
     public get NoteName(): string {
         return this._NoteName;
@@ -305,10 +319,7 @@ export class KeySonics implements IKeySonics {
         this._IsPlaying = value;
     }
 
-
-
     // ========================================================================== //
-
     
     setIsSharpOrFlat(state:boolean) : void {
 
@@ -321,7 +332,8 @@ export class KeySonics implements IKeySonics {
         NoteName : string,
         OctaveNewValue:number,
         IsSharpOrFlatState:boolean,
-        IsPlayingState:boolean
+        IsPlayingState:boolean,
+        Synth : AjhSynthDefinition
     
     ) : void
     {
@@ -330,6 +342,13 @@ export class KeySonics implements IKeySonics {
         this.Octave = OctaveNewValue;
         this.IsSharpOrFlat = IsSharpOrFlatState;
         this.IsPlaying = IsPlayingState;
+
+    };
+
+    setSynth(synth:AjhSynthDefinition) : void
+    {
+
+        this.Synth = synth;
 
     };
 

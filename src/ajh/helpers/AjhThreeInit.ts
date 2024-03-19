@@ -814,9 +814,11 @@ onPointerMove( event ) {
                 1,
                 12,
                 this.modelInstance.keyboardTypes.HorizontalKeys,
-                this.modelInstance.scaleTypes.Chromatic,
-                4
+                this.modelInstance.scaleTypes.HarmonicicMinor,
+                0,
+                3
             );
+            
             this.modelInstance.currentKeyBoard = this.ajhkeys;
         
             this.enterScreen 

@@ -10,5 +10,4 @@ export default class AjhKeySetTypes {
 
     EffectsXY : String = "effectsxy"; 
 
-
 }

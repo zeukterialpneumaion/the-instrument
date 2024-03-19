@@ -50,8 +50,8 @@ import AjhKeys from "../keys/keyboards/AjhKeyBoard";
 import AjhRayCasters from "../raycasters/AjhRayCasters";
 import AjhRayPointers from "../raycasters/AjhRayPointers";
 import AjhInstruments from "../sonics/AjhInstruments";
+import AjhScaleCreation from "../sonics/AjhScaleCreation";
 import AjhScaleTypes from "../sonics/AjhScaleTypes";
-import AjhScales from "../sonics/AjhScales";
 
 // ============================================================ //
 
@@ -63,6 +63,14 @@ export default class AjhModel {
     public showSequenceMessages: boolean = false;
     public showAudioMessages: boolean = false;
     public useSpectrumColours : boolean = true;
+
+    private _ScalesCreation: AjhScaleCreation = new AjhScaleCreation();
+    public get ScalesCreation(): AjhScaleCreation {
+        return this._ScalesCreation;
+    }
+    public set ScalesCreation(value: AjhScaleCreation) {
+        this._ScalesCreation = value;
+    }
 
     private _fullScreenObject: AjhFullScreenObject;
     public get fullScreenObject(): AjhFullScreenObject {
@@ -194,13 +202,18 @@ export default class AjhModel {
         this._colours 
         = 
         new AjhColours( 
+        
             0,
-            this.scales.noteNamesOneOctave.length
+            this.ScalesCreation.noteNamesOneOctave.length
+        
         );
 
-        this._colours.generateSpectrumArray(
-            this.scales.noteNamesOneOctave.length, 0.3
-        )
+        this._colours
+        .generateSpectrumArray(
+        
+            this.ScalesCreation.noteNamesOneOctave.length, 0.3
+        
+        );
 
         // for (
         //     let index = 0;
@@ -842,13 +855,6 @@ export default class AjhModel {
 
 // ============================================================ //
 
-    private _scales: AjhScales = new AjhScales();
-    public get scales(): AjhScales {
-        return this._scales;
-    }
-    public set scales(value: AjhScales) {
-        this._scales = value;
-    }
 
 // ============================================================ //
 // =============== MODEL SINGLETON INSTANCE =================== //
