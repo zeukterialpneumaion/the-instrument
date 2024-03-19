@@ -36,26 +36,10 @@ export default class AjhKeyHandlerFunctions{
                 
                     // highlightkey::
                     this.keyInstance.highlightKey(true);
-
-            // now, check if key is playing a note
-                    if(this.keyInstance.KeyState.Sonics.IsPlaying){
-
-                    } else {
-
-            // now send a note attackrelease command            
-                            this.keyInstance.modelInstance.instruments
-                            .playANote(
-
-                                this.keyInstance.KeyState.Sonics.NoteName 
-                                + 
-                                this.keyInstance.KeyState.Sonics.Octave.toString()
-
-                            );
-
-                    }
                 
                 }
 
+               // }
 
                 if(
                     this.keyInstance.modelInstance.showMusicalKeyMessages
@@ -293,7 +277,6 @@ export default class AjhKeyHandlerFunctions{
 
 // ============================================================================= //
 
-// THIS HAPPENS >>>> AFTER <<<< THE POINTER EVENTS :::SO LOGIC MUST GO ::
     isRayTouchedListener(
         
         touched: boolean, 
@@ -351,10 +334,24 @@ export default class AjhKeyHandlerFunctions{
                
             );
 
+    // now, check if key is playing a note
+            if(this.keyInstance.KeyState.Sonics.IsPlaying){
 
-            ///////   OLD PLAY A NOTE CALL !!!!!!!!
+            } else {
+    // it is NOT playing, now, check if the pointer is down...
+                if(this.keyInstance.modelInstance.pointerDown){
+    // the pointer IS DOWN,  now send a note attackrelease command            
+                    this.keyInstance.modelInstance.instruments
+                    .playANote(
 
-  
+                        this.keyInstance.KeyState.Sonics.NoteName 
+                        + 
+                        this.keyInstance.KeyState.Sonics.Octave.toString()
+
+                    );
+                }
+
+            }
         
         } else {
 
@@ -366,18 +363,16 @@ export default class AjhKeyHandlerFunctions{
 
             if(this.keyInstance.modelInstance.pointerDown){
 
-    // ... the pointer is down,                     
-         // highlightkey::
-         this.keyInstance.highlightKey(false);
-         this.keyInstance.KeyState.State.IsPointerDown = false;
+    // ... the pointer is down, 
+    
     // if was playing then i need to stop IF the pointerId is registered...
     
                 if(
 
-                    this.keyInstance.KeyState.Sonics.IsPlaying 
-                    // &&
-                    // this.keyInstance.KeyState.State.checkIfPointerRayExistsById(rayid, true) 
-                    //     != null
+                    !this.keyInstance.KeyState.Sonics.IsPlaying 
+                    &&
+                    this.keyInstance.KeyState.State.checkIfPointerRayExistsById(rayid, true) 
+                        != null
 
                 ){
 
