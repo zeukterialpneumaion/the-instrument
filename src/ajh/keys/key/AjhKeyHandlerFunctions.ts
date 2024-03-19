@@ -36,10 +36,26 @@ export default class AjhKeyHandlerFunctions{
                 
                     // highlightkey::
                     this.keyInstance.highlightKey(true);
+
+            // now, check if key is playing a note
+                    if(this.keyInstance.KeyState.Sonics.IsPlaying){
+
+                    } else {
+
+            // now send a note attackrelease command            
+                            this.keyInstance.modelInstance.instruments
+                            .playANote(
+
+                                this.keyInstance.KeyState.Sonics.NoteName 
+                                + 
+                                this.keyInstance.KeyState.Sonics.Octave.toString()
+
+                            );
+
+                    }
                 
                 }
 
-               // }
 
                 if(
                     this.keyInstance.modelInstance.showMusicalKeyMessages
@@ -334,24 +350,10 @@ export default class AjhKeyHandlerFunctions{
                
             );
 
-    // now, check if key is playing a note
-            if(this.keyInstance.KeyState.Sonics.IsPlaying){
 
-            } else {
-    // it is NOT playing, now, check if the pointer is down...
-                if(this.keyInstance.modelInstance.pointerDown){
-    // the pointer IS DOWN,  now send a note attackrelease command            
-                    this.keyInstance.modelInstance.instruments
-                    .playANote(
+            ///////   OLD PLAY A NOTE CALL !!!!!!!!
 
-                        this.keyInstance.KeyState.Sonics.NoteName 
-                        + 
-                        this.keyInstance.KeyState.Sonics.Octave.toString()
-
-                    );
-                }
-
-            }
+  
         
         } else {
 
@@ -363,7 +365,7 @@ export default class AjhKeyHandlerFunctions{
 
             if(this.keyInstance.modelInstance.pointerDown){
 
-    // ... the pointer is down, 
+    // ... the pointer is down,                     
          // highlightkey::
          this.keyInstance.highlightKey(false);
          this.keyInstance.KeyState.State.IsPointerDown = false;
