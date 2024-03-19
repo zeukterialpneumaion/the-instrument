@@ -2,6 +2,8 @@ import AjhScaleDefinition from "./AjhScaleDefinition";
 
 export default class AjhScaleTypes {
 
+    public SemitoneOffset : number = 0;
+
     public Major : AjhScaleDefinition;
 
     public MelodicMinor : AjhScaleDefinition;
@@ -42,7 +44,7 @@ export default class AjhScaleTypes {
     private _Major: Array<number> = [0, 2, 4, 5, 7, 9, 11];
    
 
-    private _MelodicMinor: Array<number> = [0, 1, 3, 5, 7, 8, 11];
+    private _MelodicMinor: Array<number> = [0, 2, 3, 5, 7, 8, 11];
    
 
     private _HarmonicicMinor: Array<number> = [0, 2, 3, 5, 7, 8, 10];
@@ -59,7 +61,10 @@ export default class AjhScaleTypes {
 
     private _BlackKeys: Array<number>  = [1, 3, 6, 8, 10];
 
-    private _noteNamesOneOctave = [
+    private _noteNamesOneOctave 
+    = 
+    [
+
         "C",
         "C#",
         "D",
@@ -72,47 +77,57 @@ export default class AjhScaleTypes {
         "A",
         "A#",
         "B"
+
     ];
    
 
-    constructor(){
+    constructor( semitoneOffset:number = 0 ){
 
-        this.BlackKeys 
+        this.createAllScales( this.SemitoneOffset);
+
+    }
+
+    createAllScales(semitoneOffset :number){
+
+        this.SemitoneOffset = semitoneOffset;
+
+        this.BlackKeys
         = 
         this.createScale(
             this.nBlackKeys,
-            this._BlackKeys
+            this._BlackKeys, this.SemitoneOffset
         );
 
         this.Chromatic 
-        = this.createScale(this.nChromatic,this._Chromatic);
+        = this.createScale(this.nChromatic,this._Chromatic, this.SemitoneOffset);
     
         this.CircleOfFifths 
-        = this.createScale(this.nCircleOfFifths,this._CircleOfFifths);
+        = this.createScale(this.nCircleOfFifths,this._CircleOfFifths, this.SemitoneOffset);
     
         this.HarmonicicMinor 
-        = this.createScale(this.nHarmonicicMinor,this._HarmonicicMinor);
+        = this.createScale(this.nHarmonicicMinor,this._HarmonicicMinor, this.SemitoneOffset);
     
         this.Major 
-        = this.createScale(this.nMajor,this._Major);
+        = this.createScale(this.nMajor,this._Major, this.SemitoneOffset);
 
         this.MelodicMinor 
-        = this.createScale(this.nMelodicMinor,this._MelodicMinor);
+        = this.createScale(this.nMelodicMinor,this._MelodicMinor), this.SemitoneOffset;
 
         this.MinorPentatonic 
-        = this.createScale(this.nMinorPentatonic,this._MinorPentatonic);
+        = this.createScale(this.nMinorPentatonic,this._MinorPentatonic, this.SemitoneOffset);
  
         this.MinorThirdFifthSeventh 
         = 
         this.createScale(
             this.nMinorThirdFifthSeventh,
-            this._MinorThirdFifthSeventh
+            this._MinorThirdFifthSeventh, this.SemitoneOffset
         );
  
 
+
     }
 
-    createScale( name : string, intervals : Array<number> ) : AjhScaleDefinition{
+    createScale( name : string, intervals : Array<number> , offset : number = 0) : AjhScaleDefinition{
 
         let synthDef = new AjhScaleDefinition();
 
@@ -120,9 +135,27 @@ export default class AjhScaleTypes {
 
         let notenames = new Array<string>();
 
-        for (let index = 0; index < intervals.length; index++) {
+        for (
+            
+            let index = 0; 
+            index < intervals.length; 
+            index++
+        
+        ) {
+
             const element = intervals[index];
-            notenames.push( this._noteNamesOneOctave[element] );
+
+            notenames.push( 
+                this._noteNamesOneOctave[
+                    (
+                        element
+                        + offset
+                    )
+                    %
+                    this._noteNamesOneOctave.length
+                ] 
+            );
+
         }
 
         synthDef.scale 
@@ -132,6 +165,82 @@ export default class AjhScaleTypes {
         =  intervals;
 
         return synthDef;
+
+    }
+
+    getScaleAndTranspose(
+
+        name:string , 
+        offset : number
+
+    ) : AjhScaleDefinition | null 
+    {
+
+        let foundScale : AjhScaleDefinition = null;
+
+        let scales : Array<AjhScaleDefinition>
+        = 
+        [ 
+            this.Major,
+            this.MelodicMinor,
+            this.HarmonicicMinor,
+            this.MinorThirdFifthSeventh,
+            this.Chromatic,
+            this.CircleOfFifths,
+            this.MinorPentatonic,
+            this.BlackKeys
+        ];
+
+        for (
+            let index = 0; 
+            index < scales.length; 
+            index++
+        ) {
+
+            const element = scales[index];
+
+            if(element.name == name){
+
+               
+                foundScale = element;
+
+
+            }
+            
+        } 
+
+        if ( foundScale != null ){
+        
+            let notenames = new Array<string>();
+
+            for (let index = 0; index < foundScale.intervals.length; index++) {
+
+                const element = foundScale.intervals[index];
+
+            
+
+                notenames.push( 
+
+                    this._noteNamesOneOctave[
+                        (
+                            element
+                            + offset
+                        )
+                        %
+                        this._noteNamesOneOctave.length
+                    ] 
+
+                );
+
+            }
+
+            foundScale.scale = notenames;
+
+           
+
+        }
+
+        return foundScale;
 
     }
 

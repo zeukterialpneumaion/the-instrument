@@ -25,10 +25,12 @@ export default class AjhKeyColours {
     //////////////////////////////////////////////////
 
     constructor(
+
         baseColour: Color = new Color(0x00ff00),
         highlightColour: Color = new Color(0x00ff00),
         onColour: Color = new Color(0x00ff00),
         offColour: Color = new Color(0x00ff00)
+
     ) {
 
         this._baseColour = baseColour

@@ -138,6 +138,10 @@ export default class AjhRayCaster {
                         this.modelInstance.selectedKeys
                         .getSelectedKeyByRayCasterId(this.id)
                         .selectedKey.KeyState.Sonics.NoteName
+                        +
+                        this.modelInstance.selectedKeys
+                        .getSelectedKeyByRayCasterId(this.id)
+                        .selectedKey.KeyState.Sonics.Octave
                     );
                     this.modelInstance.infoScreen
                     .setMessageFieldText( 

@@ -93,42 +93,25 @@ populateGUI( drag:boolean = false )  {
                 //     .name("volume");
                 //let instrument = this.modelInstance.instruments.currentInstrument;
         
-                let synthsObj = { instrument: 'PolySynth' }
+                let synthsObj = { instrument: 'PolySynth' };
+
                 soundsFolder.add(
+
                     synthsObj, 
                     'instrument', 
                     [ 
                         
-                        // 'SquareEightSynth', 
-                        'PolySynth', 
-                        'PhatPolySynth',
-                        'FatOscillator', 
+                        'Sine', 
+                        'Sawtooth',
+                        'Square', 
                         'Triangle',
-                        'Square',
+                        'WideSine', 
 
                     ]
+
                 )
                 .onChange(
-                    function( v ) {
-
-                    //     try{
-
-                    //         this._modelInstance.musicalKeyEventEmitter.emit(
-                    //             "onPointerUp", 
-                    //             this._modelInstance.selectedKeys.selectedKeys[0].bodyName,
-                    //             this._modelInstance.selectedKeys.selectedKeys[0].bodyId,
-                    //             this._modelInstance.selectedKeys.selectedKeys[0].bodyUUID,
-                    //         )
-                
-                    //    console.log("pointerup  >> id: " + 0)
-                
-                    // }
-                    // catch(e){
-                
-                    //     console.log(e);
-                
-                    // }
-                
+                    function( v ) { 
                     
                         console.log( 'The current synth is now a ' + v );
 
@@ -141,10 +124,10 @@ populateGUI( drag:boolean = false )  {
                                 (this.modelInstance.instruments.synths as AjhSynths).fatoscillator 
                                  break;
 
-                            // case 'SquareEightSynth':
-                            //     this.modelInstance.instruments.currentInstrument  =
-                            //      (this.modelInstance.instruments.synths as AjhSynths).square8synth; 
-                            //      break;
+                            case 'Sawtooth':
+                                this.modelInstance.instruments.currentInstrument  =
+                                 (this.modelInstance.instruments.synths as AjhSynths).fatoscillator; 
+                                 break;
 
                             case 'Square':
                                 this.modelInstance.instruments.currentInstrument  =
@@ -157,21 +140,21 @@ populateGUI( drag:boolean = false )  {
                                 (this.modelInstance.instruments.synths as AjhSynths).trianglesynth; 
                                 break;        
 
-                            case 'PhatPolySynth':
+                            case 'WideSine':
                                 this.modelInstance.instruments.currentInstrument  =
                                 (this.modelInstance.instruments.synths as AjhSynths).phatpolysynth; 
                                 break;
 
-                            case 'PolySynth':
+                            case 'Sine':
                                 this.modelInstance.instruments.currentInstrument  =
                                 (this.modelInstance.instruments.synths as AjhSynths).polysynth; 
                                 break;
 
-
                             default:
                                 break;
 
-                        }
+                        };
+
                     } .bind(this)
                 );
         
@@ -190,7 +173,7 @@ populateGUI( drag:boolean = false )  {
                         'MinorThirdFifthSeventh',
                         'MinorPentatonic',
                         "BlackKeys",
-                        'CircleOfFifths',
+                        // 'CircleOfFifths',
 
                     ]
 
@@ -204,23 +187,75 @@ populateGUI( drag:boolean = false )  {
 
                     this.modelInstance.currentKeyBoard
                     .createKeys( 
-                        "",
-                        this.modelInstance.scaleTypes.getScaleFromName(evt)
+                        ""
                     );
 
                 }.bind(this));
 
-               
-      //      });
-       // });
+                let offsetObj = { offset: 0 };
 
-       
-        const viewsFolder =  this.modelInstance.gui.addFolder('change display').close();
+                soundsFolder.add(
+
+                    offsetObj, 
+                    'offset'
+                
+                )
+                .min(0)
+                .max(11)
+                .step(1)
+                .name("offset")
+                .onChange(
+                    
+                    function(evt){
+
+                        this.modelInstance
+                        .currentKeyBoard
+                        .semitoneOffset 
+                        = evt;
+                        
+                        // transpose scale
+                        this.modelInstance
+                        .currentKeyBoard
+                        .scaleType.transpose(evt);
+
+                        this.modelInstance.currentKeyBoard
+                        .createKeys(
+                            ""
+                        );
+                         
+
+                    }.bind(this)
+
+                );
+
+        const viewsFolder 
+        =  
+        this.modelInstance.gui.addFolder('change display').close();
         
         viewsFolder.add(
+            this._modelInstance.currentKeyBoard, 
+            'numberOfColumns', 
+            8,32,1
+        ).name("number of keys").onChange(function(evt){
+
+        
+            console.log("setting key columns:"+ evt.value);
+
+            this.modelInstance.currentKeyBoard
+                    .createKeys(
+                        ""
+                    );
+
+        }.bind(this));
+
+        const  colourfolder
+        =
+        viewsFolder.addFolder("colours");
+
+        colourfolder.add(
             this._modelInstance, 
             'useSpectrumColours'
-        ).name("toggle KeyColours").onChange(
+        ).name("toggle Spectrum Colours").onChange(
             function(evt){
 
                 // this._modelInstance.currentKeyBoard.createKeys();
@@ -228,54 +263,53 @@ populateGUI( drag:boolean = false )  {
 
             }.bind(this)
         ) 
+
        
-        viewsFolder.add(
-            this._modelInstance.currentKeyBoard, 
-            'numberOfColumns', 
-            8,32,1
-        ).name("number of keys").onChange(function(evt){
+        let colourObj = {
+            naturals: '#408080',
+            accidentals: '#c18c3e',
+            color3: 'rgb(170, 0, 255)',
+            color4: 0xaa00ff
+        }
 
-            //     try{
+       
+        colourfolder.addColor( colourObj, 'naturals' ).onChange(
 
-            //         this._modelInstance.musicalKeyEventEmitter.emit(
-            //             "onPointerUp", 
-            //             this._modelInstance.selectedKeys.selectedKeys[0].bodyName,
-            //             this._modelInstance.selectedKeys.selectedKeys[0].bodyId,
-            //             this._modelInstance.selectedKeys.selectedKeys[0].bodyUUID,
-            //         )
-        
-            //    console.log("pointerup  >> id: " + 0)
-        
-            // }
-            // catch(e){
-        
-            //     console.log(e);
-        
-            // }
-        
-            console.log("setting key columns:"+ evt.value);
+            function(data){
 
-            this.modelInstance.currentKeyBoard
-                    .createKeys(
+                this._modelInstance
+                .currentKeyBoard
+                .KeyColoursDef
+                .setNaturalsColour(data.toString().replace('#', '0x') );
 
-                        "",
-                        this.modelInstance.currentKeyBoard.scaleType
+                console.log("COLOUR SET: " + data.toString().replace('#', '0x') );
 
-                    );
+                this._modelInstance.currentKeyBoard.createKeys();
+                this._modelInstance.currentKeyBoard.repaintKeyBodies();
+                // this._modelInstance.currentKeyBoard.repaintKeyBodies();
 
-        }.bind(this));
+            }.bind(this)
 
-        // viewsFolder.add(
-        //     this._modelInstance.currentKeyBoard, 
-        //     'numberOfRows', 
-        //     1,5,1
-        // ).name("number of rows of keys").onChange(function(evt){
+        );
 
+        colourfolder.addColor( colourObj, 'accidentals' ).onChange(
 
-        //     console.log("setting key rows:"+ evt.value);
-        //    this._modelInstance.currentKeyBoard.createKeys();
+            function(data){
 
-        // }.bind(this));
+                this._modelInstance
+                    .currentKeyBoard
+                    .KeyColoursDef
+                    .setAccidentalsColour( data.toString().replace('#', '0x') );
+
+                    console.log("COLOUR SET: " + data.toString().replace('#', '0x')  );
+                // this._modelInstance.currentKeyBoard.repaintKeyBodies();
+
+            }.bind(this)
+            
+        );
+
+        colourfolder.close();
+        viewsFolder.close();
        
 
         if(drag){

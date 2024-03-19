@@ -12,8 +12,8 @@ import AjhKeyHandlerFunctions from "./AjhKeyHandlerFunctions";
 
 export default class AjhKey {
 
-/////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////
+    
     private _State: AjhKeyDataModel = new AjhKeyDataModel();
     public get KeyState(): AjhKeyDataModel {
         return this._State;
@@ -32,8 +32,8 @@ export default class AjhKey {
         this._baseColor = value;
     }
        
-/////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////
+    
     constructor(
 
         id: number,
@@ -92,78 +92,93 @@ export default class AjhKey {
 
       }
 
-/////////////////////////////////////////////////////////////////////////////////
- 
- public createKeyBody() {
- 
-        if( this.KeyState.Sonics.IsSharpOrFlat ){    
-            
-            this.KeyState.View.Body
-            = 
-            new Mesh(
-                this.modelInstance.geometries.keyGeometry, 
-                this.darkMaterial
-            );
-
-            this.KeyState.View.Colours.baseColour = this.darkMaterial.color;
-            this.KeyState.View.Colours.createHighLightColourFromBaseColour();
-        
-        } else{
-            
-            this.KeyState.View.Body
-            = 
-            new Mesh(
-                this.modelInstance.geometries.keyGeometry, 
-                this.lightMaterial
-            );
-
-            this.KeyState.View.Colours.baseColour = this.lightMaterial.color;
-            this.KeyState.View.Colours.createHighLightColourFromBaseColour();
-
-        }
-
-        this.KeyState.View.Body.castShadow = true;
-
-        /////////////////////////////////////////////////////
-        // set colour //
-        /////////////////////////////////////////////////////
-
-        let material 
-        = 
-        (
-            this.KeyState.View.Body as Mesh
-        )
-        .material as MeshMatcapMaterial;
+    ////////////////////////////////////////////////////////////////
     
-        // this.darkMaterial.needsUpdate = true;
-        if(this.modelInstance.useSpectrumColours){
-            
-            material.color 
-            =
-            this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
-            // this.modelInstance.colours.spectrumArray[this.KeyState.PositionInKeyboard%12];
-            
-            material.needsUpdate = true;
+    public createKeyBody() {
 
-            this.KeyState.View.Colours.baseColour 
-            = 
-            // this.modelInstance.colours.spectrumArray[this.KeyState.PositionInKeyboard%12];
-            this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
+        this.KeyState.View.Body
+        = 
+        new Mesh(
+            this.modelInstance.geometries.keyGeometry, 
+            this.darkMaterial
+        );
 
-            this.KeyState.View.Colours.createHighLightColourFromBaseColour();
+        this.repaintBody();
+ 
+        // if( this.KeyState.Sonics.IsSharpOrFlat ){    
             
-        }
+        //     this.KeyState.View.Body
+        //     = 
+        //     new Mesh(
+        //         this.modelInstance.geometries.keyGeometry, 
+        //         this.darkMaterial
+        //     );
+
+        //     this.KeyState.View.Colours.baseColour 
+        //     = 
+        //     this.KeyState.KeyboardInstance.KeyColoursDef.Accidentals;
+            
+        //     this.KeyState.View.Colours.createHighLightColourFromBaseColour();
+        
+        // } else{
+            
+        //     this.KeyState.View.Body
+        //     = 
+        //     new Mesh(
+        //         this.modelInstance.geometries.keyGeometry, 
+        //         this.lightMaterial
+        //     );
+
+        //     this.KeyState.View.Colours.baseColour 
+        //     = 
+        //     this.KeyState.KeyboardInstance.KeyColoursDef.Naturals;
+
+        //     this.KeyState.View.Colours.createHighLightColourFromBaseColour();
+
+        // }
+
+        // this.KeyState.View.Body.castShadow = true;
+
+        // /////////////////////////////////////////////////////
+        // // set colour //
+        // /////////////////////////////////////////////////////
+
+        // let material 
+        // = 
+        // (
+        //     this.KeyState.View.Body as Mesh
+        // )
+        // .material as MeshMatcapMaterial;
+    
+        // // this.darkMaterial.needsUpdate = true;
+        // if(this.modelInstance.useSpectrumColours){
+            
+        //     material.color 
+        //     =
+        //     this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
+        //     // this.modelInstance.colours.spectrumArray[this.KeyState.PositionInKeyboard%12];
+            
+        //     material.needsUpdate = true;
+
+        //     this.KeyState.View.Colours.baseColour 
+        //     = 
+        //     // this.modelInstance.colours.spectrumArray[this.KeyState.PositionInKeyboard%12];
+        //     this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
+
+        //     this.KeyState.View.Colours.createHighLightColourFromBaseColour();
+            
+        // }
 
         ////////////////////////////////////////////////////////
 
-        material.needsUpdate = true;
+        // material.needsUpdate = true;
 
         this.KeyState.View.Body.position.y = 0.5;
 
     }
 
-/////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////
+    
     disposeOfKeyBody(){
        
         deepDispose(this.KeyState.View.Body);
@@ -173,8 +188,8 @@ export default class AjhKey {
 
     }
 
-/////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////
+    
     changeKeySizeToFitScreenSize(){
         
         let screenSize = this.modelInstance.getCameraViewSizeXY();
@@ -184,8 +199,8 @@ export default class AjhKey {
         
     }
 
-/////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////
+    
     changeKeyLengthToFitScreenHeight(newScreenHeight){
 
         this.KeyState.View.Length 
@@ -207,8 +222,8 @@ export default class AjhKey {
 
     }
 
-    /////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////
+    
     changeKeyWidthToFitScreenWidth(newScreenWidth){
         
         this.KeyState.View.Width 
@@ -230,38 +245,42 @@ export default class AjhKey {
 
     }
 
-/////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////
+    
     private addListeners(){
   
         this._modelInstance.musicalKeyEventEmitter
         .on(
             "touchedByRay",
-            this.KeyHandlers.isRayTouchedListener.bind(this.KeyHandlers)
+            this.KeyHandlers
+            .isRayTouchedListener.bind(this.KeyHandlers)
         );
    
         this._modelInstance.musicalKeyEventEmitter
         .on(
             "onPointerUp",
-            this.KeyHandlers.onPointerUpListener.bind(this.KeyHandlers)
+            this.KeyHandlers
+            .onPointerUpListener.bind(this.KeyHandlers)
         );
 
         this._modelInstance.musicalKeyEventEmitter
         .on(
             "onPointerDown",
-            this.KeyHandlers.onPointerDownListener.bind(this.KeyHandlers)
+            this.KeyHandlers
+            .onPointerDownListener.bind(this.KeyHandlers)
         );
 
         this._modelInstance.musicalKeyEventEmitter
         .on(
             "onPointerLeave",
-            this.KeyHandlers.onPointerLeaveListener.bind(this.KeyHandlers)
+            this.KeyHandlers
+            .onPointerLeaveListener.bind(this.KeyHandlers)
         );
 
     }
 
-/////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////
+    
     public setKeyInstanceScale(size){
 
         // this._body.scale.x =
@@ -270,8 +289,8 @@ export default class AjhKey {
 
     }
 
-/////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////
+    
     public setKeyColour(colour){
 
         (
@@ -286,8 +305,8 @@ export default class AjhKey {
         
     }
 
-/////////////////////////////////////////////////////////////////////////////////
- 
+    ////////////////////////////////////////////////////////////////
+    
     public highlightKey(toggle:boolean){
 
         const mesh = this.KeyState.View.Body as Mesh
@@ -313,11 +332,11 @@ export default class AjhKey {
 
     }
 
-/////////////////////////////////////////////////////////////////////////////////
- 
-
-/////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////
+  
+    
+    ////////////////////////////////////////////////////////////////
+    
     public selectedListener( 
         selected: boolean, 
         keyMeshInstance: number
@@ -370,93 +389,105 @@ export default class AjhKey {
         }
     }
 
+    ////////////////////////////////////////////////////////////////
+    
+    public repaintBody(){
 
-public repaintBody(){
+        console.log("REPAINTING MY BODY : "+ this.KeyState.Id);
 
-    console.log("REPAINTING MY BODY : "+ this.KeyState.Id);
+        let material 
+        =  
+        ((this.KeyState.View.Body as Mesh)
+        .material as MeshMatcapMaterial);
 
-    let material 
-    =  
-    ((this.KeyState.View.Body as Mesh)
-    .material as MeshMatcapMaterial);
+        if( this.KeyState.Sonics.IsSharpOrFlat ){    
+                
+            if(this.modelInstance.useSpectrumColours){
 
-    if( this.KeyState.Sonics.IsSharpOrFlat ){    
-            
-        if(this.modelInstance.useSpectrumColours){
+                this.KeyState.View.Colours.baseColour
+                =
+                material.color 
+                = 
+                this.modelInstance
+                    .colours
+                    .spectrumArray[this.KeyState.View.ColId%12];
 
-            material.color 
-            = 
-            this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
+                material.needsUpdate = true;
 
-            material.needsUpdate = true;
+            } else {
 
+                this.KeyState.View.Colours.baseColour
+                =
+                material.color 
+                = 
+                this.KeyState.KeyboardInstance.KeyColoursDef.Naturals;
+                 //new Color('#408080');
+            }
+        
         } else {
 
-            material.color 
-            = 
-            new Color('#462C07');
+            if(this.modelInstance.useSpectrumColours){
+                
+                this.KeyState.View.Colours.baseColour
+                =
+                material.color 
+                =
+                this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
+                
+                material.needsUpdate = true;
+
+            }
+            else{
+
+                this.KeyState.View.Colours.baseColour
+                =
+                material.color 
+                = 
+                this.KeyState.KeyboardInstance.KeyColoursDef.Accidentals;
+                //new Color('#c18c3e');
+
+            }
 
         }
-    
-    } else {
 
-        if(this.modelInstance.useSpectrumColours){
-            
-            material.color 
-            =
-            this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
-            
-            material.needsUpdate = true;
+        this.KeyState.View.Colours.baseColour = material.color;
 
-        }
-        else{
-
-            material.color 
-            = 
-            new Color('#f69f1f');
-
-        }
+        this.KeyState.View.Colours.createHighLightColourFromBaseColour();
 
     }
 
-    this.KeyState.View.Colours.baseColour = material.color;
-
-    this.KeyState.View.Colours.createHighLightColourFromBaseColour();
-
-}
+    ////////////////////////////////////////////////////////////////
     
-/////////////////////////////////////////////////////////////////////////////////
+    public darkMaterial 
+    = new MeshMatcapMaterial({
+        color: '#006786',
+    // metalness: 0.35,
+    // roughness: 0.41,
+        // emissive:
+        });
 
-public darkMaterial 
-= new MeshMatcapMaterial({
-    color: '#006786',
-   // metalness: 0.35,
-   // roughness: 0.41,
-    // emissive:
-    });
+    public lightMaterial 
+    = new MeshMatcapMaterial({
+        color: '#00A8A0',
+    //  metalness: 0.35,
+    // roughness: 0.41,
+        });
 
-public lightMaterial 
-= new MeshMatcapMaterial({
-    color: '#00A8A0',
-  //  metalness: 0.35,
-   // roughness: 0.41,
-    });
+        public darkOnMaterial 
+    = new MeshMatcapMaterial({
+        color: '#DDA960',
+    //  metalness: 0.35,
+    //  roughness: 0.1,
+        });
 
-    public darkOnMaterial 
-= new MeshMatcapMaterial({
-    color: '#DDA960',
-  //  metalness: 0.35,
-  //  roughness: 0.1,
-    });
+    public lighOntMaterial 
+    = new MeshMatcapMaterial({
+        color: '#F4DA93',
+    // metalness: 0.35,
+    // roughness: 0.1,
+        });
 
-public lighOntMaterial 
-= new MeshMatcapMaterial({
-    color: '#F4DA93',
-   // metalness: 0.35,
-   // roughness: 0.1,
-    });
-
-////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
 
     private _isBlackKey: boolean = false;
     public get isBlackKey(): boolean {
@@ -529,39 +560,6 @@ public lighOntMaterial
         this._note = value;
     }
 
-
-    
-    // public set playing(value: boolean) {
-    //     this._playing = value;
-    //     if(value){
-
-    //         if(!this._muted){
-
-    //        // this.setKeyColour(this.State.View.Colours.playingColour);
-
-    //         }
-    //         else{
-
-    //            // this.setKeyColour(this.State.View.Colours.seedColours[0]);
-
-    //         }
-
-    //     }
-    //     else{
-
-    //         if(!this._muted){
-
-    //            // this.setKeyColour(this.State.View.Colours.highlightColour);
-
-    //         }
-    //         else{
-
-    //           //  this.setKeyColour(this.State.View.Colours.inactiveColour);
-
-    //         }
-    //     }
-    // }
-
     public set positionInKeyboardArray(value: number) {
         this._positionInKeyboardArray = value;
     }
@@ -597,7 +595,8 @@ public lighOntMaterial
         this._modelInstance = value;
     }
 
-
+    ////////////////////////////////////////////////////////////////
+    
     public set isOn(value: boolean) {
 
         this.KeyState.State.IsActive = value;
@@ -657,8 +656,8 @@ public lighOntMaterial
 
     }
 
-
-
+    ////////////////////////////////////////////////////////////////
+    
     private _note: AjhNamedNote;
     private _id: number
 
@@ -694,11 +693,14 @@ public lighOntMaterial
         this.setKeyColour(this.KeyState.View.Colours.inactiveColour)
     }
 
+    ////////////////////////////////////////////////////////////////
+    
     private _modelInstance: AjhModel = AjhModel.Instance ;
 
     private _colours: AjhKeyColours;
   
-
+    ////////////////////////////////////////////////////////////////
+    
     private _keyWidth: number; 
     public get keyWidth(): number {
         return this._keyWidth;
@@ -723,9 +725,8 @@ public lighOntMaterial
         this._keyLength = value;
     }
 
-////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
     
-
     public set colours(value: AjhKeyColours) {
         this.KeyState.View.Colours = value;
     }
@@ -734,11 +735,7 @@ public lighOntMaterial
         this.KeyState.State.IsRayTouched = value;
     }
    
-    // public set selected(value: boolean) {
-    //     this._selected = value;
-    // }
-
-////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
 
 }
 

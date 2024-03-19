@@ -3,6 +3,7 @@ import AjhModel from '../../datamodels/AjhModel';
 import { deepDispose } from '../../helpers/scene/ajhThreeDisposal';
 import AjhScaleDefinition from '../../sonics/AjhScaleDefinition';
 import AjhKey from '../key/AjhKey';
+import AjhKeyColoursDefinition from '../key/AjhKeyColoursDefinition';
 import AjhKeyboardTypes from './AJhKeyBoardTypes';
 
 
@@ -12,6 +13,11 @@ export default class AjhKeyBoard {
 //////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////
+
+
+    public KeyColoursDef : AjhKeyColoursDefinition 
+    = 
+    new AjhKeyColoursDefinition();
 
     private _id: number;
     public get id(): number {
@@ -170,6 +176,7 @@ export default class AjhKeyBoard {
         this.KeyBoardTypeInstance = keysType
         
         this.routeToCorrectFunctionsForKeySetType();
+
        // this.positionKeys();
 
     }
@@ -193,8 +200,7 @@ routeToCorrectFunctionsForKeySetType(){
             case this.KeysetTypeDefinitions.HorizontalKeys:
             
             this.createKeys(
-                this.KeysetTypeDefinitions.HorizontalKeys, 
-                this.scaleType, //modelInstance.ScalesCreation.Chromatic 
+                this.KeysetTypeDefinitions.HorizontalKeys//modelInstance.ScalesCreation.Chromatic 
             );
 
             break;
@@ -202,8 +208,7 @@ routeToCorrectFunctionsForKeySetType(){
             case this.KeysetTypeDefinitions.VerticalKeys:
             
             this.createKeys(
-                this.KeysetTypeDefinitions.VerticalKeys,
-                this.scaleType
+                this.KeysetTypeDefinitions.VerticalKeys
             );
 
             break;
@@ -235,10 +240,9 @@ routeToCorrectFunctionsForKeySetType(){
 }
 //////////////////////////////////////////////////////////////
 
-    createKeys(keyboardType, scaletype : AjhScaleDefinition){
+    createKeys(keyboardType){
 
-
-        console.log("CREATING KEYS::"+ scaletype.name);
+        console.log("CREATING KEYS::"+ this.scaleType.name);
        // this.setToCurrentKeyboard()
 
         // let generatedScale 
@@ -246,6 +250,7 @@ routeToCorrectFunctionsForKeySetType(){
         // this.modelInstance.ScalesCreation
         // .getNoteNamesForScale(scaletype.scale,0);
 
+        let rand = Math.round(Math.random()*100);
        
 
         if( this._keys){
@@ -263,9 +268,11 @@ routeToCorrectFunctionsForKeySetType(){
             const rowElement = this._keyRows[rowIndex];
 
             for (
+
                 let colIndex = 0; 
                 colIndex < this.numberOfColumns; 
                 colIndex++
+
             ) {
                 
                 let colElement = this._keys[colIndex];
@@ -275,13 +282,15 @@ routeToCorrectFunctionsForKeySetType(){
                 let isBlackKey = false;
 
                 if( 
-                    scaletype.scale[
-                        colIndex % scaletype.scale.length
+                    this.scaleType.scale[
+                        colIndex % this.scaleType.scale.length
                     ].length 
                     == 
                     2 
                 ){
+
                     isBlackKey = true;
+
                 }
 
                 // if( 
@@ -296,18 +305,22 @@ routeToCorrectFunctionsForKeySetType(){
                 
 
                 let octave 
-                    = 
-                    this.octaveToStartFrom 
-                    +
-                    rowIndex
-                    + 
-                    Math.floor(colIndex/scaletype.scale.length);
+                = 
+                this.octaveToStartFrom 
+                +
+                rowIndex
+                +
+                Math.floor(
+                    ( colIndex )
+                    /
+                    this.scaleType.scale.length
+                );
 
-                    let keywidth =
-                    (window.innerWidth/this.numberOfColumns)
-                    -
-                    ((window.innerWidth/this.numberOfColumns)
-                    /this.numberOfColumns);
+                let keywidth =
+                (window.innerWidth/this.numberOfColumns)
+                -
+                ((window.innerWidth/this.numberOfColumns)
+                /this.numberOfColumns);
 
                     // set scale ::
 
@@ -324,7 +337,13 @@ routeToCorrectFunctionsForKeySetType(){
                         0.5,
                         keywidth / this.modelInstance.camera.position.y,
                         isBlackKey,
-                        scaletype.scale[ colIndex % scaletype.scale.length ],
+                        this.scaleType.scale[ 
+                            ( 
+                                colIndex 
+                            )
+                            % 
+                            this.scaleType.scale.length 
+                        ],
                         octave,
                         this,
                         this.keys.length-1
@@ -333,8 +352,11 @@ routeToCorrectFunctionsForKeySetType(){
 
                 );
                 
+             
                 console.log(
 
+                    rand
+                    +
                     "KEY NOTE:: " 
                     + 
                     this.modelInstance.ScalesCreation.noteNamesOneOctave[colIndex%12] 
