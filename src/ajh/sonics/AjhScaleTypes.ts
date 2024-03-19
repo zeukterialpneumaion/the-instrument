@@ -42,7 +42,7 @@ export default class AjhScaleTypes {
     private _Major: Array<number> = [0, 2, 4, 5, 7, 9, 11];
    
 
-    private _MelodicMinor: Array<number> = [0, 2, 3, 5, 7, 8, 11];
+    private _MelodicMinor: Array<number> = [0, 1, 3, 5, 7, 8, 11];
    
 
     private _HarmonicicMinor: Array<number> = [0, 2, 3, 5, 7, 8, 10];
@@ -54,7 +54,7 @@ export default class AjhScaleTypes {
     private _CircleOfFifths: Array<number> = [7];
    
 
-    private _MinorPentatonic: Array<number> = [ 0, 3, 5, 7, 8, 11 ];
+    private _MinorPentatonic: Array<number> = [ 0, 1, 4, 5, 7, 8, 11 ];
    
 
     private _BlackKeys: Array<number>  = [1, 3, 6, 8, 10];
