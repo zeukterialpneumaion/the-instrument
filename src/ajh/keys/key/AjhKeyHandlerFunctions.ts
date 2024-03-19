@@ -17,11 +17,10 @@ export default class AjhKeyHandlerFunctions{
     onPointerDownListener(
         pointerid : number, 
         keyid:number, 
-        uuid: string
+        uuid: string,
+        evt: any
     ){
 
-        //to make behave the touch events behave like the mouse
-    
         if(this.keyInstance.modelInstance.instruments){
 
             if(
@@ -126,7 +125,8 @@ export default class AjhKeyHandlerFunctions{
 
         pointerid : number, 
         id:number, 
-        uuid: string
+        uuid: string,
+        evt: any
 
     ){
 

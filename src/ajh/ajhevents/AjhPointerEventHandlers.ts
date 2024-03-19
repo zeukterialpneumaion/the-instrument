@@ -71,6 +71,11 @@ implements AjhPointerEventHandlersInterface {
 
     };
     
+
+// ======================================================================== //
+// DOWN:: AJH //
+// ======================================================================== //
+ 
     private onPointerDownHandler(evt){
 
         if (evt.target.hasPointerCapture(evt.pointerId)) {
@@ -148,12 +153,20 @@ implements AjhPointerEventHandlersInterface {
 
     };
 
+// ======================================================================== //
+// MOVE:: AJH //
+// ======================================================================== //
 
-    public onPointerMoveHandler(evt : PointerEvent){
+    public onPointerMoveHandler(evt : any){
 
                 
         evt.stopPropagation();
         evt.preventDefault();
+
+        
+        if (evt.target.hasPointerCapture(evt.pointerId)) {
+            evt.target.releasePointerCapture(evt.pointerId);
+        }
 
       // console.log( test());//getPointerEventById(evt.pointerId) );
         let selfReference 
@@ -221,8 +234,15 @@ implements AjhPointerEventHandlersInterface {
      
     };
 
+// ======================================================================== //
+// UP:: AJH //
+// ======================================================================== //
     
-    private onPointerUpHandler(evt : PointerEvent){
+    private onPointerUpHandler(evt : any){
+
+        if (evt.target.hasPointerCapture(evt.pointerId)) {
+            evt.target.releasePointerCapture(evt.pointerId);
+        }
 
         this._modelInstance.pointerDown = false;
      
@@ -286,6 +306,10 @@ implements AjhPointerEventHandlersInterface {
 
     };
 
+// ======================================================================== //
+// CANCEL:: AJH //
+// ======================================================================== //
+
     private onPointerCancelHandler(evt : PointerEvent){
 
         console.log("Pointer cancelled"+(evt as PointerEvent).pointerId);
@@ -307,6 +331,10 @@ implements AjhPointerEventHandlersInterface {
 
         }
     };
+
+// ======================================================================== //
+// OVER :: AJH //
+// ======================================================================== //
 
     private onPointerOverHandler(evt : PointerEvent){
 
@@ -331,7 +359,7 @@ implements AjhPointerEventHandlersInterface {
         }
     };
 
-    private onPointerOutHandler(evt){
+    private onPointerOutHandler(evt : any){
 
        // this._modelInstance.pointerDown = false;
 
@@ -379,7 +407,7 @@ implements AjhPointerEventHandlersInterface {
         }
     };
 
-    private onPointerLeaveHandler(evt){
+    private onPointerLeaveHandler(evt : any){
 
         this._modelInstance.pointerDown = false;
 

@@ -48,13 +48,13 @@ export interface AjhMusicalKeyEvents {
     'repaint': [isTrue: boolean, id:number]
     'touchedByRay': [ touched: boolean, rayid:number,  id:number, uuid: string  ]
     
-    'onPointerDown': [  pointerid:number,  id:number, uuid: string  ]
-    'onPointerUp': [  pointerid:number,  id:number, uuid: string  ]
-    'onPointerEnter': [  pointerid:number,  id:number, uuid: string  ]
-    'onPointerOver': [  pointerid:number,  id:number, uuid: string  ]
-    'onPointerOut': [  pointerid:number,  id:number, uuid: string  ]
-    'onPointerCancel': [  pointerid:number, id:number, uuid: string  ]
-    'onPointerLeave': [  pointerid:number, id:number, uuid: string  ]
+    'onPointerDown': [  pointerid:number,  id:number, uuid: string, event : any  ]
+    'onPointerUp': [  pointerid:number,  id:number, uuid: string, event : any  ]
+    'onPointerEnter': [  pointerid:number,  id:number, uuid: string, event : any  ]
+    'onPointerOver': [  pointerid:number,  id:number, uuid: string, event : any  ]
+    'onPointerOut': [  pointerid:number,  id:number, uuid: string, event : any ]
+    'onPointerCancel': [  pointerid:number, id:number, uuid: string, event : any  ]
+    'onPointerLeave': [  pointerid:number, id:number, uuid: string, event : any  ]
     
    
     'selected': [ selected: boolean, id:number,uuid: string  ]

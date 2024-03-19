@@ -57,6 +57,8 @@ import AjhScaleTypes from "../sonics/AjhScaleTypes";
 
 export default class AjhModel {
 
+    public showRayCasterEventMessages: boolean = true;
+    public showPointerEventMessages: boolean = true;
     public showColourMessages: boolean = true;
     public showMusicalKeyMessages: boolean = false;
     public showKeyBoardMessages: boolean = false;
@@ -71,7 +73,7 @@ export default class AjhModel {
     public set Stats(value: Stats) {
         this._Stats = value;
     }
-    
+
     private _ScalesCreation: AjhScaleCreation = new AjhScaleCreation();
     public get ScalesCreation(): AjhScaleCreation {
         return this._ScalesCreation;
