@@ -12,7 +12,7 @@ import AjhKeyHandlerFunctions from "./AjhKeyHandlerFunctions";
 
 export default class AjhKey {
 
-//////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
     private _State: AjhKeyDataModel = new AjhKeyDataModel();
     public get KeyState(): AjhKeyDataModel {
@@ -32,8 +32,7 @@ export default class AjhKey {
         this._baseColor = value;
     }
        
-//////////////////////////////////////////////////////////////////////
-
+/////////////////////////////////////////////////////////////////////////////////
 
     constructor(
 
@@ -53,11 +52,11 @@ export default class AjhKey {
 
         this.KeyState.createAll();
 
-        this.KeyState.setAllValueStates(
+        this.KeyState.setAllValueStates( 
 
             id,// IdNewValue, //:string,
             keyboardInstance,// keyboardInstance, //: AjhKeyBoard,
-            positionInKeyboard, // PositionInKeyBoard
+            positionInKeyboard, // PositionInKeyBoard : number
 
             false,// IsRayTouched, // : boolean,
             false, // IsPointerDown, // : boolean,
@@ -84,28 +83,6 @@ export default class AjhKey {
 
         this.KeyHandlers = new AjhKeyHandlerFunctions(this);
 
-        // generate random note :
-
-        // let noteRefId = 
-        //     Math.round(
-        //         Math.random()
-        //         *
-        //         (
-        //             this.modelInstance.ScalesCreation.
-        //             noteNamesWithOctaveRegister.length-1
-        //         )
-        //     );
-
-        // this._note 
-        // = 
-        // new AjhNamedNote(
-        //     this.modelInstance.ScalesCreation
-        //     .noteNamesWithOctaveRegister[
-        //         noteRefId
-        //     ],
-        //     noteRefId
-        // );
-
         this.createKeyBody();
 
         this.changeKeySizeToFitScreenSize();
@@ -115,8 +92,8 @@ export default class AjhKey {
 
       }
 
-//////////////////////////////////////////////////////////////////////
-   
+/////////////////////////////////////////////////////////////////////////////////
+ 
  public createKeyBody() {
  
         if( this.KeyState.Sonics.IsSharpOrFlat ){    
@@ -185,7 +162,7 @@ export default class AjhKey {
 
     }
 
-//////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
     disposeOfKeyBody(){
        
@@ -196,7 +173,7 @@ export default class AjhKey {
 
     }
 
-//////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
     changeKeySizeToFitScreenSize(){
         
@@ -207,21 +184,13 @@ export default class AjhKey {
         
     }
 
+/////////////////////////////////////////////////////////////////////////////////
+
     changeKeyLengthToFitScreenHeight(newScreenHeight){
 
         this.KeyState.View.Length 
         =  
         (newScreenHeight / this.KeyState.KeyboardInstance.numberOfRows);
-        
-        // (( this.State.View.Body as Mesh ).geometry as BoxGeometry )
-        
-        // ( this.State.View.Body as Mesh ).scale.set( 
-            
-        //     this.keyWidth, 
-        //     this.keyHeight, 
-        //     this.keyLength
-            
-        // );
 
         ( this.KeyState.View.Body as Mesh ).geometry.dispose();
         
@@ -237,6 +206,8 @@ export default class AjhKey {
 
 
     }
+
+    /////////////////////////////////////////////////////////////////////////////////
 
     changeKeyWidthToFitScreenWidth(newScreenWidth){
         
@@ -259,40 +230,16 @@ export default class AjhKey {
 
     }
 
-//////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
     private addListeners(){
-        
-        // this._modelInstance.keyEventEmitter
-        // .on("off",this.offListener.bind(this));
-
-        // this._modelInstance.musicalKeyEventEmitter
-        // .on("on_off",this.onListener.bind(this));
-
-        // this._modelInstance.keyEventEmitter
-        // .on(
-        //     "repaint",
-        //     this.repaintListener.bind(this)
-        // );
-        
+  
         this._modelInstance.musicalKeyEventEmitter
         .on(
             "touchedByRay",
             this.KeyHandlers.isRayTouchedListener.bind(this.KeyHandlers)
         );
-    
-        // this._modelInstance.musicalKeyEventEmitter
-        // .on(
-        //     "no longer touched",
-        //     this.noLongerTouchedListener.bind(this)
-        // );
-        
-        // this._modelInstance.musicalKeyEventEmitter
-        // .on(
-        //     "selected",
-        //     this.selectedListener.bind(this)
-        // );
-        
+   
         this._modelInstance.musicalKeyEventEmitter
         .on(
             "onPointerUp",
@@ -311,27 +258,9 @@ export default class AjhKey {
             this.KeyHandlers.onPointerLeaveListener.bind(this.KeyHandlers)
         );
 
-        // this._modelInstance.musicalKeyEventEmitter
-        // .on(
-        //     "onPointerOut",
-        //     this.onPointerOutListener.bind(this)
-        //     );
-
-        //     this._modelInstance.musicalKeyEventEmitter
-        // .on(
-        //     "onPointerLeave",
-        //     this.onPointerLeaveListener.bind(this)
-        //     );
-
-        // this._modelInstance.noteEventEmitter
-        // .on(
-        //     "on_off",
-        //     this.noteOnListener.bind(this)
-        // );
-        
     }
 
-//////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
     public setKeyInstanceScale(size){
 
@@ -341,7 +270,7 @@ export default class AjhKey {
 
     }
 
-//////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
     public setKeyColour(colour){
 
@@ -357,8 +286,8 @@ export default class AjhKey {
         
     }
 
-//////////////////////////////////////////////////////////////////////
-    
+/////////////////////////////////////////////////////////////////////////////////
+ 
     public highlightKey(toggle:boolean){
 
         const mesh = this.KeyState.View.Body as Mesh
@@ -384,148 +313,8 @@ export default class AjhKey {
 
     }
 
-//////////////////////////////////////////////////////////////////////
-    
-        private noteOnListener(on_off, positionId,noteName){
-
-        if(
-           
-            (
-                this._positionInKeyboardArray == positionId 
-                && 
-                on_off == true 
-            )
-
-        ){
-
-            if(this.modelInstance.showMusicalKeyMessages){
-
-                console.log(
-                    "Key " 
-                    + positionId 
-                    + " heard that it was playing a " 
-                    + noteName
-                )
-
-            }
-
-            this.modelInstance.musicalKeyEventEmitter.emit(
-
-                "playing",
-                this._positionInKeyboardArray,
-                this.KeyState.Id,
-                0,
-                0,
-                0
-
-            )
-
-        }
-
-    }
-
-//////////////////////////////////////////////////////////////////////
-    
-    private repaintListener(receivedId){
-
-        if(this.KeyState.Id == receivedId){
-
-            if(this.modelInstance.showMusicalKeyMessages){
-
-                console.log(
-
-                   "Key " + this._id + " received a REPAINT message.."
-                
-                );
-            }
-                    
-        }
-
-    }
-
-//////////////////////////////////////////////////////////////////////////////
-
-private onPointerOutListener(pointerid : number, id:number, uuid: string){
-
-   
-    if(this.modelInstance.instruments){
-
-        if(
-            ( (this.KeyState.View.Body as Mesh).uuid == uuid )
-        ){
-
-            console.log( 
-                "Pointer out :: I am  key number " 
-                + this.KeyState.Id
-                + ", with a pitch of "
-                + this.KeyState.Sonics.NoteName
-                + " and i heard that my identifier: " 
-                + this.KeyState.View.Body.uuid 
-                + "was compared to:" 
-                + uuid +
-                " and i am trigging a NOTE RELEASE" 
-            );
-
-            this.KeyState.State.setIsPointerOut(true);
-
-                if(this.KeyState.Sonics.IsPlaying){
-
-                    if(this.modelInstance.instruments){
-
-                        this.modelInstance.instruments
-                        .stopToPlayANote(
-                            this.KeyState.Sonics.NoteName 
-                            + 
-                            this.KeyState.Sonics.Octave.toString()
-                        );
-    
-                    }
-    
-                    this.KeyState.Sonics.IsPlaying = false; 
-    
-                } else {
-    
-    
-                }
-        
-            }
-
-        
-        };
-
-    }
-    
 /////////////////////////////////////////////////////////////////////////////////
-  
-//////////////////////////////////////////////////////////////////////
-
-/////////////////////////////////////////////////////////////////////////////////
-  
-
-
-    private onListener( isTrue ){
-
-        if(this.modelInstance.showMusicalKeyMessages){
-
-            console.log( "I heard that i should turn on!" )
-
-        }
-
-        this.isOn = true;
-
-    }
-
-    private offListener( isTrue ){
-
-        if(this.modelInstance.showMusicalKeyMessages){
-
-            console.log( "I heard that i should turn off!" )
-
-        }
-        
-        this.isOn = false;
-
-    }
+ 
 
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -581,141 +370,6 @@ private onPointerOutListener(pointerid : number, id:number, uuid: string){
         }
     }
 
-/////////////////////////////////////////////////////////////////////////////////
-
-    private checkIfOnAndRepaint(){
-
-        if( this.KeyState.State.IsActive == false ){
-
-            if(this.modelInstance.showMusicalKeyMessages){
-
-                console.log(
-
-                    "Key : "
-                    + this._id
-                    + ": It is " 
-                    + this.KeyState.State.IsActive
-                    + " that I am On , ie. I am Off."
-
-                )
-
-            }
-
-            
-            
-            if(this.KeyState.Sonics.IsSharpOrFlat){
-
-                this.darkMaterial.needsUpdate = true;
-               // (this.State.View.Body as Mesh).material = this.darkMaterial;
-           
-            }
-            else {
-
-                this.lightMaterial.needsUpdate = true;
-               // (this.State.View.Body as Mesh).material = this.lightMaterial;
-
-            }
-
-           // this.setKeyInstanceScale( this._isOffScale );
-            
-            if(!this._muted){
-
-               // this.setKeyColour(this.colours.offColour);
-
-            }
-
-        }
-        
-        if( this.KeyState.State.IsActive == true ){
-
-            if(this.modelInstance.showMusicalKeyMessages){
-         
-                console.log(
-
-                    "I am On : " 
-                    + this.KeyState.State.IsActive
-
-                )
-
-            }
-
-            if(this.KeyState.State.IsRayTouched){
-
-                console.log(
-
-                    "I was raytouched : " 
-                    + this.KeyState.State.IsRayTouched
-
-                )
-
-                this.highlightKey(true);
-
-                if(this.KeyState.Sonics.IsSharpOrFlat){
-
-                    //this.darkOnMaterial.needsUpdate = true;
-                   // (this.State.View.Body as Mesh).material = this.darkOnMaterial;
-               
-                }
-                else {
-                    
-                    //this.lighOntMaterial.needsUpdate = true;
-                  //  (this.State.View.Body as Mesh).material = this.lighOntMaterial;
-    
-                }
-            
-            }
-            else{
-
-                console.log(
-
-                    "I was raytouched : " 
-                    + this.KeyState.State.IsRayTouched
-
-                )
-
-               this.highlightKey(false);
-
-                if(this.KeyState.Sonics.IsSharpOrFlat){
-
-                  //  (this.State.View.Body as Mesh).material = this.darkMaterial;
-                    //this.darkMaterial.needsUpdate = true;
-
-                }
-                else {
-    
-                    //this.lightMaterial.needsUpdate = true;
-                    //(this.State.View.Body as Mesh).material = this.lightMaterial;
-    
-                }
-
-            }
-            
-            if(this.KeyState.Sonics.IsSharpOrFlat){
-
-               // this.darkOnMaterial.needsUpdate = true;
-               // (this.State.View.Body as Mesh).material = this.darkOnMaterial;
-           
-            }
-            else {
-
-               // this.lighOntMaterial.needsUpdate = true;
-               // (this.State.View.Body as Mesh).material = this.lighOntMaterial;
-
-            }
-
-            // this.setKeyInstanceScale( this.State.State.IsActiveScale );
-
-            if(!this._muted){
-
-                //this.setKeyColour(this.colours.onColour);
-
-            }
-
-        }
-
-    }
-
-/////////////////////////////////////////////////////////////////////////////////  
 
 public repaintBody(){
 
@@ -775,7 +429,7 @@ public repaintBody(){
 
 public darkMaterial 
 = new MeshMatcapMaterial({
-    color: '#462C07',
+    color: '#268F34',
    // metalness: 0.35,
    // roughness: 0.41,
     // emissive:
@@ -783,7 +437,7 @@ public darkMaterial
 
 public lightMaterial 
 = new MeshMatcapMaterial({
-    color: '#f69f1f',
+    color: '#6BE767',
   //  metalness: 0.35,
    // roughness: 0.41,
     });

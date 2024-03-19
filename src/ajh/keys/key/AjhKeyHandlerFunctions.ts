@@ -28,7 +28,19 @@ export default class AjhKeyHandlerFunctions{
                 ( (this.keyInstance.KeyState.View.Body as Mesh).id == keyid )
             ){
 
-            // this.keyInstance.KeyState.State.setIsPointerDown(true);
+                this.keyInstance.modelInstance.pointerDown = true;
+                this.keyInstance.KeyState.State.setIsPointerDown(true);
+               // if(this.keyInstance.KeyState.State.checkIfPointerRayExistsById(pointerid)){
+                        
+               if( this.keyInstance.KeyState.State.IsRayTouched ){
+                
+                    // highlightkey::
+                    this.keyInstance.highlightKey(true);
+                
+                }
+
+               // }
+
                 if(
                     this.keyInstance.modelInstance.showMusicalKeyMessages
                 ){
@@ -123,7 +135,15 @@ export default class AjhKeyHandlerFunctions{
             if(
                 ( (this.keyInstance.KeyState.View.Body as Mesh).uuid == uuid )
             // ( isTrue )
-            ){       
+            ){     
+                
+                this.keyInstance.KeyState.State.setIsPointerDown(true);
+              //  if(this.keyInstance.KeyState.State.checkIfPointerRayExistsById(pointerid)){
+                
+                    // highlightkey::
+                    this.keyInstance.highlightKey(false);
+
+             //   }
 
                 if(
                     this.keyInstance.modelInstance.showMusicalKeyMessages
@@ -227,6 +247,14 @@ export default class AjhKeyHandlerFunctions{
                 
                 this.keyInstance.KeyState.Sonics.IsPlaying = false;
 
+                //if(this.keyInstance.KeyState.State.checkIfPointerRayExistsById(pointerid)){
+                                
+                    // highlightkey::
+                    this.keyInstance.highlightKey(false);
+
+                //}
+
+
             } else {
 
             }
@@ -264,15 +292,14 @@ export default class AjhKeyHandlerFunctions{
         if(
 
             ( (this.keyInstance.KeyState.View.Body as Mesh).uuid == uuid )
+            &&
+            ( (this.keyInstance.KeyState.View.Body as Mesh).id == id )
 
         ){
     
     // set the ray touch to true
 
-            this.keyInstance.KeyState.State.IsRayTouched = true;  
-
-            //highlightkey::
-            this.keyInstance.highlightKey(true);
+            this.keyInstance.KeyState.State.IsRayTouched = true;
             
     // register Pointer Ray in the KEY Pointer Ray Array : 
             
@@ -334,20 +361,20 @@ export default class AjhKeyHandlerFunctions{
             
         this.keyInstance.KeyState.State.removePointerRayById(rayid, true);
 
-    if(this.keyInstance.KeyState.State.getNumberOfPointerRays() == 0){
-        this.keyInstance.highlightKey(false);
-    }
             if(this.keyInstance.modelInstance.pointerDown){
 
     // ... the pointer is down, 
+         // highlightkey::
+         this.keyInstance.highlightKey(false);
+         this.keyInstance.KeyState.State.IsPointerDown = false;
     // if was playing then i need to stop IF the pointerId is registered...
     
                 if(
 
-                    !this.keyInstance.KeyState.Sonics.IsPlaying 
-                    &&
-                    this.keyInstance.KeyState.State.checkIfPointerRayExistsById(rayid, true) 
-                        != null
+                    this.keyInstance.KeyState.Sonics.IsPlaying 
+                    // &&
+                    // this.keyInstance.KeyState.State.checkIfPointerRayExistsById(rayid, true) 
+                    //     != null
 
                 ){
 
