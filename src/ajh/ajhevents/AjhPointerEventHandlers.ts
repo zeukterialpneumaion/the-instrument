@@ -71,7 +71,11 @@ implements AjhPointerEventHandlersInterface {
 
     };
     
-    private onPointerDownHandler(evt : PointerEvent){
+    private onPointerDownHandler(evt){
+
+        if (evt.target.hasPointerCapture(evt.pointerId)) {
+            evt.target.releasePointerCapture(evt.pointerId);
+        }
 
         this._modelInstance.pointerDown = true;
 
@@ -115,6 +119,7 @@ implements AjhPointerEventHandlersInterface {
                     this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyName,
                     this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
                     this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
+                    evt
                 )
 
                console.log("pointerdown  >> id: " + evt.pointerId)
@@ -261,6 +266,7 @@ implements AjhPointerEventHandlersInterface {
                     evt.pointerId,
                     this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
                     this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
+                    evt
                 )
 
                 console.log("pointerup  >> id: " + evt.pointerId)

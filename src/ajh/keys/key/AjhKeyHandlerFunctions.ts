@@ -19,6 +19,8 @@ export default class AjhKeyHandlerFunctions{
         keyid:number, 
         uuid: string
     ){
+
+        //to make behave the touch events behave like the mouse
     
         if(this.keyInstance.modelInstance.instruments){
 
