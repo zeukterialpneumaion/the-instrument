@@ -326,6 +326,14 @@ export default class AjhInitialScreen {
             this._dataField.innerText = text;
     }
 
+    public setMessageFieldText(text:string){
+        this._messageField.innerText = text;
+    }
+
+    public setTitleFieldText(text:string){
+        this._titleField.innerText = text;
+    }
+
    createEnterButton(whereToAdd){
 
         const enterButtonGeometry 

@@ -139,6 +139,14 @@ export default class AjhRayCaster {
                         .getSelectedKeyByRayCasterId(this.id)
                         .selectedKey.KeyState.Sonics.NoteName
                     );
+                    this.modelInstance.infoScreen
+                    .setMessageFieldText( 
+                        "" + this.modelInstance.currentKeyBoard.scaleType.name
+                    );
+                    this.modelInstance.infoScreen
+                    .setTitleFieldText( 
+                        this.modelInstance.instruments.currentInstrument.name
+                    );
                     //ended
 
                   //  console.log(" NO SELECTED KEY EXISTED SO A NEW ONE WAS ADDED but RAY IS NOW TOUCHING " + this.INTERSECTED.uuid + " " );

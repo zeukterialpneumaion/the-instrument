@@ -39,6 +39,9 @@ implements AjhPointerEventHandlersInterface {
         this.lostpointercaptureHandler
         = new AjhHandlerObject( "lostpointercapture",  this.onLostPointerCaptureHandler);
 
+        this.ontouchendcaptureHandler
+        = new AjhHandlerObject( "touchend",  this.onTouchEndHandler);
+
         this.handlersArray = 
         [
             this.pointerdownHandler,
@@ -307,7 +310,7 @@ implements AjhPointerEventHandlersInterface {
     };
 
 // ======================================================================== //
-// CANCEL:: AJH //
+// CANCEL:: Pointer AJH //
 // ======================================================================== //
 
     private onPointerCancelHandler(evt : PointerEvent){
@@ -433,6 +436,31 @@ implements AjhPointerEventHandlersInterface {
 
     // ================================================================= //
 
+    private onTouchEndHandler(evt : any){
+
+        console.log("onTouchEndHandler  >> id: " + evt.id)
+        try{
+
+            this._modelInstance.musicalKeyEventEmitter.emit(
+                "onTouchEnd", 
+                evt.pointerId,
+                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
+                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
+            )
+
+            console.log("onTouchEnd  >> id: " + evt.id)
+
+        }
+        catch(e){
+            
+        }
+
+    }
+
+
+
+    // ================================================================= //
+
     addPointerEvent(id){
 
         this.pointerEventsIds.push(new AjhPointerEventId(id));
@@ -497,6 +525,8 @@ implements AjhPointerEventHandlersInterface {
         pointercancelHandler: AjhHandlerObject
         gotpointercaptureHandler: AjhHandlerObject
         lostpointercaptureHandler: AjhHandlerObject
+        ontouchendcaptureHandler: AjhHandlerObject
+
 
 // ======================================================================== //
 
@@ -557,7 +587,8 @@ interface AjhPointerEventHandlersInterface {
     pointerleaveHandler: AjhHandlerObject,
     pointercancelHandler: AjhHandlerObject,
     gotpointercaptureHandler: AjhHandlerObject,
-    lostpointercaptureHandler: AjhHandlerObject
+    lostpointercaptureHandler: AjhHandlerObject,
+    ontouchendcaptureHandler: AjhHandlerObject
 
     handlersArray : Array<AjhHandlerObject>;
 

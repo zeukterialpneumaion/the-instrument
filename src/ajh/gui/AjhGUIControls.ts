@@ -198,6 +198,10 @@ populateGUI( drag:boolean = false )  {
                 .name("scale")
                 .onChange(function(evt){
 
+                    this.modelInstance.currentKeyBoard.scaleType
+                    =
+                    this.modelInstance.scaleTypes.getScaleFromName(evt); 
+
                     this.modelInstance.currentKeyBoard
                     .createKeys( 
                         "",
