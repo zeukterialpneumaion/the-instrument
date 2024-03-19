@@ -429,7 +429,7 @@ public repaintBody(){
 
 public darkMaterial 
 = new MeshMatcapMaterial({
-    color: '#268F34',
+    color: '#263F8F',
    // metalness: 0.35,
    // roughness: 0.41,
     // emissive:
