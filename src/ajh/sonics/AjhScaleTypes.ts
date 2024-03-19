@@ -54,7 +54,7 @@ export default class AjhScaleTypes {
     private _CircleOfFifths: Array<number> = [7];
    
 
-    private _MinorPentatonic: Array<number> = [ 0,3,5,7,11 ];
+    private _MinorPentatonic: Array<number> = [ 0, 3, 5, 7, 8, 11 ];
    
 
     private _BlackKeys: Array<number>  = [1, 3, 6, 8, 10];
