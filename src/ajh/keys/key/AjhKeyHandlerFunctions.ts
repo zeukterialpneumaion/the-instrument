@@ -32,29 +32,29 @@ export default class AjhKeyHandlerFunctions{
                 this.keyInstance.KeyState.State.setIsPointerDown(true);
                // if(this.keyInstance.KeyState.State.checkIfPointerRayExistsById(pointerid)){
                         
-            //    if( this.keyInstance.KeyState.State.IsRayTouched ){
+               if( this.keyInstance.KeyState.State.IsRayTouched ){
                 
-            //         // highlightkey::
-            //         this.keyInstance.highlightKey(true);
+                    // highlightkey::
+                    this.keyInstance.highlightKey(true);
 
-            // // now, check if key is playing a note
-            //         if(this.keyInstance.KeyState.Sonics.IsPlaying){
+            // now, check if key is playing a note
+                    if(this.keyInstance.KeyState.Sonics.IsPlaying){
 
-            //         } else {
+                    } else {
 
-            // // now send a note attackrelease command            
-            //                 this.keyInstance.modelInstance.instruments
-            //                 .playANote(
+            // now send a note attackrelease command            
+                            this.keyInstance.modelInstance.instruments
+                            .playANote(
 
-            //                     this.keyInstance.KeyState.Sonics.NoteName 
-            //                     + 
-            //                     this.keyInstance.KeyState.Sonics.Octave.toString()
+                                this.keyInstance.KeyState.Sonics.NoteName 
+                                + 
+                                this.keyInstance.KeyState.Sonics.Octave.toString()
 
-            //                 );
+                            );
 
-            //         }
+                    }
                 
-            //     }
+                }
 
 
                 if(
@@ -80,22 +80,22 @@ export default class AjhKeyHandlerFunctions{
 
                 }
 
-                // if(!this.keyInstance.KeyState.Sonics.IsPlaying){
+                if(!this.keyInstance.KeyState.Sonics.IsPlaying){
 
-                //     this.keyInstance.KeyState.Sonics.IsPlaying = true; 
+                    this.keyInstance.KeyState.Sonics.IsPlaying = true; 
                 
-                //     this.keyInstance.KeyState.State.setIsPointerDown(true);
+                    this.keyInstance.KeyState.State.setIsPointerDown(true);
 
-                //     this.keyInstance.modelInstance.instruments
-                //     .startToPlayANote(
+                    this.keyInstance.modelInstance.instruments
+                    .startToPlayANote(
 
-                //         this.keyInstance.KeyState.Sonics.NoteName 
-                //         + 
-                //         this.keyInstance.KeyState.Sonics.Octave.toString()
+                        this.keyInstance.KeyState.Sonics.NoteName 
+                        + 
+                        this.keyInstance.KeyState.Sonics.Octave.toString()
 
-                //     );
+                    );
 
-                // }
+                }
 
             }
             else{
@@ -197,33 +197,33 @@ export default class AjhKeyHandlerFunctions{
         
             } else {
 
-    // // if I am NOT the event target
+    // if I am NOT the event target
 
-    //             if(
-    //                 this.keyInstance.KeyState.State.IsPointerDown
-    //                 &&
-    //                 this.keyInstance.KeyState.Sonics.IsPlaying
-    //             ){
+                if(
+                    this.keyInstance.KeyState.State.IsPointerDown
+                    &&
+                    this.keyInstance.KeyState.Sonics.IsPlaying
+                ){
 
-    //                 if(this.keyInstance.modelInstance.instruments){
+                    if(this.keyInstance.modelInstance.instruments){
 
-    //                     this.keyInstance.KeyState.Sonics.IsPlaying = true; 
+                        this.keyInstance.KeyState.Sonics.IsPlaying = true; 
 
-    //                     this.keyInstance.modelInstance.instruments
-    //                     .stopToPlayANote(
+                        this.keyInstance.modelInstance.instruments
+                        .stopToPlayANote(
 
-    //                         this.keyInstance.KeyState.Sonics.NoteName 
-    //                         + 
-    //                         this.keyInstance.KeyState.Sonics.Octave.toString()
+                            this.keyInstance.KeyState.Sonics.NoteName 
+                            + 
+                            this.keyInstance.KeyState.Sonics.Octave.toString()
 
-    //                     );
+                        );
 
-    //                 }
+                    }
 
-    //                 this.keyInstance.KeyState.State.setIsPointerDown(false);
-    //                 this.keyInstance.KeyState.Sonics.IsPlaying = false;
+                    this.keyInstance.KeyState.State.setIsPointerDown(false);
+                    this.keyInstance.KeyState.Sonics.IsPlaying = false;
 
-    //             }
+                }
         
             }
         
@@ -293,7 +293,7 @@ export default class AjhKeyHandlerFunctions{
 
 // ============================================================================= //
 
-// THIS HAPPENS >>>> AFTER <<<< THE POINTER EVENTS :::SO LOGIC MUST GO HERE ::
+// THIS HAPPENS >>>> AFTER <<<< THE POINTER EVENTS :::SO LOGIC MUST GO ::
     isRayTouchedListener(
         
         touched: boolean, 
@@ -351,32 +351,6 @@ export default class AjhKeyHandlerFunctions{
                
             );
 
-            /////////////////////////////////////////////////////////////////
-            // now play a note and highlight key
-            if( this.keyInstance.KeyState.State.IsPointerDown ){
-                
-                // highlightkey::
-                this.keyInstance.highlightKey(true);
-
-        // now, check if key is playing a note
-                if(this.keyInstance.KeyState.Sonics.IsPlaying){
-
-                } else {
-
-        // now send a note attackrelease command            
-                        this.keyInstance.modelInstance.instruments
-                        .startToPlayANote(
-
-                            this.keyInstance.KeyState.Sonics.NoteName 
-                            + 
-                            this.keyInstance.KeyState.Sonics.Octave.toString()
-
-                        );
-
-                }
-            
-            }
-
 
             ///////   OLD PLAY A NOTE CALL !!!!!!!!
 
@@ -384,7 +358,7 @@ export default class AjhKeyHandlerFunctions{
         
         } else {
 
-        //  the key is not intersected by the raycaster .....
+    //  the key is not intersected by the raycaster .....
 
        // remover Pointer Ray from the KEY Pointer Ray Array : 
             
@@ -392,42 +366,37 @@ export default class AjhKeyHandlerFunctions{
 
             if(this.keyInstance.modelInstance.pointerDown){
 
-        // ... the pointer is down,                     
-            // highlightkey::
-                this.keyInstance.highlightKey(false);
-                this.keyInstance.KeyState.State.IsPointerDown = false;
-        // if was playing then i need to stop IF the pointerId is registered...
+    // ... the pointer is down,                     
+         // highlightkey::
+         this.keyInstance.highlightKey(false);
+         this.keyInstance.KeyState.State.IsPointerDown = false;
+    // if was playing then i need to stop IF the pointerId is registered...
     
-               // if I am NOT the event target
+                if(
 
-               if(
-                    this.keyInstance.KeyState.State.IsPointerDown
-                    &&
-                    this.keyInstance.KeyState.Sonics.IsPlaying
+                    this.keyInstance.KeyState.Sonics.IsPlaying 
+                    // &&
+                    // this.keyInstance.KeyState.State.checkIfPointerRayExistsById(rayid, true) 
+                    //     != null
+
                 ){
 
-                    if(this.keyInstance.modelInstance.instruments){
+                    this.keyInstance.modelInstance.instruments
+                    .stopToPlayANote(
 
-                        this.keyInstance.KeyState.Sonics.IsPlaying = true; 
+                        this.keyInstance.KeyState.Sonics.NoteName 
+                        + 
+                        this.keyInstance.KeyState.Sonics.Octave.toString()
 
-                        this.keyInstance.modelInstance.instruments
-                        .stopToPlayANote(
+                    );
 
-                            this.keyInstance.KeyState.Sonics.NoteName 
-                            + 
-                            this.keyInstance.KeyState.Sonics.Octave.toString()
-
-                        );
-
-                    }
-
-                    this.keyInstance.KeyState.State.setIsPointerDown(false);
                     this.keyInstance.KeyState.Sonics.IsPlaying = false;
+                
+                }
+                else{
 
-            } else{
 
-
-            }
+                }
 
             } else {
 
