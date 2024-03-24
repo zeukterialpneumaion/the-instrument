@@ -28,7 +28,7 @@ export default class AjhRayCasters {
             if(element.id == id){
 
                 foundRay = element;
-                console.log( "found in RayCasters, id: " + element.id );
+              //  console.log( "found in RayCasters, id: " + element.id );
             }
 
         }

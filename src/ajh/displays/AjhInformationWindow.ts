@@ -1,4 +1,4 @@
-import "../assets/css/AjhFonts.css";
+import "../../assets/css/AjhFonts.css";
 import AjhModel from "../datamodels/AjhModel";
 
 export default class AjhInformationWindow {
@@ -45,12 +45,12 @@ export default class AjhInformationWindow {
         this._statusField = value;
     }
 
-    private _pearlField;
-    public get pearlField() {
-        return this._pearlField;
+    private _nameField;
+    public get nameField() {
+        return this._nameField;
     }
-    public set pearlField(value) {
-        this._pearlField = value;
+    public set nameField(value) {
+        this._nameField = value;
     }
 
     private _messageField;
@@ -108,61 +108,68 @@ export default class AjhInformationWindow {
        
         this._InformationWindowInstance 
         = document.createElement('div');
+        this._InformationWindowInstance.style.userSelect =  "none";//.disable();
+        this._InformationWindowInstance.style.pointerEvents =  "none";
+        
 
         this._titleField 
         = document.createElement('div');
         this._InformationWindowInstance
         .appendChild(this._titleField);
-        this._titleField.style.color = "#ff9800";
+        this._titleField.style.color = "#ECA130";
 
         this._onField 
         = document.createElement('div');
         this._InformationWindowInstance
         .appendChild(this._onField);
-        this._onField.style.color = "#ffffdd";
+        this._onField.style.color = "#F1DA55";
 
         this._messageField 
         = document.createElement('div');
         this._InformationWindowInstance
         .appendChild(this._messageField);
-        this._messageField.style.color = "#ffaa00";
+        this._messageField.style.color = "#58E281";
 
         this._contentField 
         = document.createElement('div');
         this._InformationWindowInstance
         .appendChild(this._contentField);
-        this._contentField.style.color = "#ff8800";
+        this._contentField.style.color = "#62CDFF";
 
         this._dataField 
         = document.createElement('div');
         this._InformationWindowInstance
         .appendChild(this._dataField);
-        this._dataField.style.color = "#91c91a";
+        this._dataField.style.color = "#58FF61";
 
         this._statusField 
         = document.createElement('div');
         this._InformationWindowInstance
         .appendChild(this._statusField);
-        this._statusField.style.color = "#70a809";
+        this._statusField.style.color = "#FFA396";
         
-        this._repetitionsField 
+        this._nameField 
         = document.createElement('div');
         this._InformationWindowInstance
-        .appendChild(this._repetitionsField);
-        this._repetitionsField.style.color = "#3c9505";
-
-        this._pearlField 
-        = document.createElement('div');
-        this._InformationWindowInstance
-        .appendChild(this._pearlField);
-        this._pearlField.style.color = "#2cc9ff";
+        .appendChild(this._nameField);
+        this._nameField.style.color = "#FCBE38";
 
         this._infoField 
         = document.createElement('div');
         this._InformationWindowInstance
         .appendChild(this._infoField);
-        this._infoField.style.color = "#00acff";
+        this._infoField.style.color = "#61C8F1";
 
+
+
+        this._repetitionsField 
+        = document.createElement('div');
+        this._InformationWindowInstance
+        .appendChild(this._repetitionsField);
+        this._repetitionsField.style.color = "#E08B8B";
+
+
+        
         this._InformationWindowInstance.style.fontFamily 
         = "Consolas";
         //Arial";
@@ -173,7 +180,7 @@ export default class AjhInformationWindow {
         
         this._InformationWindowInstance.style.color = "#ff9800";
 
-        this._InformationWindowInstance.style.padding = "1.5em";
+        this._InformationWindowInstance.style.padding = "0.5em";
 
 
         this._InformationWindowInstance.style.maxWidth 
@@ -183,7 +190,7 @@ export default class AjhInformationWindow {
         + "px";
 
         this._InformationWindowInstance.style.maxHeight 
-        = this._height+"px";
+        = 30 + this._height+"px";
 
         this._InformationWindowInstance
         .style.backgroundColor
@@ -195,40 +202,43 @@ export default class AjhInformationWindow {
         this._InformationWindowInstance.style.opacity = "1.0";
 
         this.updateAllFields();
-        this.show();
+
+
+        this.hide();
+        // this.show();
 
       //  this.addListeners();
 
     }
 
-    addListeners(){
+    // addListeners(){
 
-        this.modelInstance.noteEventEmitter
-        .on(
-            "touched",
-            this.touchListener.bind(this)
-        );
+    //     this.modelInstance.noteEventEmitter
+    //     .on(
+    //         "touched",
+    //         this.touchListener.bind(this)
+    //     );
         
-        // this.modelInstance.noteEventEmitter
-        // .on(
-        //     "no longer touched",
-        //     this.noLongerTouchedListener.bind(this)
-        // );
+    //     // this.modelInstance.noteEventEmitter
+    //     // .on(
+    //     //     "no longer touched",
+    //     //     this.noLongerTouchedListener.bind(this)
+    //     // );
 
-    }
+    // }
 
-    touchListener(){
+    // touchListener(){
 
-            this.show();
+    //         this.show();
 
-    }
+    // }
 
 
-    noLongerTouchedListener(){
+    // noLongerTouchedListener(){
 
-        this.hide();
+    //     this.hide();
 
-    }
+    // }
 
     setPosition(){
 
@@ -307,9 +317,12 @@ export default class AjhInformationWindow {
         {
 
             this._InformationWindowInstance.style.top 
-            = ( y - ( 15 + this._height ) ) + "px";
+            = ( y - ( 30 + this._height ) ) + "px";
 
         }
+
+        // this._InformationWindowInstance.style.maxHeight 
+        // = 500+"px";
        
     }
 
@@ -366,7 +379,9 @@ export default class AjhInformationWindow {
         status:string = "status",
         content:string = "content",
         info:string = "info",
-        message:string = "message"
+        message:string = "message",
+        on:string = "on",
+        name:string = "name"
 
     ){
 
@@ -375,8 +390,10 @@ export default class AjhInformationWindow {
         this._contentField.innerText = content;
         this._dataField.innerText = data;
         this._statusField.innerText = status;
-        this._pearlField.innerText = "pearl id";
+        this._nameField.innerText = "name id";
         this._infoField.innerText = info;
+        this._onField.innerText = on;
+        this._nameField.innerText = name;
     }
 
     updateContentField(
@@ -441,17 +458,17 @@ export default class AjhInformationWindow {
         
     }
 
-    updatePearlField(
-        pearlString:string = "pearl"
+    updatenameField(
+        nameString:string = "name"
     ){
 
-        this._pearlField.innerText 
-        = pearlString;
+        this._nameField.innerText 
+        = nameString;
         
     }
 
     updateRepetitionsField(
-        repetitionsString:string = "pearl"
+        repetitionsString:string = "name"
     ){
 
         this._repetitionsField.innerText 

@@ -112,7 +112,7 @@ Step 3: Install gh-pages
   "name": "book-product",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://aishwaryaparab.github.io/book-landing-page/",
+  "homepage": "https://zeukterialpneumaion.github.io/the-instrument/",
   "type": "module",
   "scripts": {
     "predeploy" : "npm run build",

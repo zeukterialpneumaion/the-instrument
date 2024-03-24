@@ -81,9 +81,9 @@ implements AjhPointerEventHandlersInterface {
  
     private onPointerDownHandler(evt){
 
-        if (evt.target.hasPointerCapture(evt.pointerId)) {
-            evt.target.releasePointerCapture(evt.pointerId);
-        }
+        // if (evt.target.hasPointerCapture(evt.pointerId)) {
+        //     evt.target.releasePointerCapture(evt.pointerId);
+        // }
 
         this._modelInstance.pointerDown = true;
 
@@ -112,13 +112,13 @@ implements AjhPointerEventHandlersInterface {
         ){
 
             //set coords
-            this._modelInstance.mouseCoordinates.x
-            =
-            evt.clientX;
+            // this._modelInstance.mouseCoordinates.x
+            // =
+            // evt.clientX;
             
-            this._modelInstance.mouseCoordinates.y
-            =
-            evt.clientY;
+            // this._modelInstance.mouseCoordinates.y
+            // =
+            // evt.clientY;
             
         try{
 
@@ -160,18 +160,28 @@ implements AjhPointerEventHandlersInterface {
 // MOVE:: AJH //
 // ======================================================================== //
 
-    public onPointerMoveHandler(evt : any){
+    public onPointerMoveHandler(evt : PointerEvent){
 
                 
         evt.stopPropagation();
         evt.preventDefault();
 
         
-        if (evt.target.hasPointerCapture(evt.pointerId)) {
-            evt.target.releasePointerCapture(evt.pointerId);
-        }
+        // if (evt.target.hasPointerCapture(evt.pointerId)) {
+        //     evt.target.releasePointerCapture(evt.pointerId);
+        // }
 
-      // console.log( test());//getPointerEventById(evt.pointerId) );
+        // console.log( 
+        //     "pointermoving x:" 
+        //     +
+        //     evt.clientX
+        //     +
+        //     " y:"
+        //     +
+        //     evt.clientY
+
+        // );
+
         let selfReference 
         = 
         this._modelInstance.pointerEventsInstance.ajhPointerEventHandlers;
@@ -186,10 +196,15 @@ implements AjhPointerEventHandlersInterface {
         // update pointer from the evt id
         // = 
         let pointerToUpdate:AjhRayPointer 
-        = this._modelInstance.raycasterPointers.getRayPointerByID(evt.pointerId);
+        = 
+        this._modelInstance
+        .raycasterPointers.getRayPointerByID(evt.pointerId);
 
+          // update raycaster from the evt id
         let raycasterToUpdate:AjhRayCaster 
-        = this._modelInstance.raycasters.getRayCasterByID(evt.pointerId);
+        = 
+        this._modelInstance
+        .raycasters.getRayCasterByID(evt.pointerId);
 
         if(
             pointerToUpdate 
@@ -199,10 +214,12 @@ implements AjhPointerEventHandlersInterface {
 
         // console.log("UPDATING POINTER:" + evt.pointerId + ":" +  this._modelInstance.raycasterPointers.getRayPointerByID(evt.pointerId).id );
             pointerToUpdate.rayPointer.x 
-            = ( evt.clientX / window.innerWidth ) * 2 - 1;
+            = 
+            ( evt.clientX / window.innerWidth ) * 2 - 1;
 
             pointerToUpdate.rayPointer.y
-            = ( evt.clientY / window.innerHeight ) * 2 - 1;
+            = 
+            - ( evt.clientY / window.innerHeight ) * 2 - 1;
 
          //   console.log("UPDATING POINTER: x " +pointerToUpdate.rayPointer.x+" y: "+pointerToUpdate.rayPointer.y);
     
@@ -211,7 +228,7 @@ implements AjhPointerEventHandlersInterface {
             this._modelInstance.raycasterPointers.addRayPointer(
                 evt.pointerId,
                 ( evt.clientX / window.innerWidth ) * 2 - 1,
-                ( evt.clientY / window.innerHeight ) * 2 - 1
+                - ( evt.clientY / window.innerHeight ) * 2 - 1
             )
 
         }
@@ -370,10 +387,17 @@ implements AjhPointerEventHandlersInterface {
         try{
 
             this._modelInstance.musicalKeyEventEmitter.emit(
-                "onPointerOut", 
+
+                "onPointerOut",
+
                 evt.pointerId,
-                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyId,
-                this._modelInstance.selectedKeys.selectedKeys[evt.pointerId].bodyUUID,
+
+                this._modelInstance.selectedKeys.
+                selectedKeys[evt.pointerId].bodyId,
+
+                this._modelInstance.selectedKeys
+                .selectedKeys[evt.pointerId].bodyUUID,
+
             )
 
        console.log("pointerout  >> id: " + evt.pointerId)

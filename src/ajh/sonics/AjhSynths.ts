@@ -68,7 +68,7 @@ export default class AjhSynths {
                     spread: 30
                 },
                 envelope: {
-                    attack: 0.01,
+                    attack: 0.74,
                     decay: 0.1,
                     sustain: 0.5,
                     release: 0.8,
@@ -98,7 +98,7 @@ export default class AjhSynths {
                     spread: 60
                 },
                 envelope: {
-                    attack: 0.01,
+                    attack: 0.71,
                     decay: 0.1,
                     sustain: 0.5,
                     release: 0.8,
@@ -128,7 +128,7 @@ export default class AjhSynths {
                     spread: 60
                 },
                 envelope: {
-                    attack: 0.01,
+                    attack: 0.71,
                     decay: 0.1,
                     sustain: 0.5,
                     release: 0.8,
@@ -180,7 +180,7 @@ export default class AjhSynths {
                             rolloff: -24
                         },
                         envelope: {
-                            attack: 0.01,
+                            attack: 0.61,
                             decay: 0.25,
                             sustain: 0.8,
                             release: 1.2
@@ -277,7 +277,7 @@ export default class AjhSynths {
                         spread: 30
                     },
                     envelope: {
-                        attack: 0.2,
+                        attack: 0.62,
                         decay: 0.1,
                         sustain: 0.5,
                         release: 0.8,

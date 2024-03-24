@@ -10,6 +10,7 @@ import {
     Raycaster,
     Renderer,
     Scene,
+    TextureLoader,
     Vector2,
     Vector3,
     WebGLRenderer
@@ -35,6 +36,7 @@ import { AjhNoteEventTypes, createNoteEventBroker } from '../ajhevents/AjhNoteEv
 
 import GUI from "lil-gui";
 import { DragControls } from "three/examples/jsm/controls/DragControls";
+import AjhCanvasInteraction from "../AjhMultiTouch/AjhCanvasInteraction";
 import AjhPointerEvents from "../ajhevents/AjhPointerEvents";
 import AjhColours from "../colours/AjhColours";
 import AjhColourSchemeOptions from "../configs/options/AjhColourSchemeOptions";
@@ -73,6 +75,26 @@ export default class AjhModel {
     public set Stats(value: Stats) {
         this._Stats = value;
     }
+
+    // multitouch
+    private _canvasInteraction: AjhCanvasInteraction;
+    public get canvasInteraction(): AjhCanvasInteraction {
+        return this._canvasInteraction;
+    }
+    public set canvasInteraction(value: AjhCanvasInteraction) {
+        this._canvasInteraction = value;
+    }
+
+
+    private _initialScreen: AjhInitialScreen;
+    public get initialScreen(): AjhInitialScreen {
+        return this._initialScreen;
+    }
+    public set initialScreen(value: AjhInitialScreen) {
+        this._initialScreen = value;
+    }
+
+    public textureLoader : TextureLoader = new TextureLoader();
 
     private _ScalesCreation: AjhScaleCreation = new AjhScaleCreation();
     public get ScalesCreation(): AjhScaleCreation {
@@ -192,14 +214,6 @@ export default class AjhModel {
     }
     public set keyBodies(value: Array<Mesh>) {
         this._keyBodies = value;
-    }
-
-    private _infoScreen: AjhInitialScreen;
-    public get infoScreen(): AjhInitialScreen {
-        return this._infoScreen;
-    }
-    public set infoScreen(value: AjhInitialScreen) {
-        this._infoScreen = value;
     }
 
 
@@ -404,14 +418,6 @@ export default class AjhModel {
     }
     public set clock(value: Clock) {
         this._clock = value;
-    }
-
-    private _initialscreen: AjhInitialScreen;
-    public get initialscreen(): AjhInitialScreen {
-        return this._initialscreen;
-    }
-    public set initialscreen(value: AjhInitialScreen) {
-        this._initialscreen = value;
     }
 
 // ======================================================= //

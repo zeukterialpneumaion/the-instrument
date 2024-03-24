@@ -84,15 +84,7 @@ populateGUI( drag:boolean = false )  {
     //);
     
         const soundsFolder =  this.modelInstance.gui.addFolder('sound controls').close();
-       // let vol:Channel = this.modelInstance.instruments.channel as Channel;
-        //vol.v
-                // soundFolder.add(vol, "volume")
-                //     .min(0.02)
-                //     .max(0.8)
-                //     .step(0.01)
-                //     .name("volume");
-                //let instrument = this.modelInstance.instruments.currentInstrument;
-        
+      
                 let synthsObj = { instrument: 'PolySynth' };
 
                 soundsFolder.add(
@@ -192,41 +184,75 @@ populateGUI( drag:boolean = false )  {
 
                 }.bind(this));
 
-                let offsetObj = { offset: 0 };
 
-                soundsFolder.add(
+                // set octave 
+                    let octaveObj = { octave: 3 };
 
-                    offsetObj, 
-                    'offset'
-                
-                )
-                .min(0)
-                .max(11)
-                .step(1)
-                .name("offset")
-                .onChange(
+                    soundsFolder.add(
+
+                        octaveObj, 
+                        'octave'
                     
-                    function(evt){
-
-                        this.modelInstance
-                        .currentKeyBoard
-                        .semitoneOffset 
-                        = evt;
+                    )
+                    .min(0)
+                    .max(5)
+                    .step(1)
+                    .name("octave to start from")
+                    .onChange(
                         
-                        // transpose scale
-                        this.modelInstance
-                        .currentKeyBoard
-                        .scaleType.transpose(evt);
+                        function(evt){
 
-                        this.modelInstance.currentKeyBoard
-                        .createKeys(
-                            ""
-                        );
-                         
+                        
+                            this.modelInstance
+                            .currentKeyBoard
+                            .octaveToStartFrom = (evt);
 
-                    }.bind(this)
+                            this.modelInstance.currentKeyBoard
+                            .createKeys(
+                                ""
+                            );
+                            
 
-                );
+                        }.bind(this)
+
+                    );
+
+                // set offset 
+                    let offsetObj = { offset: 0 };
+
+                    soundsFolder.add(
+
+                        offsetObj, 
+                        'offset'
+                    
+                    )
+                    .min(0)
+                    .max(11)
+                    .step(1)
+                    .name("semitone offset")
+                    .onChange(
+                        
+                        function(evt){
+
+                            this.modelInstance
+                            .currentKeyBoard
+                            .semitoneOffset 
+                            = evt;
+                            
+                            // transpose scale
+                            this.modelInstance
+                            .currentKeyBoard
+                            .scaleType.transpose(evt);
+
+                            this.modelInstance.currentKeyBoard
+                            .createKeys(
+                                ""
+                            );
+                            
+
+                        }.bind(this)
+
+                    );
 
         const viewsFolder 
         =  
@@ -240,6 +266,22 @@ populateGUI( drag:boolean = false )  {
 
         
             console.log("setting key columns:"+ evt.value);
+
+            this.modelInstance.currentKeyBoard
+                    .createKeys(
+                        ""
+                    );
+
+        }.bind(this));
+
+        viewsFolder.add(
+            this._modelInstance.currentKeyBoard, 
+            'numberOfRows', 
+            1,7,1
+        ).name("number of rows").onChange(function(evt){
+
+        
+            console.log("setting key rowss:"+ evt.value);
 
             this.modelInstance.currentKeyBoard
                     .createKeys(
@@ -310,32 +352,98 @@ populateGUI( drag:boolean = false )  {
 
         colourfolder.close();
         viewsFolder.close();
+
+        let stateFolder = this.modelInstance.gui.addFolder("state")
+
+        let statsShow = { show : false }
+        stateFolder.add(statsShow, "show",).name("stats").onChange(
+
+            function(evt){
+
+                if(evt){
+
+                    document.body.appendChild(this.modelInstance.Stats.dom);
+
+                } else {
+
+                    document.body.removeChild(this.modelInstance.Stats.dom);
+
+                }
        
+            }.bind(this)
 
-        if(drag){
+        )
 
-            const controlsFolder =   this.modelInstance.gui.addFolder('Controls');
-            controlsFolder.add(this.modelInstance.dragControls, 'enabled').name('drag controls');
+        let infoShow = { show : false }
+        stateFolder.add(infoShow, "show",).name("info").onChange(
 
-            const lightsFolder =   this.modelInstance.gui.addFolder('Lights').close();
+            function(evt){
 
-            lightsFolder.add(this.modelInstance.pointLights[0], 'visible').name('point light');
-            lightsFolder.add(this.modelInstance.ambientLight, 'visible').name('ambient light');
-        
-            // const helpersFolder =  this.modelInstance.gui.addFolder('Helpers');
-            // helpersFolder.add(this.axesHelper, 'visible').name('axes');
-            // helpersFolder.add(this.modelInstance.pointLightHelper, 'visible').name('pointLight');
-        
-            const cameraFolder =   this.modelInstance.gui.addFolder('camera').close();
+                if(evt){
+
+                    this.modelInstance.initialScreen.show();
+
+                } else {
+
+                    this.modelInstance.initialScreen.hide();
+
+                }
+       
+            }.bind(this)
+
+        )
+
+
+        let debugShow = { show : false }
+        stateFolder.add(debugShow, "show",).name("debug").onChange(
+
+            function(evt){
+
+                if(evt){
+
+                    this.modelInstance.informationWindow.show();
+
+                } else {
+
+                    this.modelInstance.informationWindow.hide();
+
+                }
+       
+            }.bind(this)
+
+        )
+
+        const cameraFolder 
+        =   
+        stateFolder.addFolder('camera').close();
         // cameraFolder.add( this.modelInstance.cameraOrbitControls, 'autoRotate');
             cameraFolder.add( this.modelInstance.cameraOrbitControls, 'enabled').onChange(
                 function(evt){
                 this.modelInstance.toggleOrbitCameraEnabled(this.modelInstance.cameraOrbitControls.enabled)
                 }.bind(this)
             )
+        stateFolder.close();
+       
 
-        };
+        // if(drag){
 
+        //     const controlsFolder =   this.modelInstance.gui.addFolder('Controls');
+        //     controlsFolder.add(this.modelInstance.dragControls, 'enabled').name('drag controls');
+
+        //     const lightsFolder =   this.modelInstance.gui.addFolder('Lights').close();
+
+        //     lightsFolder.add(this.modelInstance.pointLights[0], 'visible').name('point light');
+        //     lightsFolder.add(this.modelInstance.ambientLight, 'visible').name('ambient light');
+        
+        //     // const helpersFolder =  this.modelInstance.gui.addFolder('Helpers');
+        //     // helpersFolder.add(this.axesHelper, 'visible').name('axes');
+        //     // helpersFolder.add(this.modelInstance.pointLightHelper, 'visible').name('pointLight');
+        
+          
+
+        // };
+
+       
 
         // let functionobj 
         // = 
@@ -360,6 +468,7 @@ populateGUI( drag:boolean = false )  {
             }
         );
 
+        
         // load GUI state if available in local storage
         const guiState = localStorage.getItem('guiState')
         if (guiState)  this.modelInstance.gui.load(JSON.parse(guiState))
@@ -370,28 +479,9 @@ populateGUI( drag:boolean = false )  {
            this.modelInstance.gui.reset()
         }
 
-        let stateFolder = this.modelInstance.gui.addFolder("state")
-
-        let statsShow = { show : false }
-        stateFolder.add(statsShow, "show",).name("stats").onChange(
-
-            function(evt){
-
-                if(evt){
-
-                    document.body.appendChild(this.modelInstance.Stats.dom);
-
-                } else {
-
-                    document.body.removeChild(this.modelInstance.Stats.dom);
-
-                }
        
-            }.bind(this)
-
-        )
         stateFolder.add({ resetGui }, 'resetGui').name('reset local storage')
-        stateFolder.close();
+       
          this.modelInstance.gui.close()
 
     }

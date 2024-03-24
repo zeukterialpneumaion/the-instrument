@@ -506,41 +506,56 @@ createVerticalKeys(){
                  new AjhKey(
 
                      ( (rowIndex) * this.numberOfColumns ) + colIndex,
+
                      rowIndex,
+
                      colIndex,
+
                      ( window.innerWidth/this.numberOfColumns ) 
                      / 
                      this.modelInstance.camera.position.y,
-                     0.5,
+
+                     0.25,
+
                      keywidth / this.modelInstance.camera.position.y,
+
                      isBlackKey,
-                     this.scaleType.scale[ 
+
+                     this.scaleType.scale[
                          ( 
                              colIndex 
                          )
                          % 
                          this.scaleType.scale.length 
                      ],
+
                      octave,
+
                      this,
+
                      this.keys.length-1
 
                  )
 
              );
+
+            //  this.modelInstance.canvasInteraction
+            //     .multitouchManager.interactiveItems
+            //         .push( this.keys[this.keys.length-1]);
              
           
-             console.log(
+            // console.log("number of keys:" + this.keys.length);
 
-                 rand
-                 +
-                 "KEY NOTE:: " 
-                 + 
-                 this.modelInstance.ScalesCreation.noteNamesOneOctave[colIndex%12] 
-                 + 
-                 Math.round( octave + colIndex/12 ).toString()
+            //      rand
+            //      +
+            //      "KEY NOTE:: " 
+            //      + 
+            //      this.modelInstance
+            //      .ScalesCreation.noteNamesOneOctave[colIndex%12] 
+            //      + 
+            //      Math.round( octave + colIndex/12 ).toString()
 
-             );
+            //  );
 
          }
          
@@ -553,6 +568,13 @@ createVerticalKeys(){
      this.positionVerticalKeys();
 
      this.addKeysToScene( this.modelInstance.scene ); 
+
+     this.modelInstance.canvasInteraction
+     .multitouchManager.interactiveItems
+          = this.keys;
+  
+
+ console.log("number of keys:" + this.keys.length);
 
 }
 //////////////////////////////////////////////////////////////
@@ -595,18 +617,27 @@ createVerticalKeys(){
                 //now the z position
                 //let zOffset =  -( keyElement.keyHeight / 2 );//0;//screenXY.y/2; //(window.innerHeight/this.numberOfRows) / this.modelInstance.camera.position.y;
                 //let zOffset = window.innerHeight/this.numberOfRows;//screenXY.y / this._numberOfRows; 
-                let zOffset = -screenXY.y/this.numberOfRows;// window.innerHeight/2;//0;//-screenXY.y / this._numberOfRows; 
+                let zOffset = 0;//screenXY.y/2;// window.innerHeight/2;//0;//-screenXY.y / this._numberOfRows; 
                 
                 keyElement.KeyState.View.Body.position.z 
-                =  0;//
-
-               - (
+                =  
+                    - 
                     ( 
-                        (keyElement.KeyState.View.RowId) 
+                        ((
+                            keyElement.KeyState.View.Length 
+                            * this.numberOfRows
+                        )/2)
+                        -
+                        keyElement.KeyState.View.Length/2
+                    )
+                    +
+               (
+                    ( 
+                         keyElement.KeyState.View.RowId
                    
                         * 
 
-                        ( (keyElement.KeyState.View.Height* ((this.numberOfRows))))
+                        keyElement.KeyState.View.Length
 
                         // (window.innerHeight/this.numberOfRows) 
                         // ( keyElement.keyHeight * this.numberOfRows ) ) + ( keyElement.keyHeight ) 
@@ -614,14 +645,14 @@ createVerticalKeys(){
                         //-( ( (window.innerHeight/this.numberOfRows) / this.modelInstance.camera.position.y )/2 ) 
                     )
 
-                  // - (zOffset)
+                   - (zOffset)
 
                 )
 
-                +
+                // +
                 
-                ( keyElement.KeyState.View.Height * ((this.numberOfRows/2)))
-                - (zOffset);
+                // ( keyElement.KeyState.View.Height * ((this.numberOfRows/2)))
+                // - (zOffset);
             
         }
 

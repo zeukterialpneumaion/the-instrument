@@ -121,7 +121,7 @@ export default class AjhInitialScreen {
 
         this.raycaster.layers.set(2);
 
-        this.modelInstance.infoScreen = this;
+        // this.modelInstance.initialScreen = this;
 
         this.modelInstance.gui.hide();
 
@@ -174,6 +174,7 @@ export default class AjhInitialScreen {
         this._InformationWindowInstance 
         = document.createElement('div');
         this._InformationWindowInstance.style.userSelect =  "none";//.disable();
+        this._InformationWindowInstance.style.pointerEvents =  "none";
 
         this._InformationWindowInstance.style.padding = "0px";
         this._InformationWindowInstance.style.height = "max-content";//"100" + "px";
@@ -452,6 +453,8 @@ export default class AjhInitialScreen {
             this._fullscreenobject.body.removeFromParent();
             
             this.enterButton.removeFromParent();
+
+      
             
             // this.modelInstance.ajhGuiControls = new AjhGUIControls();
 
@@ -481,6 +484,13 @@ export default class AjhInitialScreen {
             this.modelInstance.instruments.playAChord(2);//.playAChord();
            
             this.modelInstance.gui.show();
+
+            this.updateAllFields(
+                "playing THE INSTRUMENT",
+                this.modelInstance.instruments.currentInstrument.name,
+                this.modelInstance.currentKeyBoard.scaleType.name,
+                
+            );
 
         });
 
@@ -550,126 +560,168 @@ export default class AjhInitialScreen {
     
         }
 
-raycastingEnterButton() {
+    raycastingEnterButton() {
 
-	// update the picking ray with the camera and pointer position
-	this.raycaster.setFromCamera( this.pointer, this.modelInstance.camera );
+        // update the picking ray with the camera and pointer position
+        this.raycaster.setFromCamera( this.pointer, this.modelInstance.camera );
 
-	// calculate objects intersecting the picking ray
-	// let intersects = this.raycaster.intersectObjects( this.selectableItems );
-    // this.enterButtonIsTouched = false;
-    // console.log("LOOKING FOR BUTTON!!!")
-	// for ( let i = 0; i < intersects.length; i ++ ) {
+        // calculate objects intersecting the picking ray
+        // let intersects = this.raycaster.intersectObjects( this.selectableItems );
+        // this.enterButtonIsTouched = false;
+        // console.log("LOOKING FOR BUTTON!!!")
+        // for ( let i = 0; i < intersects.length; i ++ ) {
 
-    //     this.enterButtonIsTouched = true;
-    //      console.log("FOUND BUTTON!!!");
-    //      if(this.enterButtonIsTouched){
-	// 	((intersects[ i ].object as Mesh).material as MeshMatcapMaterial)
-    //     .color.set( 0xff0000 );
-    // }
-    // else{
-    //     ((intersects[ i ].object as Mesh).material as MeshMatcapMaterial)
-    //     .color.set( 0x0000ff );
+        //     this.enterButtonIsTouched = true;
+        //      console.log("FOUND BUTTON!!!");
+        //      if(this.enterButtonIsTouched){
+        // 	((intersects[ i ].object as Mesh).material as MeshMatcapMaterial)
+        //     .color.set( 0xff0000 );
+        // }
+        // else{
+        //     ((intersects[ i ].object as Mesh).material as MeshMatcapMaterial)
+        //     .color.set( 0x0000ff );
 
-    // }
-	// }
+        // }
+        // }
 
-    // =============================================================================== //
+        // =============================================================================== //
 
-    let intersects 
-    = this.raycaster
-    .intersectObjects( 
-        this.selectableItems, // scene.children, 
-        false 
-    );//
+        let intersects 
+        = this.raycaster
+        .intersectObjects( 
+            this.selectableItems, // scene.children, 
+            false 
+        );//
+        
+        //nothing selected yet but the function is cycling...::
     
-    //nothing selected yet but the function is cycling...::
- 
-    if ( this.INTERSECTED == null ) {
+        if ( this.INTERSECTED == null ) {
 
-        //not touched
-       // (this.enterButton.material as MeshMatcapMaterial).color.setHex( 0x00FF00 );
+            //not touched
+        // (this.enterButton.material as MeshMatcapMaterial).color.setHex( 0x00FF00 );
 
-       // (this.enterButton.material as MeshMatcapMaterial).emissive.setHex( 0xFF0000 );
+        // (this.enterButton.material as MeshMatcapMaterial).emissive.setHex( 0xFF0000 );
 
-      //this.INTERSECTED.currentHex
-        console.log("INTERSECTED????");
-    }
+        //this.INTERSECTED.currentHex
+            console.log("INTERSECTED????");
+        }
 
-    if ( intersects.length > 0 ) {
+        if ( intersects.length > 0 ) {
 
 
-        if ( this.INTERSECTED != intersects[ 0 ].object ) {
+            if ( this.INTERSECTED != intersects[ 0 ].object ) {
+
+                if ( this.INTERSECTED ) {
+
+                    //not touched
+
+                
+                //this.INTERSECTED.currentHex
+                    console.log("INTERSECTED????");
+                }
+
+            
+            
+
+                if(this.INTERSECTED != intersects[ 0 ].object){
+                            // what is the state here??
+                // --->> that there has been a new intersect or that no intersect is now the state
+                }
+
+                // setting the state to the current object found by the raycaster : 
+                this.INTERSECTED = intersects[ 0 ].object;
+
+            //  this.INTERSECTED.material.emissive.setHex( 0xFFFFFF);
+
+            for ( let i = 0; i < intersects.length; i ++ ) {
+
+                this.enterButtonIsTouched = true;
+                    console.log("FOUND BUTTON!!!");
+                if(this.enterButtonIsTouched){
+                    ((intersects[ i ].object as Mesh).material as MeshMatcapMaterial)
+                    .color.set( 0xff0000 );
+                }
+                else{
+                    ((intersects[ i ].object as Mesh).material as MeshMatcapMaterial)
+                    .color.set( 0x0000ff );
+                //  (this.enterButton.material as MeshMatcapMaterial).emissive.setHex( 0x00FF00 );
+            
+                }
+
+            }
+
+        } else {
 
             if ( this.INTERSECTED ) {
 
-                //not touched
-
-             
-              //this.INTERSECTED.currentHex
-                console.log("INTERSECTED????");
+                // 
+                console.log("STILL TOUCHING SOMETHING");
+                
+            // this.INTERSECTED.material.emissive.setHex( this.INTERSECTED.currentHex );
+                
             }
 
-          
-           
-
-            if(this.INTERSECTED != intersects[ 0 ].object){
-                          // what is the state here??
-              // --->> that there has been a new intersect or that no intersect is now the state
-            }
-
-            // setting the state to the current object found by the raycaster : 
-            this.INTERSECTED = intersects[ 0 ].object;
-
-          //  this.INTERSECTED.material.emissive.setHex( 0xFFFFFF);
-
-          for ( let i = 0; i < intersects.length; i ++ ) {
-
-            this.enterButtonIsTouched = true;
-                 console.log("FOUND BUTTON!!!");
-            if(this.enterButtonIsTouched){
-            	((intersects[ i ].object as Mesh).material as MeshMatcapMaterial)
-                .color.set( 0xff0000 );
-            }
-            else{
-                ((intersects[ i ].object as Mesh).material as MeshMatcapMaterial)
-                .color.set( 0x0000ff );
-              //  (this.enterButton.material as MeshMatcapMaterial).emissive.setHex( 0x00FF00 );
         
-            }
+            //empty the intersections buffer
+            this.INTERSECTED = null;
+
+            
 
         }
+    }
 
-    } else {
+    }
 
-        if ( this.INTERSECTED ) {
+    show(): void {
 
-            // 
-            console.log("STILL TOUCHING SOMETHING");
+        console.log(
+            "note information show():"
+            + this.modelInstance.mouseCoordinates.x
+            + " :: "
+            + this.modelInstance.mouseCoordinates.y
+        );
+
+        // this.setPosition();
+
+        // this.moveToMouseCoords(
+
+        //     this.modelInstance.mouseCoordinates.x,
+        //     this.modelInstance.mouseCoordinates.y
             
-           // this.INTERSECTED.material.emissive.setHex( this.INTERSECTED.currentHex );
-            
+        // );
+        //
+
+        if (!this.modelInstance.initialScreen.InformationWindowInstance.parentNode){
+
+            document.body.appendChild(
+
+                this.modelInstance.initialScreen.InformationWindowInstance
+
+            );
+        
         }
-
-       
-        //empty the intersections buffer
-        this.INTERSECTED = null;
 
         
 
     }
-}
 
+    hide(): void {
 
+        console.log("note information hide()");
 
+        if (this.modelInstance.initialScreen.InformationWindowInstance.parentNode){
+
+            document.body.removeChild(
+                this.modelInstance.initialScreen.InformationWindowInstance
+            );
+        
+        }
+    }
 
 
 
     // =============================================================================== //
 
 	//renderer.render( scene, camera );
-
-}
-
 
 }

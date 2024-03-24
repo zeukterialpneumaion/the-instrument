@@ -13,16 +13,12 @@ import {
     PerspectiveCamera,
     PointLight,
     PointLightHelper,
-    Raycaster,
     Scene,
     Vector3,
     WebGLRenderer
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { SSAOPass } from 'three/examples/jsm/postprocessing/SSAOPass.js';
 
 
 
@@ -37,8 +33,9 @@ import '../../assets/css/style.css';
 import { DragControls } from "three/examples/jsm/controls/DragControls";
 
 
-import AjhPointerEvents from "../ajhevents/AjhPointerEvents";
+import AjhCanvasInteraction from "../AjhMultiTouch/AjhCanvasInteraction";
 import AjhModel from "../datamodels/AjhModel";
+import AjhInformationWindow from "../displays/AjhInformationWindow";
 import AjhInitialScreen from "../displays/AjhInitialScreen";
 import AjhKeys from "../keys/keyboards/AjhKeyBoard";
 import AjhFullScreenObject from "./AjhFullScreenObject";
@@ -67,9 +64,7 @@ export default class AjhThreeInit{
     width = window.innerWidth
     height = window.innerHeight
 
-    enterScreen:AjhInitialScreen;
 
-    // lights
     pointLight : PointLight;
     ambientLight : AmbientLight;
     light : Light;
@@ -94,9 +89,13 @@ export default class AjhThreeInit{
 
     init(where){
 
+       // localStorage.removeItem('guiState');
+
             this.addScene();
 
             this.addCamera();
+            
+            
             
             this.addRayCaster();
       
@@ -106,19 +105,22 @@ export default class AjhThreeInit{
 
             this.addLights();
            
-            this.addHelpers();
+           // this.addHelpers();
 
+            this.addCanvasInteraction();
+            
             this.addObjects();
-
+            
+            
             this.addControls();
             
             // this.addGui(); 
 
-            this._modelInstance.pointerEventsInstance 
-            = new AjhPointerEvents();
+            // this._modelInstance.pointerEventsInstance 
+            // = new AjhPointerEvents();
            
-            this.modelInstance.pointerEventsInstance
-                .addAllListeners( this.modelInstance.canvas );
+            // this.modelInstance.pointerEventsInstance
+            //     .addAllListeners( this.modelInstance.canvas );
 
             this.addFullScreenAndResizeListeners();
           
@@ -205,12 +207,22 @@ export default class AjhThreeInit{
     }
 
 // ============================================================ //
+// ===== 🎥 ADD CANVAS INTERACTION ===== //
+// ============================================================ //
+
+    addCanvasInteraction(){
+
+        this.modelInstance.canvasInteraction = new AjhCanvasInteraction();
+       
+    }
+
+// ============================================================ //
 // ========= addScene_Camera_Renderer_RayCaster ========== //
 // ============================================================ //
                                                                
     addRayCaster(){
     
-        this.modelInstance.raycaster = new Raycaster();
+       //this.modelInstance.raycaster = new Raycaster();
 
     }
 
@@ -220,13 +232,13 @@ export default class AjhThreeInit{
                                                                
     addLights(){
 
-        this.light = new DirectionalLight( 0xffffff, 4 );
-        this.light.position.set(0, -1, -1);
+        // this.light = new DirectionalLight( 0xffffff, 4 );
+        // this.light.position.set(0, -1, -1);
     
-        this.modelInstance.scene.add(
-            this.light, 
-            new AmbientLight(0xffffff, 0.5)
-        );
+        // this.modelInstance.scene.add(
+        //     this.light, 
+        //     new AmbientLight(0xffffff, 0.5)
+        // );
     
        // this.modelInstance.scene.add( new AmbientLight( 0xffeeee,0.3 ) );
 
@@ -280,14 +292,14 @@ export default class AjhThreeInit{
 
         //TWEEN.update();;
 
-        if(!this.enterScreen.enterButtonClicked){
+        if(!this.modelInstance.initialScreen.enterButtonClicked){
 
-            this.enterScreen.raycastingEnterButton();
+            this.modelInstance.initialScreen.raycastingEnterButton();
 
         }
        
 
-        this.modelInstance.raycasters.setAllRaycastersToCamera();
+       // this.modelInstance.raycasters.setAllRaycastersToCamera();
         // .setFromCamera( 
         //     this.modelInstance.pointer, 
         //     this.modelInstance.camera 
@@ -329,10 +341,39 @@ export default class AjhThreeInit{
         }
       //  console.log("position of pointLights[0] : " +  this.modelInstance.pointLights[0].position.z )
            
-      this.enterScreen.rotateButton();
+      this.modelInstance.initialScreen.rotateButton();
     
-        this.modelInstance.cameraOrbitControls.update()
+        this.modelInstance.cameraOrbitControls.update();
+
+        // ============================================ //
     
+
+        if(
+            this.modelInstance.canvasInteraction.multitouchManager
+            .getRaycasterWithPointById(0)
+            != 
+            undefined
+        ){
+
+            if(
+                this.modelInstance.canvasInteraction.multitouchManager
+                .findCurrentlyIntersectedItems().length
+                > 0
+                
+            ){
+                let intersectPoint 
+                =  
+                this.modelInstance.canvasInteraction.multitouchManager
+                .findCurrentlyIntersectedItems()[0].intersectPoint;
+
+            }
+
+        }
+
+     
+        // ============================================ //
+       
+
         this.modelInstance.renderer.render(
 
             this.modelInstance.scene, 
@@ -348,73 +389,73 @@ export default class AjhThreeInit{
 // ===== renderLoop ===== //
 // ============================================================ //
 
-    startRenderLoop(){
+    // startRenderLoop(){
                 
-        // start the loop
-                (this.modelInstance.renderer as WebGLRenderer)
-                .setAnimationLoop(
+    //     // start the loop
+    //             (this.modelInstance.renderer as WebGLRenderer)
+    //             .setAnimationLoop(
 
-                    () => {
+    //                 () => {
                     
-                        this.renderLoop();
+    //                     this.renderLoop();
 
-                    }
+    //                 }
 
-                );
+    //             );
                 
-    }
+    // }
 
-    renderLoop() {
+    // renderLoop() {
 
-        let t = this.clock.getElapsedTime();
-        this.gu.time.value = t;
+    //     let t = this.clock.getElapsedTime();
+    //     this.gu.time.value = t;
 
-       // TWEEN.update();
+    //    // TWEEN.update();
 
-        this.modelInstance.cameraOrbitControls.update();
+    //     this.modelInstance.cameraOrbitControls.update();
 
-        this.modelInstance.raycasters.setAllRaycastersToCamera();
+    //     this.modelInstance.raycasters.setAllRaycastersToCamera();
           
         
-	   // this.renderComposition();
+	//    // this.renderComposition();
 
-        this.modelInstance.Stats.update();
+    //     this.modelInstance.Stats.update();
   
-        //TWEEN.update();;
+    //     //TWEEN.update();;
       
-        if ( this.animation.enabled && this.animation.play) {
+    //     if ( this.animation.enabled && this.animation.play) {
 
-            // animations.rotate( this.cube, this.clock, Math.PI / 3);
-            // animations.bounce( this.cube, this.clock, 1, 0.5, 0.5);
+    //         // animations.rotate( this.cube, this.clock, Math.PI / 3);
+    //         // animations.bounce( this.cube, this.clock, 1, 0.5, 0.5);
 
-        }
+    //     }
       
-        if (
+    //     if (
 
-                this.resizeRendererToDisplaySize(
-                    this.modelInstance.renderer as WebGLRenderer
-                )
+    //             this.resizeRendererToDisplaySize(
+    //                 this.modelInstance.renderer as WebGLRenderer
+    //             )
 
-        ) {
+    //     ) {
       
-            //const canvas = this.modelInstance.renderer.domElement;
+    //         //const canvas = this.modelInstance.renderer.domElement;
 
-            (this.modelInstance.camera as PerspectiveCamera).aspect 
-            =
-            this.modelInstance.canvas.clientWidth / this.modelInstance.canvas.clientHeight;
+    //         (this.modelInstance.camera as PerspectiveCamera).aspect 
+    //         =
+    //         this.modelInstance.canvas.clientWidth / this.modelInstance.canvas.clientHeight;
 
-             (this.modelInstance.camera as PerspectiveCamera).updateProjectionMatrix();
+    //          (this.modelInstance.camera as PerspectiveCamera).updateProjectionMatrix();
       
-        }
+    //     }
       
-        //cameraControls.update()
+    //     //cameraControls.update()
       
-        this.modelInstance.renderer.render(
-            this.modelInstance.scene, 
-            this.modelInstance.camera
-        );
+    //     this.modelInstance.renderer.render(
+    //         this.modelInstance.scene, 
+    //         this.modelInstance.camera
+    //     );
 
-    };
+    // };
 
 // ============================================================ //
 
@@ -435,8 +476,8 @@ export default class AjhThreeInit{
 
         this.modelInstance.renderer.setSize( width, height );
 
-        this.modelInstance.infoScreen.setInformationWindowPosition();
-        this.modelInstance.infoScreen.fullscreenobject.resizeToScreenSize();
+        this.modelInstance.initialScreen.setInformationWindowPosition();
+        this.modelInstance.initialScreen.fullscreenobject.resizeToScreenSize();
         this.modelInstance.fullScreenObject.resizeToScreenSize();
         this.modelInstance.currentKeyBoard.changeKeyWidthsAndLengthsToFitScreenSize();
     
@@ -460,25 +501,25 @@ export default class AjhThreeInit{
 // ===== ON POINTER MOVE ===== //
 // ============================================================ //
 
-onPointerMove( event ) {
+// onPointerMove( event ) {
 
-    this.modelInstance.mouseCoordinates.x 
-    =
-    ( event.clientX / window.innerWidth ) * 2 - 1;
+//     this.modelInstance.mouseCoordinates.x 
+//     =
+//     ( event.clientX / window.innerWidth ) * 2 - 1;
 
-    this.modelInstance.mouseCoordinates.y 
-    =
-    - ( event.clientY / window.innerHeight ) * 2 + 1;
-    //    = 
-    this.modelInstance.pointer.x 
-    = ( event.clientX / window.innerWidth ) * 2 - 1;
+//     this.modelInstance.mouseCoordinates.y 
+//     =
+//     - ( event.clientY / window.innerHeight ) * 2 + 1;
+//     //    = 
+//     this.modelInstance.pointer.x 
+//     = ( event.clientX / window.innerWidth ) * 2 - 1;
 
-    this.modelInstance.pointer.y 
-    = - ( event.clientY / window.innerHeight ) * 2 + 1;
+//     this.modelInstance.pointer.y 
+//     = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
     
 
-}
+// }
 
 // ============================================================ //
 
@@ -521,171 +562,32 @@ onPointerMove( event ) {
 // ===== RENDER COMPOSITION ===== //
 // ============================================================ //
     
-    renderComposition() {
+    // renderComposition() {
 
-        if (
-            this.resizeRendererToDisplaySize(
-                this.modelInstance.renderer
-            )
-        ) {
+    //     if (
+    //         this.resizeRendererToDisplaySize(
+    //             this.modelInstance.renderer
+    //         )
+    //     ) {
             
-            const canvas = this.modelInstance.renderer.domElement;
+    //         const canvas = this.modelInstance.renderer.domElement;
 
-            (this.modelInstance.camera as PerspectiveCamera).aspect 
-            = 
-            canvas.clientWidth / canvas.clientHeight;
+    //         (this.modelInstance.camera as PerspectiveCamera).aspect 
+    //         = 
+    //         canvas.clientWidth / canvas.clientHeight;
 
-            (this.modelInstance.camera as PerspectiveCamera)
-            .updateProjectionMatrix();
+    //         (this.modelInstance.camera as PerspectiveCamera)
+    //         .updateProjectionMatrix();
             
-        }
+    //     }
 
-        const timer = performance.now();
+    //     const timer = performance.now();
             
-       // this.findInstrumentKeysFromRaycastFromMouseCoords();
+    //    // this.findInstrumentKeysFromRaycastFromMouseCoords();
         
-        this.modelInstance.composer.render();
-
-    }
-
-// ============================================================ //
-
-// ============================================================ //
-// ===== RAYCAST ===== //
-// ============================================================ //    
-
-    // findInstrumentKeysFromRaycastFromMouseCoords() {
-
-    //     let intersects : Intersection[] ;
-
-    //     try{
-
-    //         intersects 
-    //         = this.modelInstance.raycaster
-    //         .intersectObjects( 
-    //             this.modelInstance.currentKeyBoard.getKeyBodies(), // scene.children, 
-    //             false 
-    //         );//
-
-
-    //         //console.log( " this.modelInstance.scene.children " +  this.modelInstance.scene.children );
-
-    //         if ( intersects.length > 0 ) {
-
-    //             if ( this.INTERSECTED != intersects[ 0 ].object ) {
-
-    //                 if ( this.INTERSECTED ) {
-
-    //                     // this.INTERSECTED.material.emissive.setHex( this.INTERSECTED.currentHex );
-
-    //                     console.log("INTERSECTED????");
-    //                 }
-
-    //                 if(this.INTERSECTED != intersects[ 0 ].object){
-
-    //                     console.log("Not touching last touched");
-
-    //                     this.modelInstance.musicalKeyEventEmitter.emit(
-    //                         "touched", 
-    //                         false,
-    //                         this.modelInstance.selectedKey.bodyName,
-    //                         this.modelInstance.selectedKey.bodyId ,
-    //                         this.modelInstance.selectedKey.bodyUUID
-    //                     )
-
-    //                 }
-
-    //                 this.INTERSECTED = intersects[ 0 ].object;
-    //                 // this.INTERSECTED.currentHex = this.INTERSECTED.material.emissive.getHex();
-    //                 // this.INTERSECTED.material.emissive.setHex( 0xff0000 );
-
-    //                 //set selected object //
-                    
-    //                 if(
-    //                     this.modelInstance.selectedKeys
-    //                     .getSelectedKeyByBodyUUID( this.INTERSECTED.uuid )
-    //                     != 
-    //                     null
-    //                 ) {
-
-
-    //                     this.modelInstance.selectedKeys.addNewSelectedKey(
-
-    //                         this.INTERSECTED.id, // bodyId: any, 
-    //                         this.INTERSECTED.name, // bodyName: any, 
-    //                         this.INTERSECTED.uuid, //bodyUUID: any, 
-    //                         this.modelInstance.currentKeyBoard.getKeyByBodyUUID( this.INTERSECTED.uuid).id, // this.INTERSECTED., // keyId: any, 
-    //                         this.modelInstance.currentKeyBoard.id, // this.INTERSECTED.id, //keyboardId: any, 
-    //                         0, // touchId: any, 
-    //                         this.modelInstance.currentKeyBoard.getKeyByBodyUUID( this.INTERSECTED.uuid) // selectedKey: any
-
-    //                     )
-
-
-    //                 }
-
-    //                 else {
-
-    //                     //this.modelInstance.selectedKeys.
-
-    //                 }
-
-    //                 this.modelInstance.selectedKey.bodyName 
-    //                 =
-    //                 this.INTERSECTED.name;
-
-    //                 this.modelInstance.selectedKey.bodyUUID
-    //                 =
-    //                 this.INTERSECTED.uuid;
-
-    //                 this.modelInstance.selectedKey.bodyId
-    //                 =
-    //                 this.INTERSECTED.id;
-
-    //                 //
-
-    //                 this.modelInstance.musicalKeyEventEmitter.emit(
-    //                     "touched", 
-    //                     true,
-    //                     this.modelInstance.selectedKey.bodyName,
-    //                     this.modelInstance.selectedKey.bodyId ,
-    //                     this.modelInstance.selectedKey.bodyUUID
-    //                 )
-
-    //             }
-
-    //             this.modelInstance.pointLight.position.x 
-    //             = intersects[0].point.x;
-                
-    //             this.modelInstance.pointLight.position.z 
-    //             = intersects[0].point.z;
-
-    //             // this.modelInstance.getWorldCoordsFromMouseXY(
-    //             //     this.modelInstance.mouseCoordinates
-    //             // ).x; //intersects[0].point.y;
-
-    //         } else {
-
-    //             if ( this.INTERSECTED ) {
-
-    //                 // 
-    //                 console.log("NOT TOUCHING ANYTHING");
-
-    //                 // this.INTERSECTED.material.emissive.setHex( this.INTERSECTED.currentHex );
-                    
-    //             }
-
-    //             this.INTERSECTED = null;
-
-    //         }
-    //     }
-    //     catch(e){
-    //         console.log(e)
-    //     }
+    //     this.modelInstance.composer.render();
 
     // }
-
-
 
 // ============================================================ //
 
@@ -813,10 +715,12 @@ onPointerMove( event ) {
 // ============================================================ //
 
     addObjects(){
+
+        
         
             this.ajhkeys 
             = new AjhKeys(
-                1,
+                6,
                 12,
                 this.modelInstance.keyboardTypes.HorizontalKeys,
                 this.modelInstance.scaleTypes.HarmonicicMinor,
@@ -824,13 +728,15 @@ onPointerMove( event ) {
                 3
             );
 
+            this.modelInstance.informationWindow = new AjhInformationWindow();
+
             this.modelInstance.currentKeyBoard = this.ajhkeys;
         
-            this.enterScreen 
+            this.modelInstance.initialScreen 
             = 
             new AjhInitialScreen();
 
-           this.modelInstance.scene.add( this.enterScreen.body );
+           this.modelInstance.scene.add( this.modelInstance.initialScreen .body );
         
             this.ajhkeys.addKeysToScene(this.modelInstance.scene);
 
@@ -946,7 +852,7 @@ onPointerMove( event ) {
 // ===== 🪄 ADD HELPERS ===== //
 // ============================================================ //
   
-    addHelpers(){
+   // addHelpers(){
   
     //   this.axesHelper = new AxesHelper(4);
   
@@ -979,7 +885,7 @@ onPointerMove( event ) {
   
     //  / this.modelInstance.scene.add(gridHelper);
   
-    }
+  //  }
   
 // ============================================================ //
 
@@ -987,40 +893,40 @@ onPointerMove( event ) {
 // ======= 🪄 ADD COMPOSER PASS ======= //
 // ============================================================ //
     
-    addComposerPass(){
+    // addComposerPass(){
 
-        this.gu = {
-            time: { value: 0 }
-        };
+    //     this.gu = {
+    //         time: { value: 0 }
+    //     };
         
-        this.clock = new Clock();
+    //     this.clock = new Clock();
     
-        this.modelInstance.composer 
-        = new EffectComposer( 
-            this.modelInstance.renderer as WebGLRenderer 
-        );
+    //     this.modelInstance.composer 
+    //     = new EffectComposer( 
+    //         this.modelInstance.renderer as WebGLRenderer 
+    //     );
     
-            const renderPass 
-            = new RenderPass( 
-                this.modelInstance.scene, 
-                this.modelInstance.camera 
-            );
+    //         const renderPass 
+    //         = new RenderPass( 
+    //             this.modelInstance.scene, 
+    //             this.modelInstance.camera 
+    //         );
     
-            this.modelInstance.composer.addPass( renderPass );
+    //         this.modelInstance.composer.addPass( renderPass );
     
-            const ssaoPass = new SSAOPass( 
-                this.modelInstance.scene, 
-                this.modelInstance.camera, 
-                this.width, 
-                this.height 
-            );
-            //
-            this.modelInstance.composer.addPass( ssaoPass );
+    //         const ssaoPass = new SSAOPass( 
+    //             this.modelInstance.scene, 
+    //             this.modelInstance.camera, 
+    //             this.width, 
+    //             this.height 
+    //         );
+    //         //
+    //         this.modelInstance.composer.addPass( ssaoPass );
     
-            const outputPass = new OutputPass();
-            this.modelInstance.composer.addPass( outputPass );
+    //         const outputPass = new OutputPass();
+    //         this.modelInstance.composer.addPass( outputPass );
 
-    }
+    // }
 
 // ============================================================ //
 
