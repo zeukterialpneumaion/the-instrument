@@ -204,7 +204,7 @@ public BaseMaterial
         this.octaveToStartFrom = octaveToStartFrom;
         this.semitoneOffset = semitoneOffset;
 
-        this.spaceBetweenKeys = 0;//0.025;
+        this.spaceBetweenKeys = 0.25;//0.025;
         this.spaceBetweenRows = 0;
 
         this.scaleType = scaleType;
@@ -583,7 +583,14 @@ createVerticalKeys(){
 
         let screenXY = this.modelInstance.getCameraViewSizeXY();
 
-        let xOffset = screenXY.x / 2; 
+        let xOffset 
+        = 
+        ( screenXY.x / 2 );
+        // +
+        // (
+        //     ( this.spaceBetweenKeys * this.numberOfColumns )
+        //     /1
+        // ); 
 
         for (
             let keyIndex = 0; 
@@ -602,22 +609,36 @@ createVerticalKeys(){
                     
                         * 
                     
-                        (keyElement.KeyState.View.Width +this.spaceBetweenKeys) 
+                        (
+                            keyElement.KeyState.View.Width
+                            // +
+                            // this.spaceBetweenKeys
+                        ) 
                 
-                    ) 
+                    )
+                    +
+                    (
+                        (
+                            (
+                                (
+                                   keyElement.KeyState.View.Width
+                                ) 
+                            ) 
+                            /2
+                        )
+                    )
                 
                     - (xOffset)
                 
-                )
-                
-                + 
-                
-                ( keyElement.KeyState.View.Width / 2 );
+                );
 
                 //now the z position
                 //let zOffset =  -( keyElement.keyHeight / 2 );//0;//screenXY.y/2; //(window.innerHeight/this.numberOfRows) / this.modelInstance.camera.position.y;
                 //let zOffset = window.innerHeight/this.numberOfRows;//screenXY.y / this._numberOfRows; 
-                let zOffset = 0;//screenXY.y/2;// window.innerHeight/2;//0;//-screenXY.y / this._numberOfRows; 
+                let zOffset 
+                = 
+                - keyElement.KeyState.View.Length/2;
+                //(this.spaceBetweenKeys * this.numberOfRows) / 2;//0;//this.spaceBetweenKeys * ( this.numberOfRows - 1 ); // 0;//screenXY.y/2;// window.innerHeight/2;//0;//-screenXY.y / this._numberOfRows; 
                 
                 keyElement.KeyState.View.Body.position.z 
                 =  
@@ -625,10 +646,9 @@ createVerticalKeys(){
                     ( 
                         ((
                             keyElement.KeyState.View.Length 
-                            * this.numberOfRows
+                           * this.numberOfRows
                         )/2)
-                        -
-                        keyElement.KeyState.View.Length/2
+                       
                     )
                     +
                (
@@ -636,8 +656,11 @@ createVerticalKeys(){
                          keyElement.KeyState.View.RowId
                    
                         * 
-
-                        keyElement.KeyState.View.Length
+                        (
+                            keyElement.KeyState.View.Length
+                            //+ 
+                           // this.spaceBetweenKeys
+                        )
 
                         // (window.innerHeight/this.numberOfRows) 
                         // ( keyElement.keyHeight * this.numberOfRows ) ) + ( keyElement.keyHeight ) 

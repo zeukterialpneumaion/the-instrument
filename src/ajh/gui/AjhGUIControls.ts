@@ -281,7 +281,7 @@ populateGUI( drag:boolean = false )  {
         ).name("number of rows").onChange(function(evt){
 
         
-            console.log("setting key rowss:"+ evt.value);
+            console.log("setting key rows:"+ evt.value);
 
             this.modelInstance.currentKeyBoard
                     .createKeys(

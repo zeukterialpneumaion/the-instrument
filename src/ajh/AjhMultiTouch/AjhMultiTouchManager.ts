@@ -242,7 +242,9 @@ export default class AjhMultiTouchManager {
             index++
         ) {
 
-            const raycasterElement = this.raycastersWithPoints[index];
+            const raycasterElement 
+            = 
+            this.raycastersWithPoints[index];
             
             this.interactiveItems.forEach(
     
@@ -254,7 +256,9 @@ export default class AjhMultiTouchManager {
                         raycasterElement.id
                     );
             
-                    element.checkIfIntersectsWith( raycasterElement.raycaster );
+                    element.checkIfIntersectsWith( 
+                        raycasterElement.raycaster 
+                    );
         
                 }
 

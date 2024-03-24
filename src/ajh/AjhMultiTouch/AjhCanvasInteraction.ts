@@ -247,6 +247,14 @@ export default class AjhCanvasInteraction {
             //     .target?.releasePointerCapture(pointerEvt.pointerId);
             // }
 
+
+            this.multitouchManager.findCurrentlyIntersectedItems().forEach(
+                (foundKey,index) => {
+                        foundKey.startNote();
+                        foundKey.changeIntersectedColour();
+                }
+            );
+
             let pointerid 
             = 
             (pointerEvt as PointerEvent).pointerId;
@@ -330,6 +338,17 @@ export default class AjhCanvasInteraction {
         let id =  (pointerEvt as PointerEvent).pointerId;
         let pX =  (pointerEvt as PointerEvent).clientX;
         let pY =  (pointerEvt as PointerEvent).clientY;
+
+
+
+
+        this.multitouchManager.findCurrentlyIntersectedItems().forEach(
+            (foundKey,index) => {
+                    foundKey.stopNote();
+            }
+        );
+
+        this.multitouchManager.getRaycasterWithPointById(pointerEvt.pointerId)
 
         this.multitouchManager.removeRaycasterWithPointById(id);
     // this.multitouchManager.re

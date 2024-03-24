@@ -361,6 +361,10 @@ export default class AjhKey {
     // =================================================== //  
      
         changeKeyWidthToFitScreenWidth(newScreenWidth){
+
+            let amountOfWidthToUseAsAGap = 0.005;
+            let klgap = this.KeyState.View.Width*amountOfWidthToUseAsAGap;
+            let kwgap = this.KeyState.View.Length*amountOfWidthToUseAsAGap;
             
             this.KeyState.View.Width 
             = 
@@ -368,13 +372,14 @@ export default class AjhKey {
             / 
             this.KeyState.KeyboardInstance.numberOfColumns);
 
-            ( this.KeyState.View.Body as Mesh ).geometry.dispose();
+            //( this.KeyState.View.Body as Mesh ).geometry.dispose();
+            deepDispose(( this.KeyState.View.Body as Mesh ));
             
             ( this.KeyState.View.Body as Mesh ).geometry = 
             new RoundedBoxGeometry(
-                this.KeyState.View.Width, 
-                this.KeyState.View.Height, 
-                this.KeyState.View.Length,
+                this.KeyState.View.Width  - kwgap, 
+                this.KeyState.View.Height , 
+                this.KeyState.View.Length - klgap,
                 7,
                 0.65
             );
@@ -537,6 +542,8 @@ export default class AjhKey {
             raycaster.intersectObjects([this.KeyState.View.Body as Mesh], true);
         
             this.wasIntersected = this.intersected;
+
+            this.intersected = false;
         
             if (intersects.length > 0) {
         
@@ -555,8 +562,10 @@ export default class AjhKey {
                     }
 
                 );
-            
-                this.intersected = true;
+                if(!this.intersected){
+                    this.intersected = true;
+                }
+                
 
                 this.intersectPoint = intersects[0].point;
 
@@ -584,9 +593,13 @@ export default class AjhKey {
                     this.intersected = false;
                 }
                 console.log(
-                    "intersected = false" 
+                    "intersected " 
                     + 
                     this.name
+                    +
+                    " : "
+                    +
+                    this.intersected
                 );
         
             }
@@ -620,23 +633,24 @@ export default class AjhKey {
   
         changeIntersectedColour() {
 
-            if( this.intersected == undefined ){
+            if( this.intersected != undefined ){
                 
                     
                 // ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
                 // = 
                 // new Color( + this.name );
 
+                this.stopNote();
                 
                 ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
                 = 
                 this.KeyState.View.Colours.baseColour;
 
-                this.stopNote();
+               
 
             }
 
-            if(this.intersected ){
+            if(this.intersected ) { //} || this.intersected != undefined  ){
 
                 ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
                 = 
@@ -671,14 +685,11 @@ startNote(){
 
     if( this.modelInstance.instruments != undefined){
                 
-        ///PLAY A NOTE ::
-        if(
-            !this.KeyState.Sonics.IsPlaying ){
-
-            this.KeyState.Sonics.IsPlaying = true; 
         
-            this.KeyState.State.setIsPointerDown(true);
-
+        if(
+            !this.KeyState.Sonics.IsPlaying
+        ){
+            // PLAY A NOTE ::
             this.modelInstance.instruments
             .startToPlayANote(
 
@@ -686,7 +697,22 @@ startNote(){
                 + 
                 this.KeyState.Sonics.Octave.toString()
 
+            ); 
+            
+            this.KeyState.Sonics.IsPlaying = true; 
+            
+            console.log(
+                " KEY :: " 
+                + 
+                this.KeyState.Id 
+                + 
+                " STARTING NOTE ::"
+                +
+                this.KeyState.Sonics.NoteName 
+                + 
+                this.KeyState.Sonics.Octave.toString()
             );
+            //this.KeyState.State.setIsPointerDown(true);
 
         }
 
@@ -698,11 +724,25 @@ startNote(){
 
 stopNote(){
 
-    if( this.modelInstance.instruments != undefined){
-                
-        // STOP A NOTE ::
-        if(this.KeyState.Sonics.IsPlaying){
 
+    
+    if( this.modelInstance.instruments != undefined){
+              
+        //if(this.KeyState.Sonics.IsPlaying){
+
+            console.log(
+                " KEY :: " 
+                + 
+                this.KeyState.Id 
+                + 
+                " STOPPING NOTE ::"
+                +
+                this.KeyState.Sonics.NoteName 
+                + 
+                this.KeyState.Sonics.Octave.toString()
+            );
+        
+            // STOP A NOTE ::
             this.modelInstance.instruments
             .stopToPlayANote(
 
@@ -714,7 +754,7 @@ stopNote(){
 
             this.KeyState.Sonics.IsPlaying = false;
 
-        }
+       // }
 
     }
 }
