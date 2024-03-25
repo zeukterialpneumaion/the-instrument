@@ -215,6 +215,8 @@ public BaseMaterial
         
         this.routeToCorrectFunctionsForKeySetType();
 
+        this.setThisToCurrentKeyboard();
+
        // this.positionKeys();
 
     }

@@ -3,12 +3,10 @@ import { Color, MathUtils, Mesh, MeshMatcapMaterial, Vector2, Vector3, WebGLRend
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import { Filter } from "tone";
 import AjhEventMemoryCache from "../../AjhMultiTouch/AjhEventMemoryCache";
-import AjhRaycasterWithPoint from "../../AjhMultiTouch/AjhRaycasterWithPoint";
 import AjhModel from "../../datamodels/AjhModel";
 import { deepDispose } from "../../helpers/scene/ajhThreeDisposal";
 import AjhNamedNote from "../../sonics/AjhNamedNote";
 import AjhKeys from "../keyboards/AjhKeyBoard";
-import AjhIntersectionInstance from "./AjhIntersectionInstance";
 import AjhIntersectionInstances from "./AjhIntersectionInstances";
 import AjhKeyColours from "./AjhKeyColours";
 import AjhKeyDataModel from "./AjhKeyDataModel";
@@ -547,123 +545,7 @@ export default class AjhKey {
         }
 
     // =================================================== //
-    
- 
-    // =================================================== //
-    /** 
-     * checkIfIntersectsWith :: function 
-     * */
-    // =================================================== //  
-  
-        checkIfIntersectsWith(
-            raycasterWithPoint : AjhRaycasterWithPoint,
-            //rayId : number
-        ) : AjhIntersectionInstances {
 
-            let raycaster = raycasterWithPoint.raycaster;
-
-           // let isIntersected = false;
-        
-            const intersects 
-            = 
-            raycaster.intersectObjects(
-                [this.KeyState.View.Body as Mesh], 
-                true
-            );
-        
-            this.wasIntersectedByRayId =  raycasterWithPoint.id;
-           
-            //this.intersectedRays[this.intersectedRays.length - 1];
-
-            //this.intersected = false;
-        
-            if (intersects.length > 0) {
-        
-                let distance = intersects[0].distance;
-            
-                intersects.forEach(
-
-                    (i) => {
-
-                        if (i.distance < distance) {
-
-                            distance = i.distance;
-
-                        }
-
-                    }
-
-                );
-
-
-               
-                   // this.startNote();
-                //}
-                
-
-                this.intersectedInstances.addIntersectionPoint(
-
-                    new AjhIntersectionInstance(
-                        raycasterWithPoint.id,
-                        intersects[0].point,
-                        raycasterWithPoint.id
-                    )
-
-                );
-
-                console.log(
-
-                    "intersected = true " 
-                    + 
-                    this.name
-                    +
-                    " x: "
-                    +
-                    this.intersectedInstances.getIntersectionPointById(raycasterWithPoint.id).point.x
-                    +
-                    " z : "
-                    +
-                    this.intersectedInstances.getIntersectionPointById(raycasterWithPoint.id).point.z
-
-                );
-
-                this.distance = distance;
-        
-            } else {
-
-                //if(this.intersectPoints.getIntersectionPointById(rayId) != null){
-
-              
-                
-                this.intersectedInstances
-                .removeIntersectionPointById(
-
-                    this.wasIntersectedByRayId
-
-                );
-
-                    //this.stopNote();
-                //}
-
-                console.log(
-                    "no longer intersected "
-                    + 
-                    this.name
-                    +
-                    " by ray : "
-                    +
-                    raycasterWithPoint.id
-                );
-        
-            }
-
-            this.changeIntersectedColour();
-
-            return this.intersectedInstances
-        
-        };
-    
- 
     // =================================================== //
     /** 
      * setItemIsIntersected :: function 
@@ -699,9 +581,13 @@ export default class AjhKey {
 
                // this.stopNote();
                 
-                ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
+                (
+                    (this.KeyState.View.Body as Mesh)
+                        .material as MeshMatcapMaterial
+                ).color 
                 = 
                 this.KeyState.View.Colours.baseColour;
+                (this.KeyState.View.Body as Mesh).position.y = 0.5;
 
                
 
@@ -717,6 +603,7 @@ export default class AjhKey {
                         0xffffff
                         ).toString() 
                 );
+
                 (this.KeyState.View.Body as Mesh).position.y = 0.3;
 
             }

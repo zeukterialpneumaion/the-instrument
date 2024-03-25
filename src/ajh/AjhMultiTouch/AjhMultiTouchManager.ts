@@ -1,4 +1,6 @@
-import { Camera, Vector2 } from "three";
+import { Camera, Mesh, Vector2 } from "three";
+import AjhIntersectionInstance from "../keys/key/AjhIntersectionInstance";
+import AjhIntersectionInstances from "../keys/key/AjhIntersectionInstances";
 import AjhKey from "../keys/key/AjhKey";
 import AjhEventMemoryCache from "./AjhEventMemoryCache";
 import AjhRaycasterWithPoint from "./AjhRaycasterWithPoint";
@@ -204,27 +206,27 @@ export default class AjhMultiTouchManager {
 
         if( foundIntersectedItems.length == 0 ){
             
-            console.log( 
-                " No intersected items found from array of " 
-                + 
-                this.interactiveItems.length
-                +
-                " items" 
-            );
+            // console.log( 
+            //     " No intersected items found from array of " 
+            //     + 
+            //     this.interactiveItems.length
+            //     +
+            //     " items" 
+            // );
 
         // this.logEvents.log("Error with cache handling", itemId);
         
         } else {
 
-            console.log(
+            // console.log(
 
-                " SUCCESS :: "
-                +
-                foundIntersectedItems.length  
-                +
-                " intersected items found"
+            //     " SUCCESS :: "
+            //     +
+            //     foundIntersectedItems.length  
+            //     +
+            //     " intersected items found"
                 
-            );
+            // );
 
         }
 
@@ -250,13 +252,13 @@ export default class AjhMultiTouchManager {
     
                 ( element ) => {
 
-                    console.log(
-                        "CHECKING INTERSECTIONS FOR RAY :: "
-                        +
-                        raycasterElement.id
-                    );
+                //     console.log(
+                //         "CHECKING INTERSECTIONS FOR RAY :: "
+                //         +
+                //         raycasterElement.id
+                //     );
             
-                    element.checkIfIntersectsWith( 
+                    this.checkIfIntersectsWith( element,
                         raycasterElement
                     );
         
@@ -270,5 +272,123 @@ export default class AjhMultiTouchManager {
 
 
 // ======================================================== //
+
+    
+ 
+    // =================================================== //
+    /** 
+     * checkIfIntersectsWith :: function 
+     * */
+    // =================================================== //  
+  
+    checkIfIntersectsWith(itemToCheck:AjhKey,
+        raycasterWithPoint : AjhRaycasterWithPoint,
+        //rayId : number
+    ) : AjhIntersectionInstances {
+
+        let raycaster = raycasterWithPoint.raycaster;
+
+       // let isIntersected = false;
+    
+        const intersects 
+        = 
+        raycaster.intersectObjects(
+            [itemToCheck.KeyState.View.Body as Mesh], 
+            true
+        );
+    
+        itemToCheck.wasIntersectedByRayId =  raycasterWithPoint.id;
+       
+        //this.intersectedRays[this.intersectedRays.length - 1];
+
+        //this.intersected = false;
+    
+        if (intersects.length > 0) {
+    
+            let distance = intersects[0].distance;
+        
+            intersects.forEach(
+
+                (i) => {
+
+                    if (i.distance < distance) {
+
+                        distance = i.distance;
+
+                    }
+
+                }
+
+            );
+
+
+           
+               // this.startNote();
+            //}
+            
+
+            itemToCheck.intersectedInstances.addIntersectionPoint(
+
+                new AjhIntersectionInstance(
+                    raycasterWithPoint.id,
+                    intersects[0].point,
+                    raycasterWithPoint.id
+                )
+
+            );
+
+            console.log(
+
+                "intersected = true " 
+                + 
+                itemToCheck.name
+                +
+                " x: "
+                +
+                itemToCheck.intersectedInstances.getIntersectionPointById(raycasterWithPoint.id).point.x
+                +
+                " z : "
+                +
+                itemToCheck.intersectedInstances.getIntersectionPointById(raycasterWithPoint.id).point.z
+
+            );
+
+            itemToCheck.distance = distance;
+    
+        } else {
+
+            //if(this.intersectPoints.getIntersectionPointById(rayId) != null){
+
+          
+            
+            itemToCheck.intersectedInstances
+            .removeIntersectionPointById(
+
+                itemToCheck.wasIntersectedByRayId
+
+            );
+
+                //this.stopNote();
+            //}
+
+            // console.log(
+            //     "no longer intersected "
+            //     + 
+            //     itemToCheck.name
+            //     +
+            //     " by ray : "
+            //     +
+            //     raycasterWithPoint.id
+            // );
+    
+        }
+
+        itemToCheck.changeIntersectedColour();
+
+        return itemToCheck.intersectedInstances
+    
+    };
+
+
 
 }
