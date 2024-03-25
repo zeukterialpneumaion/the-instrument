@@ -77,62 +77,13 @@ export default class AjhIntersectionInstances {
         id : number
     ){
 
-        
-        let pointFound = null;
-        
-        for (
-            let index = 0; 
-            index < this.instances.length; 
-            index++
-        ) {
-            
-            const element = this.instances[index];
-            
-            if( element.id == id){
-            
-                pointFound = element; 
+        this.instances
+        =
+        this.instances.filter(
 
-                this.instances
-                    .splice(id,1);
-            
-            }
-            
-        }
+                    (instance) => (instance.id != id)
 
-        if( pointFound != null ){
-
-        
-
-            // console.log(
-
-            //     "Intersect Point "
-            //     + 
-            //     pointFound.id 
-            //     +
-            //     " Updated in Key " 
-            //     + 
-            //     this.KeyState.Id 
-
-            // );
-
-        }
-        else {
-
-           // this.intersectionpoints.push(newIntersectionPoint);
-
-            // console.log(
-
-            //     "Intersection Point" 
-            //     + 
-            //     newIntersectionPoint.id 
-            //     + 
-            //     " ADDED TO KEY "
-            //     + 
-            //     this.KeyState.Id
-
-            // );
-
-        }
+                )
 
     }
 
