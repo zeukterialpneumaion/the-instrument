@@ -1,5 +1,6 @@
 
 import { BoxGeometry, Color, MathUtils, Mesh, MeshMatcapMaterial, Raycaster, Vector2, Vector3, WebGLRenderer } from "three";
+import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import { Filter } from "tone";
 import AjhEventMemoryCache from "../../AjhMultiTouch/AjhEventMemoryCache";
 import AjhModel from "../../datamodels/AjhModel";
