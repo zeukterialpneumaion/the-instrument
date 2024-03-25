@@ -71,6 +71,21 @@ export default class AjhMultiTouchManager {
                 (foundRayPoint) => foundRayPoint.id === id,
 
             );
+           
+            this.findCurrentlyIntersectedItems().forEach(
+
+                (item) => {
+
+                    item.intersectedInstances.instances
+                    =
+                    item.intersectedInstances.instances.filter(
+
+                        (instance) => (instance.id != id)
+
+                    )
+
+                }
+            )
 
             this.raycastersWithPoints.splice(index, 1);
 
@@ -134,33 +149,25 @@ export default class AjhMultiTouchManager {
             = 
             this.EventMemoryCacheManager
             .getPointerEventById(element.id);
-            
-            element.updatePointCoords(
 
-                new Vector2(
-                    evt?.clientX,
-                    evt?.clientY
-                )
+            if(evt != null){
+                
+                element.updatePointCoords(
 
-            );
+                    new Vector2(
+                        evt?.clientX,
+                        evt?.clientY
+                    )
 
-            // console.log( 
-            //     " updateAllRayCasters :: x:" 
-            //     + 
-            //     element.screenPoint.x
-            //     +
-            //     ", y:"
-            //     +
-            //     element.screenPoint.y
-            //     +
-            //     "." 
-            // );
-            
-            element
-            .updateRaycaster(
-                camera,
-                element.screenPoint
-            );
+                );
+                
+                element
+                .updateRaycaster(
+                    camera,
+                    element.screenPoint
+                );
+
+            }
 
         }
 
@@ -337,21 +344,21 @@ export default class AjhMultiTouchManager {
 
             );
 
-            console.log(
+            // console.log(
 
-                "intersected = true " 
-                + 
-                itemToCheck.name
-                +
-                " x: "
-                +
-                itemToCheck.intersectedInstances.getIntersectionPointById(raycasterWithPoint.id).point.x
-                +
-                " z : "
-                +
-                itemToCheck.intersectedInstances.getIntersectionPointById(raycasterWithPoint.id).point.z
+            //     "intersected = true " 
+            //     + 
+            //     itemToCheck.name
+            //     +
+            //     " x: "
+            //     +
+            //     itemToCheck.intersectedInstances.getIntersectionPointById(raycasterWithPoint.id).point.x
+            //     +
+            //     " z : "
+            //     +
+            //     itemToCheck.intersectedInstances.getIntersectionPointById(raycasterWithPoint.id).point.z
 
-            );
+            // );
 
             itemToCheck.distance = distance;
     
