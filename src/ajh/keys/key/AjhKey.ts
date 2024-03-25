@@ -579,7 +579,7 @@ export default class AjhKey {
                 // = 
                 // new Color( + this.name );
 
-               // this.stopNote();
+                 this.stopNote();
                 
                 (
                     (this.KeyState.View.Body as Mesh)
@@ -589,7 +589,7 @@ export default class AjhKey {
                 this.KeyState.View.Colours.baseColour;
                 (this.KeyState.View.Body as Mesh).position.y = 0.5;
 
-               
+                this.vibrate(0);
 
             }
 
@@ -606,8 +606,11 @@ export default class AjhKey {
 
                 (this.KeyState.View.Body as Mesh).position.y = 0.3;
 
+                this.vibrate(100);
+                this.startNote();
+
             }
-               // this.startNote();
+               // 
 
             // } else {
 
@@ -671,9 +674,7 @@ export default class AjhKey {
 // =================================================== //
 
     stopNote(){
-
-
-        
+  
         if( this.modelInstance.instruments != undefined){
                 
             //if(this.KeyState.Sonics.IsPlaying){
@@ -706,6 +707,26 @@ export default class AjhKey {
 
         }
     }
+
+    ////////////////////////////////////////////////////////////////
+    
+    vibrate(duration:number){
+
+        let timings : Array <number>
+        = 
+        [ 50, 50, 50, 50, 50, 100, 350, 25, 25, 25, 25, 200 ];
+
+        let amplitudes: Array <number> 
+        = 
+        [33, 51, 75, 113, 170, 255, 0, 38, 62, 100, 160, 255];
+
+        let repeatIndex = -1 // Do not repeat.
+
+        navigator.vibrate(200);
+    }
+
+    ////////////////////////////////////////////////////////////////
+    
 
     checkForRayIdInIntersectedRayIds(id: number) : boolean {
         
