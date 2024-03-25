@@ -94,7 +94,7 @@ export default class AjhKey {
         }
 
        // intersectPoint : Vector3;
-       // wasIntersected : boolean = false;
+       wasIntersectedByRayId : number;
 
         distance : number;
 
@@ -571,8 +571,8 @@ export default class AjhKey {
                 true
             );
         
-            //this.wasIntersected 
-            //= 
+            this.wasIntersectedByRayId =  raycasterWithPoint.id;
+           
             //this.intersectedRays[this.intersectedRays.length - 1];
 
             //this.intersected = false;
@@ -638,7 +638,7 @@ export default class AjhKey {
                 this.intersectedInstances
                 .removeIntersectionPointById(
 
-                    raycasterWithPoint.id
+                    this.wasIntersectedByRayId
 
                 );
 
