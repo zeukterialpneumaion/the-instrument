@@ -1,5 +1,5 @@
 
-import { BoxGeometry, Color, CylinderGeometry, MathUtils, Mesh, MeshMatcapMaterial, Raycaster, TetrahedronGeometry, Vector2, Vector3, WebGLRenderer } from "three";
+import { BoxGeometry, Color, MathUtils, Mesh, MeshMatcapMaterial, Raycaster, Vector2, Vector3, WebGLRenderer } from "three";
 import { Filter } from "tone";
 import AjhEventMemoryCache from "../../AjhMultiTouch/AjhEventMemoryCache";
 import AjhModel from "../../datamodels/AjhModel";
@@ -298,11 +298,11 @@ export default class AjhKey {
      
         changeKeyWidthToFitScreenWidth(newScreenWidth){
 
-            let amountOfWidthToUseAsAGap = 0.02;
-            let kwgap = this.KeyState.View.Length* amountOfWidthToUseAsAGap;
+            let amountOfWidthToUseAsAGap = 0.001;
+            let kwgap = this.KeyState.View.Width * amountOfWidthToUseAsAGap;
 
             let amountOfHeightToUseAsAGap = 0.01;
-            let klgap = this.KeyState.View.Width*amountOfHeightToUseAsAGap ;
+            let klgap = this.KeyState.View.Length * amountOfHeightToUseAsAGap ;
             
             this.KeyState.View.Width 
             = 
@@ -323,13 +323,26 @@ export default class AjhKey {
 
             ( this.KeyState.View.Body as Mesh ).geometry 
             = 
-            // new BoxGeometry(
-            //     this.KeyState.View.Width-kwgap, 
-            //     this.KeyState.View.Height, 
-            //     this.KeyState.View.Length-klgap,
+
+            // new CapsuleGeometry(
+            //     ( this.KeyState.View.Width-kwgap )/2, 
+            //     // this.KeyState.View.Height, 
+            //     this.KeyState.View.Length-klgap - (( this.KeyState.View.Width-kwgap )),
+            //     2,
+            //     5
             //     // 7,
             //     // 0.05
             // );
+
+           // ( this.KeyState.View.Body as Mesh ).rotateX(Math.PI /2 );
+
+            new BoxGeometry(
+                this.KeyState.View.Width-kwgap, 
+                this.KeyState.View.Height, 
+                this.KeyState.View.Length-klgap,
+                // 7,
+                // 0.05
+            );
             
 
             // new SphereGeometry(
@@ -340,25 +353,25 @@ export default class AjhKey {
             //     // 0.05
             // );
 
-            new CylinderGeometry(
-                smallerDimension/8,
-                smallerDimension/2,
-                0.25,
-                7,
-                 // this.KeyState.View.Height, 
-                 // this.KeyState.View.Length-klgap,
-                 // 7,
-                 // 0.05
-             );
+            // new CylinderGeometry(
+            //     smallerDimension/8,
+            //     smallerDimension/2,
+            //     0.25,
+            //     7,
+            //      // this.KeyState.View.Height, 
+            //      // this.KeyState.View.Length-klgap,
+            //      // 7,
+            //      // 0.05
+            //  );
 
-             new TetrahedronGeometry(
-                smallerDimension/2,
-                1,
-                 // this.KeyState.View.Height, 
-                 // this.KeyState.View.Length-klgap,
-                 // 7,
-                 // 0.05
-             );
+            //  new TetrahedronGeometry(
+            //     smallerDimension/2,
+            //     1,
+            //      // this.KeyState.View.Height, 
+            //      // this.KeyState.View.Length-klgap,
+            //      // 7,
+            //      // 0.05
+            //  );
 
 
             // new OctahedronGeometry(
