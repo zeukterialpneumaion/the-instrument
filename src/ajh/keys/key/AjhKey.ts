@@ -75,6 +75,7 @@ export default class AjhKey {
             return this._intersected;
         }
         public set intersected(value: boolean) {
+
             this._intersected = value;
             this.changeIntersectedColour();
         }
@@ -140,11 +141,6 @@ export default class AjhKey {
                     
                 )
 
-                this._intersected = false;
-                this.intersectPoint = new Vector3();
-
-                this.distance = 0;
-
 
         // this.KeyHandlers = new AjhKeyHandlerFunctions(this);
 
@@ -194,79 +190,9 @@ export default class AjhKey {
             
             this.KeyState.View.Body.layers.enable( 3 );
 
-            // (mesh.material as MeshMatcapMaterial).color 
-            // = 
-            // new Color( + mesh.name );
 
             this.repaintBody();
-    
-            // if( this.KeyState.Sonics.IsSharpOrFlat ){    
-                
-            //     this.KeyState.View.Body
-            //     = 
-            //     new Mesh(
-            //         this.modelInstance.geometries.keyGeometry, 
-            //         this.darkMaterial
-            //     );
 
-            //     this.KeyState.View.Colours.baseColour 
-            //     = 
-            //     this.KeyState.KeyboardInstance.KeyColoursDef.Accidentals;
-                
-            //     this.KeyState.View.Colours.createHighLightColourFromBaseColour();
-            
-            // } else{
-                
-            //     this.KeyState.View.Body
-            //     = 
-            //     new Mesh(
-            //         this.modelInstance.geometries.keyGeometry, 
-            //         this.lightMaterial
-            //     );
-
-            //     this.KeyState.View.Colours.baseColour 
-            //     = 
-            //     this.KeyState.KeyboardInstance.KeyColoursDef.Naturals;
-
-            //     this.KeyState.View.Colours.createHighLightColourFromBaseColour();
-
-            // }
-
-            // this.KeyState.View.Body.castShadow = true;
-
-            // /////////////////////////////////////////////////////
-            // // set colour //
-            // /////////////////////////////////////////////////////
-
-            // let material 
-            // = 
-            // (
-            //     this.KeyState.View.Body as Mesh
-            // )
-            // .material as MeshMatcapMaterial;
-        
-            // // this.darkMaterial.needsUpdate = true;
-            // if(this.modelInstance.useSpectrumColours){
-                
-            //     material.color 
-            //     =
-            //     this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
-            //     // this.modelInstance.colours.spectrumArray[this.KeyState.PositionInKeyboard%12];
-                
-            //     material.needsUpdate = true;
-
-            //     this.KeyState.View.Colours.baseColour 
-            //     = 
-            //     // this.modelInstance.colours.spectrumArray[this.KeyState.PositionInKeyboard%12];
-            //     this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
-
-            //     this.KeyState.View.Colours.createHighLightColourFromBaseColour();
-                
-            // }
-
-            ////////////////////////////////////////////////////////
-
-            // material.needsUpdate = true;
 
             this.KeyState.View.Body.position.y = 0.5;
 
@@ -308,7 +234,7 @@ export default class AjhKey {
             
         }
 
- // =================================================== //
+    // =================================================== //
 
     /////////////////////////////////////////////////////////
 
@@ -334,8 +260,10 @@ export default class AjhKey {
                 / 
                 this.KeyState.KeyboardInstance.numberOfRows
             );
-
-            ( this.KeyState.View.Body as Mesh ).geometry.dispose();
+            
+            this.disposeOfKeyBody();
+           // deepDispose(( this.KeyState.View.Body as Mesh ));
+            //( this.KeyState.View.Body as Mesh ).geometry.dispose();
             
             ( this.KeyState.View.Body as Mesh ).geometry 
             = 
@@ -372,8 +300,10 @@ export default class AjhKey {
             / 
             this.KeyState.KeyboardInstance.numberOfColumns);
 
-            //( this.KeyState.View.Body as Mesh ).geometry.dispose();
-            deepDispose(( this.KeyState.View.Body as Mesh ));
+            // ( this.KeyState.View.Body as Mesh ).geometry.dispose();
+            // deepDispose(( this.KeyState.View.Body as Mesh ));
+            this.disposeOfKeyBody();
+
             
             ( this.KeyState.View.Body as Mesh ).geometry = 
             new RoundedBoxGeometry(
@@ -539,11 +469,14 @@ export default class AjhKey {
         
             const intersects 
             = 
-            raycaster.intersectObjects([this.KeyState.View.Body as Mesh], true);
+            raycaster.intersectObjects(
+                [this.KeyState.View.Body as Mesh], 
+                true
+            );
         
             this.wasIntersected = this.intersected;
 
-            this.intersected = false;
+            //this.intersected = false;
         
             if (intersects.length > 0) {
         
@@ -562,9 +495,10 @@ export default class AjhKey {
                     }
 
                 );
-                if(!this.intersected){
+                //if(!this.intersected){
                     this.intersected = true;
-                }
+                   // this.startNote();
+                //}
                 
 
                 this.intersectPoint = intersects[0].point;
@@ -591,6 +525,7 @@ export default class AjhKey {
 
                 if(this.intersected){
                     this.intersected = false;
+                    //this.stopNote();
                 }
                 console.log(
                     "intersected " 
@@ -640,7 +575,7 @@ export default class AjhKey {
                 // = 
                 // new Color( + this.name );
 
-                this.stopNote();
+               // this.stopNote();
                 
                 ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
                 = 
@@ -650,7 +585,7 @@ export default class AjhKey {
 
             }
 
-            if(this.intersected ) { //} || this.intersected != undefined  ){
+            if(this.intersected  || this.intersected != undefined  ){
 
                 ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
                 = 
@@ -661,7 +596,7 @@ export default class AjhKey {
                         ).toString() 
                 );
 
-                this.startNote();
+               // this.startNote();
 
             } else {
 
@@ -669,7 +604,7 @@ export default class AjhKey {
                 // = 
                 // new Color( + this.name );
                 
-                this.stopNote();
+               // this.stopNote();
 
                 ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
                 = 
@@ -681,83 +616,83 @@ export default class AjhKey {
 
 // =================================================== //
 
-startNote(){
+    startNote(){
 
-    if( this.modelInstance.instruments != undefined){
+        if( this.modelInstance.instruments != undefined){
+                    
+            
+            if(
+                !this.KeyState.Sonics.IsPlaying
+            ){
+                // PLAY A NOTE ::
+                this.modelInstance.instruments
+                .startToPlayANote(
+
+                    this.KeyState.Sonics.NoteName 
+                    + 
+                    this.KeyState.Sonics.Octave.toString()
+
+                ); 
                 
-        
-        if(
-            !this.KeyState.Sonics.IsPlaying
-        ){
-            // PLAY A NOTE ::
-            this.modelInstance.instruments
-            .startToPlayANote(
+                this.KeyState.Sonics.IsPlaying = true; 
+                
+                console.log(
+                    " KEY :: " 
+                    + 
+                    this.KeyState.Id 
+                    + 
+                    " STARTING NOTE ::"
+                    +
+                    this.KeyState.Sonics.NoteName 
+                    + 
+                    this.KeyState.Sonics.Octave.toString()
+                );
+                //this.KeyState.State.setIsPointerDown(true);
 
-                this.KeyState.Sonics.NoteName 
-                + 
-                this.KeyState.Sonics.Octave.toString()
-
-            ); 
-            
-            this.KeyState.Sonics.IsPlaying = true; 
-            
-            console.log(
-                " KEY :: " 
-                + 
-                this.KeyState.Id 
-                + 
-                " STARTING NOTE ::"
-                +
-                this.KeyState.Sonics.NoteName 
-                + 
-                this.KeyState.Sonics.Octave.toString()
-            );
-            //this.KeyState.State.setIsPointerDown(true);
+            }
 
         }
 
     }
 
-}
-
 // =================================================== //
 
-stopNote(){
+    stopNote(){
 
 
-    
-    if( this.modelInstance.instruments != undefined){
-              
-        //if(this.KeyState.Sonics.IsPlaying){
-
-            console.log(
-                " KEY :: " 
-                + 
-                this.KeyState.Id 
-                + 
-                " STOPPING NOTE ::"
-                +
-                this.KeyState.Sonics.NoteName 
-                + 
-                this.KeyState.Sonics.Octave.toString()
-            );
         
-            // STOP A NOTE ::
-            this.modelInstance.instruments
-            .stopToPlayANote(
+        if( this.modelInstance.instruments != undefined){
+                
+            //if(this.KeyState.Sonics.IsPlaying){
 
-                this.KeyState.Sonics.NoteName 
-                + 
-                this.KeyState.Sonics.Octave.toString()
+                console.log(
+                    " KEY :: " 
+                    + 
+                    this.KeyState.Id 
+                    + 
+                    " STOPPING NOTE ::"
+                    +
+                    this.KeyState.Sonics.NoteName 
+                    + 
+                    this.KeyState.Sonics.Octave.toString()
+                );
+            
+                // STOP A NOTE ::
+                this.modelInstance.instruments
+                .stopToPlayANote(
 
-            );
+                    this.KeyState.Sonics.NoteName 
+                    + 
+                    this.KeyState.Sonics.Octave.toString()
 
-            this.KeyState.Sonics.IsPlaying = false;
+                );
 
-       // }
+                this.KeyState.Sonics.IsPlaying = false;
 
+        // }
+
+        }
     }
-}
 
     
     public selectedListener( 

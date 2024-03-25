@@ -250,8 +250,8 @@ export default class AjhCanvasInteraction {
 
             this.multitouchManager.findCurrentlyIntersectedItems().forEach(
                 (foundKey,index) => {
-                        foundKey.startNote();
-                        foundKey.changeIntersectedColour();
+                        //foundKey.startNote();
+                        //foundKey.changeIntersectedColour();
                 }
             );
 
