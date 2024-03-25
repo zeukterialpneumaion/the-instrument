@@ -138,7 +138,10 @@ export default class AjhThreeInit{
             this.modelInstance.Stats = new Stats();
 
             this.modelInstance.Stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-           
+            this.modelInstance.Stats.dom.style.left = 'auto';
+            this.modelInstance.Stats.dom.style.right = '0';
+            this.modelInstance.Stats.dom.style.top = 'auto';
+            this.modelInstance.Stats.dom.style.bottom = '0';
            // document.body.appendChild(this.modelInstance.Stats.dom)
            // this.modelInstance.Stats.dom.
         

@@ -672,6 +672,7 @@ export default class AjhKey {
                         0xffffff
                         ).toString() 
                 );
+                (this.KeyState.View.Body as Mesh).position.y = 0.4;
 
                // this.startNote();
 
@@ -686,6 +687,8 @@ export default class AjhKey {
                 ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
                 = 
                 this.KeyState.View.Colours.baseColour;
+
+                (this.KeyState.View.Body as Mesh).position.y = 0.5;
 
             }
 
