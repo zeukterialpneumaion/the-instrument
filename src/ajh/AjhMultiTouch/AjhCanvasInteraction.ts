@@ -311,11 +311,11 @@ export default class AjhCanvasInteraction {
             = 
             (pointerEvt as PointerEvent).pointerId;
 
-            console.log( 
-                "PointerDown:: event id ::" 
-                +
-                pointerid 
-            );
+            // console.log( 
+            //     "PointerDown:: event id ::" 
+            //     +
+            //     pointerid 
+            // );
 
             this.multitouchManager.addRaycasterWithPoint(pointerid);
             
@@ -473,6 +473,19 @@ export default class AjhCanvasInteraction {
                 rY = 0;
             }
 
+            let cachedEventIds: string =  "";
+            this.multitouchManager.EventMemoryCacheManager
+            .EventMemoryCache.forEach(
+                (evt,index) => {
+
+                    cachedEventIds += ": " + evt.pointerId 
+
+
+                }
+
+
+            )
+
             // console.log(
 
             //     eventType
@@ -517,7 +530,14 @@ export default class AjhCanvasInteraction {
                 // content
                 "numberOfCachedEvents : "
                 + 
-                numberOfCachedEvents,
+                this.multitouchManager
+                .EventMemoryCacheManager.EventMemoryCache.length
+                +
+                " : [ "
+                +
+                cachedEventIds
+                +
+                ": ]",
                 
                 //info
                 "info ajh.",
