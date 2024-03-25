@@ -1,6 +1,5 @@
 
-import { Color, MathUtils, Mesh, MeshMatcapMaterial, Raycaster, Vector2, Vector3, WebGLRenderer } from "three";
-import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
+import { BoxGeometry, Color, CylinderGeometry, MathUtils, Mesh, MeshMatcapMaterial, Raycaster, TetrahedronGeometry, Vector2, Vector3, WebGLRenderer } from "three";
 import { Filter } from "tone";
 import AjhEventMemoryCache from "../../AjhMultiTouch/AjhEventMemoryCache";
 import AjhModel from "../../datamodels/AjhModel";
@@ -266,14 +265,23 @@ export default class AjhKey {
             //( this.KeyState.View.Body as Mesh ).geometry.dispose();
             
             ( this.KeyState.View.Body as Mesh ).geometry 
-            = 
-            new RoundedBoxGeometry(
+            =
+            
+            new BoxGeometry(
                 this.KeyState.View.Width, 
                 this.KeyState.View.Height, 
                 this.KeyState.View.Length,
-                7,
-                0.05
+                // 7,
+                // 0.05
             );
+
+            // new RoundedBoxGeometry(
+            //     this.KeyState.View.Width, 
+            //     this.KeyState.View.Height, 
+            //     this.KeyState.View.Length,
+            //     7,
+            //     0.05
+            // );
 
 
         }
@@ -290,9 +298,11 @@ export default class AjhKey {
      
         changeKeyWidthToFitScreenWidth(newScreenWidth){
 
-            let amountOfWidthToUseAsAGap = 0.005;
-            let klgap = this.KeyState.View.Width*amountOfWidthToUseAsAGap;
-            let kwgap = this.KeyState.View.Length*amountOfWidthToUseAsAGap;
+            let amountOfWidthToUseAsAGap = 0.02;
+            let kwgap = this.KeyState.View.Length* amountOfWidthToUseAsAGap;
+
+            let amountOfHeightToUseAsAGap = 0.01;
+            let klgap = this.KeyState.View.Width*amountOfHeightToUseAsAGap ;
             
             this.KeyState.View.Width 
             = 
@@ -304,15 +314,69 @@ export default class AjhKey {
             // deepDispose(( this.KeyState.View.Body as Mesh ));
             this.disposeOfKeyBody();
 
-            
-            ( this.KeyState.View.Body as Mesh ).geometry = 
-            new RoundedBoxGeometry(
-                this.KeyState.View.Width  - kwgap, 
-                this.KeyState.View.Height , 
-                this.KeyState.View.Length - klgap,
-                7,
-                0.65
+            let smallerDimension 
+            = 
+            Math.min(
+                this.KeyState.View.Width-kwgap,
+                this.KeyState.View.Length-klgap
             );
+
+            ( this.KeyState.View.Body as Mesh ).geometry 
+            = 
+            // new BoxGeometry(
+            //     this.KeyState.View.Width-kwgap, 
+            //     this.KeyState.View.Height, 
+            //     this.KeyState.View.Length-klgap,
+            //     // 7,
+            //     // 0.05
+            // );
+            
+
+            // new SphereGeometry(
+            //    smallerDimension/2, 
+            //     // this.KeyState.View.Height, 
+            //     // this.KeyState.View.Length-klgap,
+            //     // 7,
+            //     // 0.05
+            // );
+
+            new CylinderGeometry(
+                smallerDimension/8,
+                smallerDimension/2,
+                0.25,
+                7,
+                 // this.KeyState.View.Height, 
+                 // this.KeyState.View.Length-klgap,
+                 // 7,
+                 // 0.05
+             );
+
+             new TetrahedronGeometry(
+                smallerDimension/2,
+                1,
+                 // this.KeyState.View.Height, 
+                 // this.KeyState.View.Length-klgap,
+                 // 7,
+                 // 0.05
+             );
+
+
+            // new OctahedronGeometry(
+            //     smallerDimension/2,
+            //     1,
+            //      // this.KeyState.View.Height, 
+            //      // this.KeyState.View.Length-klgap,
+            //      // 7,
+            //      // 0.05
+            //  );
+
+            // new RoundedBoxGeometry(
+            //     this.KeyState.View.Width, 
+            //     this.KeyState.View.Height, 
+            //     this.KeyState.View.Length,
+            //     7,
+            //     0.05
+            // );
 
         }
 
@@ -585,7 +649,7 @@ export default class AjhKey {
 
             }
 
-            if(this.intersected  || this.intersected != undefined  ){
+            if(this.intersected   ){//|| this.intersected != undefined  ){
 
                 ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
                 = 

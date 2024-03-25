@@ -720,8 +720,8 @@ export default class AjhThreeInit{
         
             this.ajhkeys 
             = new AjhKeys(
-                6,
-                12,
+                3,
+                4,
                 this.modelInstance.keyboardTypes.HorizontalKeys,
                 this.modelInstance.scaleTypes.HarmonicicMinor,
                 0,

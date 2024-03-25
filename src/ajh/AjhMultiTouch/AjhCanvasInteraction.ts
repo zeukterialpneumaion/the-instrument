@@ -177,7 +177,7 @@ export default class AjhCanvasInteraction {
             this.multitouchManager
             .getRaycasterWithPointById(id);
 
-            if(raycaster != null || raycaster != undefined ){
+            if(raycaster != null && raycaster != undefined ){ // ||
 
                 raycaster.updatePointCoords(
                     new Vector2(pX,pY)
@@ -219,7 +219,48 @@ export default class AjhCanvasInteraction {
                 rX, // : number,
                 rY, // : number,
                 numberOfCachedEvents,// : number
-            )
+            );
+
+            let notesString : string = "playing ";
+            this.multitouchManager
+            .findCurrentlyIntersectedItems().forEach(
+
+                (item,index) => {
+
+                    notesString 
+                    += 
+                    ":"
+                    +
+                    item.KeyState.Sonics.NoteName
+                    +
+                    item.KeyState.Sonics.Octave.toString()
+
+                }
+
+            );
+
+            let instrumenttype 
+            = 
+            this._modelInstance.instruments.currentInstrument.name;
+
+            let currentscale 
+            = 
+            this._modelInstance.currentKeyBoard.scaleType.name;
+
+            this._modelInstance.initialScreen
+            .setTitleFieldText(
+                notesString
+            );
+
+            this._modelInstance.initialScreen
+            .setDataFieldText(
+                instrumenttype 
+            );
+
+            this._modelInstance.initialScreen
+            .setMessageFieldText(
+                currentscale
+            );
 
         }
 
@@ -285,6 +326,8 @@ export default class AjhCanvasInteraction {
 
             raycaster?.updateRaycaster(this._modelInstance.camera);
 
+            this.multitouchManager.checkAllItemsForIntersection();
+
             let rX 
             = 
             this.multitouchManager
@@ -295,7 +338,6 @@ export default class AjhCanvasInteraction {
             this.multitouchManager
             .getRaycasterWithPointById(id)?.screenPoint.y;
 
-            this.multitouchManager.checkAllItemsForIntersection();
 
             let raypoint 
             = 
