@@ -37,7 +37,7 @@ export default class AjhRaycasterWithPoint {
         this.screenPoint.x = ( this.screenPoint.x / window.innerWidth) * 2 - 1;
         this.screenPoint.y = - ( this.screenPoint.y / window.innerHeight) * 2 + 1;
 
-        console.log( "RAYCASTER UPDATING x:" + this.screenPoint.x + "y:" + this.screenPoint.y)
+       // console.log( "RAYCASTER UPDATING x:" + this.screenPoint.x + "y:" + this.screenPoint.y)
 
         this.raycaster.setFromCamera( this.screenPoint, camera );
         

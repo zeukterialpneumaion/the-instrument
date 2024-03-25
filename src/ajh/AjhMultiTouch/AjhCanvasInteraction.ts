@@ -76,7 +76,7 @@ export default class AjhCanvasInteraction {
                     let intersectPoint 
                     =  
                     this.multitouchManager
-                    .findCurrentlyIntersectedItems()[0].intersectPoint;
+                    .findCurrentlyIntersectedItems()[0].intersectedInstances[0];
 
                     // circle.position.x = intersectPoint.x;
                     // circle.position.z = intersectPoint.z;
@@ -291,6 +291,17 @@ export default class AjhCanvasInteraction {
 
             this.multitouchManager.findCurrentlyIntersectedItems().forEach(
                 (foundKey,index) => {
+
+                    console.log( 
+                        "FOUND INTERSECTED ITEM :: "
+                        +
+                        foundKey.KeyState.Id
+                        +
+                        " : "
+                        +
+                        foundKey.KeyState.Sonics.NoteName
+                        
+                      );
                         //foundKey.startNote();
                         //foundKey.changeIntersectedColour();
                 }
@@ -381,16 +392,16 @@ export default class AjhCanvasInteraction {
         let pX =  (pointerEvt as PointerEvent).clientX;
         let pY =  (pointerEvt as PointerEvent).clientY;
 
-
-
-
-        this.multitouchManager.findCurrentlyIntersectedItems().forEach(
+        this.multitouchManager
+        .findCurrentlyIntersectedItems().forEach(
             (foundKey,index) => {
                     foundKey.stopNote();
+                    foundKey.intersectedInstances.removeIntersectionPointById(id)
             }
         );
 
-        this.multitouchManager.getRaycasterWithPointById(pointerEvt.pointerId)
+        this.multitouchManager
+        .getRaycasterWithPointById(pointerEvt.pointerId)
 
         this.multitouchManager.removeRaycasterWithPointById(id);
     // this.multitouchManager.re
@@ -462,19 +473,19 @@ export default class AjhCanvasInteraction {
                 rY = 0;
             }
 
-            console.log(
+            // console.log(
 
-                eventType
-                +
-                " id: " 
-                +
-                id 
-                +
-                " CurrentlyIntersectedItems: "
-                +
-                this.multitouchManager.findCurrentlyIntersectedItems()
+            //     eventType
+            //     +
+            //     " id: " 
+            //     +
+            //     id 
+            //     +
+            //     " CurrentlyIntersectedItems: "
+            //     +
+            //     this.multitouchManager.findCurrentlyIntersectedItems().length
 
-            );
+            // );
             
             this._modelInstance.informationWindow.updateAllFields(
 
@@ -512,10 +523,12 @@ export default class AjhCanvasInteraction {
                 "info ajh.",
 
                 // message
-                this._modelInstance.currentKeyBoard.scaleType.name+ " message",
+                this._modelInstance.currentKeyBoard.scaleType.name
+                + 
+                " message",
                 
                 //on
-                " CurrentlySelectedItems: "
+                " numberOfIntersectedItems: "
                 +
                 this.multitouchManager
                 .findCurrentlyIntersectedItems().length,

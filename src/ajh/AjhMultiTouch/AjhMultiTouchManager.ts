@@ -142,17 +142,17 @@ export default class AjhMultiTouchManager {
 
             );
 
-            console.log( 
-                " updateAllRayCasters :: x:" 
-                + 
-                element.screenPoint.x
-                +
-                ", y:"
-                +
-                element.screenPoint.y
-                +
-                "." 
-            );
+            // console.log( 
+            //     " updateAllRayCasters :: x:" 
+            //     + 
+            //     element.screenPoint.x
+            //     +
+            //     ", y:"
+            //     +
+            //     element.screenPoint.y
+            //     +
+            //     "." 
+            // );
             
             element
             .updateRaycaster(
@@ -194,7 +194,7 @@ export default class AjhMultiTouchManager {
 
             const element = this.interactiveItems[index];
 
-            if( element.intersected == true ){
+            if( element.intersectedInstances.instances.length > 0 ){
 
                 foundIntersectedItems.push( element );
             
@@ -257,7 +257,7 @@ export default class AjhMultiTouchManager {
                     );
             
                     element.checkIfIntersectsWith( 
-                        raycasterElement.raycaster 
+                        raycasterElement
                     );
         
                 }

@@ -1,12 +1,15 @@
 
-import { BoxGeometry, Color, MathUtils, Mesh, MeshMatcapMaterial, Raycaster, Vector2, Vector3, WebGLRenderer } from "three";
+import { Color, MathUtils, Mesh, MeshMatcapMaterial, Vector2, Vector3, WebGLRenderer } from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import { Filter } from "tone";
 import AjhEventMemoryCache from "../../AjhMultiTouch/AjhEventMemoryCache";
+import AjhRaycasterWithPoint from "../../AjhMultiTouch/AjhRaycasterWithPoint";
 import AjhModel from "../../datamodels/AjhModel";
 import { deepDispose } from "../../helpers/scene/ajhThreeDisposal";
 import AjhNamedNote from "../../sonics/AjhNamedNote";
 import AjhKeys from "../keyboards/AjhKeyBoard";
+import AjhIntersectionInstance from "./AjhIntersectionInstance";
+import AjhIntersectionInstances from "./AjhIntersectionInstances";
 import AjhKeyColours from "./AjhKeyColours";
 import AjhKeyDataModel from "./AjhKeyDataModel";
 
@@ -64,24 +67,34 @@ export default class AjhKey {
      * */
     // =================================================== //  
   
-        EventMemoryCache : AjhEventMemoryCache 
-        = 
-        new AjhEventMemoryCache();
+        // EventMemoryCache : AjhEventMemoryCache 
+        // = 
+        // new AjhEventMemoryCache();
 
         name : string;
 
-        private _intersected: boolean;
-        public get intersected(): boolean {
-            return this._intersected;
-        }
-        public set intersected(value: boolean) {
+        // private _intersected: boolean;
+        // public get intersected(): boolean {
+        //     return this._intersected;
+        // }
+        // public set intersected(value: boolean) {
 
-            this._intersected = value;
-            this.changeIntersectedColour();
+        //     this._intersected = value;
+        //     this.changeIntersectedColour();
+        // }
+
+
+
+        private _intersectedInstances: AjhIntersectionInstances;
+        public get intersectedInstances(): AjhIntersectionInstances {
+            return this._intersectedInstances;
+        }
+        public set intersectedInstances(value: AjhIntersectionInstances ) {
+            this._intersectedInstances = value;
         }
 
-        intersectPoint : Vector3;
-        wasIntersected : boolean = false;
+       // intersectPoint : Vector3;
+       // wasIntersected : boolean = false;
 
         distance : number;
 
@@ -146,8 +159,9 @@ export default class AjhKey {
 
             this.name = rowId + "_" + colId;
 
-            this._intersected = false;
-            this.intersectPoint = new Vector3();
+           // this._intersected = false;
+            //this.intersectPoint = new Vector3();
+            this.intersectedInstances = new AjhIntersectionInstances();
 
             this.distance = 0;
 
@@ -299,10 +313,10 @@ export default class AjhKey {
      
         changeKeyWidthToFitScreenWidth(newScreenWidth){
 
-            let amountOfWidthToUseAsAGap = 0.001;
+            let amountOfWidthToUseAsAGap = 0.002;
             let kwgap = this.KeyState.View.Width * amountOfWidthToUseAsAGap;
 
-            let amountOfHeightToUseAsAGap = 0.01;
+            let amountOfHeightToUseAsAGap = 0.02;
             let klgap = this.KeyState.View.Length * amountOfHeightToUseAsAGap ;
             
             this.KeyState.View.Width 
@@ -337,13 +351,13 @@ export default class AjhKey {
 
            // ( this.KeyState.View.Body as Mesh ).rotateX(Math.PI /2 );
 
-            new BoxGeometry(
-                this.KeyState.View.Width-kwgap, 
-                this.KeyState.View.Height, 
-                this.KeyState.View.Length-klgap,
-                // 7,
-                // 0.05
-            );
+            // new BoxGeometry(
+            //     this.KeyState.View.Width-kwgap, 
+            //     this.KeyState.View.Height, 
+            //     this.KeyState.View.Length-klgap,
+            //     // 7,
+            //     // 0.05
+            // );
             
 
             // new SphereGeometry(
@@ -384,13 +398,13 @@ export default class AjhKey {
             //      // 0.05
             //  );
 
-            // new RoundedBoxGeometry(
-            //     this.KeyState.View.Width, 
-            //     this.KeyState.View.Height, 
-            //     this.KeyState.View.Length,
-            //     7,
-            //     0.05
-            // );
+            new RoundedBoxGeometry(
+                this.KeyState.View.Width-kwgap, 
+                this.KeyState.View.Height, 
+                this.KeyState.View.Length-klgap,
+                7,
+                0.05
+            );
 
         }
 
@@ -542,8 +556,13 @@ export default class AjhKey {
     // =================================================== //  
   
         checkIfIntersectsWith(
-            raycaster : Raycaster
-        ){
+            raycasterWithPoint : AjhRaycasterWithPoint,
+            //rayId : number
+        ) : AjhIntersectionInstances {
+
+            let raycaster = raycasterWithPoint.raycaster;
+
+           // let isIntersected = false;
         
             const intersects 
             = 
@@ -552,7 +571,9 @@ export default class AjhKey {
                 true
             );
         
-            this.wasIntersected = this.intersected;
+            //this.wasIntersected 
+            //= 
+            //this.intersectedRays[this.intersectedRays.length - 1];
 
             //this.intersected = false;
         
@@ -573,13 +594,22 @@ export default class AjhKey {
                     }
 
                 );
-                //if(!this.intersected){
-                    this.intersected = true;
+
+
+               
                    // this.startNote();
                 //}
                 
 
-                this.intersectPoint = intersects[0].point;
+                this.intersectedInstances.addIntersectionPoint(
+
+                    new AjhIntersectionInstance(
+                        raycasterWithPoint.id,
+                        intersects[0].point,
+                        raycasterWithPoint.id
+                    )
+
+                );
 
                 console.log(
 
@@ -589,11 +619,11 @@ export default class AjhKey {
                     +
                     " x: "
                     +
-                    this.intersectPoint.x
+                    this.intersectedInstances.getIntersectionPointById(raycasterWithPoint.id).point.x
                     +
                     " z : "
                     +
-                    this.intersectPoint.z
+                    this.intersectedInstances.getIntersectionPointById(raycasterWithPoint.id).point.z
 
                 );
 
@@ -601,21 +631,35 @@ export default class AjhKey {
         
             } else {
 
-                if(this.intersected){
-                    this.intersected = false;
+                //if(this.intersectPoints.getIntersectionPointById(rayId) != null){
+
+              
+                
+                this.intersectedInstances
+                .removeIntersectionPointById(
+
+                    raycasterWithPoint.id
+
+                );
+
                     //this.stopNote();
-                }
+                //}
+
                 console.log(
-                    "intersected " 
+                    "no longer intersected "
                     + 
                     this.name
                     +
-                    " : "
+                    " by ray : "
                     +
-                    this.intersected
+                    raycasterWithPoint.id
                 );
         
             }
+
+            this.changeIntersectedColour();
+
+            return this.intersectedInstances
         
         };
     
@@ -627,13 +671,13 @@ export default class AjhKey {
     // =================================================== //  
     
    
-        setItemIsIntersected(
-            isIntersected:boolean
-        ) {
+        // setItemIsIntersected(
+        //     isIntersected:boolean
+        // ) {
 
-            this.intersected = isIntersected;
+        //    // this.intersected = isIntersected;
 
-        }
+        // }
 
     // =================================================== //
     
@@ -646,7 +690,7 @@ export default class AjhKey {
   
         changeIntersectedColour() {
 
-            if( this.intersected != undefined ){
+            if( this.intersectedInstances.instances.length == 0 ){
                 
                     
                 // ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
@@ -663,7 +707,7 @@ export default class AjhKey {
 
             }
 
-            if(this.intersected   ){//|| this.intersected != undefined  ){
+            else {//|| this.intersected != undefined  ){
 
                 ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
                 = 
@@ -673,25 +717,26 @@ export default class AjhKey {
                         0xffffff
                         ).toString() 
                 );
-                (this.KeyState.View.Body as Mesh).position.y = 0.4;
-
-               // this.startNote();
-
-            } else {
-
-                // ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
-                // = 
-                // new Color( + this.name );
-                
-               // this.stopNote();
-
-                ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
-                = 
-                this.KeyState.View.Colours.baseColour;
-
-                (this.KeyState.View.Body as Mesh).position.y = 0.5;
+                (this.KeyState.View.Body as Mesh).position.y = 0.3;
 
             }
+               // this.startNote();
+
+            // } else {
+
+            //     // ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
+            //     // = 
+            //     // new Color( + this.name );
+                
+            //    // this.stopNote();
+
+            //     ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
+            //     = 
+            //     this.KeyState.View.Colours.baseColour;
+
+            //     (this.KeyState.View.Body as Mesh).position.y = 0.5;
+
+            // }
 
         }
 
@@ -775,6 +820,57 @@ export default class AjhKey {
         }
     }
 
+    checkForRayIdInIntersectedRayIds(id: number) : boolean {
+        
+        let foundItem = false;
+        
+        for (
+            let index = 0; 
+            index < this.intersectedInstances.instances.length; 
+            index++
+        ) {
+            
+            const element = this.intersectedInstances.instances[index];
+            
+            if( element.id == id){
+            
+                foundItem = true;
+            
+            }
+            
+        }
+
+        if(foundItem){
+        
+            console.log(
+                "Ray "
+                + 
+                id 
+                +
+                " FOUND IN KEY " 
+                + 
+                this.KeyState.Id 
+                + 
+                " INTERSECTIONS." 
+            );
+
+        }
+        else {
+
+            console.log(
+                "NO Ray ID FOUND IN KEY " 
+                + 
+                this.KeyState.Id 
+                + 
+                " INTERSECTIONS."
+            );
+
+        }
+
+        return foundItem;
+
+    }
+
     
     public selectedListener( 
         selected: boolean, 
@@ -782,19 +878,23 @@ export default class AjhKey {
      ){
 
         if(
-                this.KeyState.State.IsRayTouched
-            ){
+            this.KeyState.State.IsRayTouched
+        ){
 
-                console.log(
+            console.log(
 
-                    "key selected:"    +    selected
-                    
-                )
+                "key selected:"    +    selected
+                
+            )
 
-            }
+        }
 
         if(
-            (this.KeyState.View.Body.id === keyMeshInstance)
+            (
+                this.KeyState.View.Body.id 
+                ==
+                keyMeshInstance
+            )
         ){
 
             if(this.modelInstance.showMusicalKeyMessages){

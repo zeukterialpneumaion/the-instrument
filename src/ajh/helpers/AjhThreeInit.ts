@@ -367,7 +367,7 @@ export default class AjhThreeInit{
                 let intersectPoint 
                 =  
                 this.modelInstance.canvasInteraction.multitouchManager
-                .findCurrentlyIntersectedItems()[0].intersectPoint;
+                .findCurrentlyIntersectedItems()[0].intersectedInstances.instances[0].point;
 
             }
 
