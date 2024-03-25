@@ -267,21 +267,21 @@ export default class AjhKey {
             ( this.KeyState.View.Body as Mesh ).geometry 
             =
             
-            new BoxGeometry(
-                this.KeyState.View.Width, 
-                this.KeyState.View.Height, 
-                this.KeyState.View.Length,
-                // 7,
-                // 0.05
-            );
-
-            // new RoundedBoxGeometry(
+            // new BoxGeometry(
             //     this.KeyState.View.Width, 
             //     this.KeyState.View.Height, 
             //     this.KeyState.View.Length,
-            //     7,
-            //     0.05
+            //     // 7,
+            //     // 0.05
             // );
+
+            new RoundedBoxGeometry(
+                this.KeyState.View.Width, 
+                this.KeyState.View.Height, 
+                this.KeyState.View.Length,
+                7,
+                0.05
+            );
 
 
         }
