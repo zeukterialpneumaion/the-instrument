@@ -175,7 +175,12 @@ populateGUI( drag:boolean = false )  {
 
                     this.modelInstance.currentKeyBoard.scaleType
                     =
-                    this.modelInstance.scaleTypes.getScaleFromName(evt); 
+                    this.modelInstance.scaleTypes.getScaleFromName(evt);
+
+                    //change number of columns to scale note length
+                    this._modelInstance.currentKeyBoard.numberOfColumns
+                    = 
+                    this.modelInstance.scaleTypes.getScaleFromName(evt).scale.length
 
                     this.modelInstance.currentKeyBoard
                     .createKeys( 
@@ -184,7 +189,7 @@ populateGUI( drag:boolean = false )  {
 
                 }.bind(this));
 
-
+               
                 // set octave 
                     let octaveObj = { octave: 3 };
 
