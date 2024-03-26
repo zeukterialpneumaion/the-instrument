@@ -677,7 +677,7 @@ export default class AjhKey {
   
         if( this.modelInstance.instruments != undefined){
                 
-            //if(this.KeyState.Sonics.IsPlaying){
+            if(this.KeyState.Sonics.IsPlaying){
 
                 console.log(
                     " KEY :: " 
@@ -703,7 +703,7 @@ export default class AjhKey {
 
                 this.KeyState.Sonics.IsPlaying = false;
 
-        // }
+            }
 
         }
     }

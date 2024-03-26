@@ -44,3 +44,42 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+
+/* .lil-gui {
+	--background-color: #fdf6e3;
+	--text-color: #657b83;
+	--title-background-color: #f5efdc;
+	--title-text-color: #657b83;
+	--widget-color: #eee8d5;
+	--hover-color: #e7e1cf;
+	--focus-color: #e6ddc7;
+	--number-color: #2aa0f3;
+	--string-color: #97ad00;
+	--scrollbar-width: 400px;
+} */
+
+/* .lil-gui {
+	--background-color: #371c00;
+	--text-color: #fdeba2;
+	--title-background-color: #628c00;
+	--title-text-color: #cdfc9a;
+	--widget-color: #f9e88a;
+	--hover-color: #f9c87d;
+	--focus-color: #feebaf;
+	--number-color: #644202;
+	--string-color: #97ad00;
+	--scrollbar-width: 400px;
+} */
+
+.lil-gui {
+	--background-color: #14763e;
+	--text-color: #fdeba2;
+	--title-background-color: #075f4b;
+	--title-text-color: #f9df93;
+	--widget-color: #105f41;
+	--hover-color: #02604d;
+	--focus-color: #064d49;
+	--number-color: #f8d14e;
+	--string-color: #15f7db;
+	--scrollbar-width: 400px;
+}
