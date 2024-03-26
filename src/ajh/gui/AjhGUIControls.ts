@@ -261,7 +261,7 @@ populateGUI( drag:boolean = false )  {
         viewsFolder.add(
             this._modelInstance.currentKeyBoard, 
             'numberOfColumns', 
-            1,32,1
+            1,12,1
         ).name("number of keys").onChange(function(evt){
 
         
@@ -277,7 +277,7 @@ populateGUI( drag:boolean = false )  {
         viewsFolder.add(
             this._modelInstance.currentKeyBoard, 
             'numberOfRows', 
-            1,24,1
+            1,6,1
         ).name("number of rows").onChange(function(evt){
 
         
