@@ -723,8 +723,8 @@ export default class AjhInit{
         
             this.ajhkeys 
             = new AjhKeys(
-                3,
-                7,
+                2,
+                10,
                 this.modelInstance.keyboardTypes.HorizontalKeys,
                 this.modelInstance.scaleTypes.HarmonicicMinor,
                 0,
