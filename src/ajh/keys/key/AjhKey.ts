@@ -589,7 +589,7 @@ export default class AjhKey {
                 this.KeyState.View.Colours.baseColour;
                 (this.KeyState.View.Body as Mesh).position.y = 0.5;
 
-                this.vibrate(0);
+                //this.vibrate(0);
 
             }
 
@@ -606,7 +606,7 @@ export default class AjhKey {
 
                 (this.KeyState.View.Body as Mesh).position.y = 0.3;
 
-                this.vibrate(100);
+               // this.vibrate(100);
                 this.startNote();
 
             }
