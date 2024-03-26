@@ -267,7 +267,10 @@ populateGUI( drag:boolean = false )  {
             this._modelInstance.currentKeyBoard, 
             'numberOfColumns', 
             1,12,1
-        ).name("number of keys").onChange(function(evt){
+        )
+        .name("number of keys")
+        .listen()
+        .onChange(function(evt){
 
         
             console.log("setting key columns:"+ evt.value);
