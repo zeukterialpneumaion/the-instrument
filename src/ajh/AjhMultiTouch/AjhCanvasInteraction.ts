@@ -478,7 +478,7 @@ export default class AjhCanvasInteraction {
             .EventMemoryCache.forEach(
                 (evt,index) => {
 
-                    cachedEventIds += ": " + evt.pointerId 
+                    cachedEventIds += evt.pointerId + "," 
 
 
                 }
@@ -537,7 +537,7 @@ export default class AjhCanvasInteraction {
                 +
                 cachedEventIds
                 +
-                ": ]",
+                " ]",
                 
                 //info
                 "info ajh.",

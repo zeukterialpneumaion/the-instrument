@@ -103,8 +103,9 @@ export default class AjhMultiTouchManager {
 
   // ======================================================== //
 
-    getRaycasterWithPointById( 
+    getRaycasterWithPointById(
         itemId : any
+
     ) : AjhRaycasterWithPoint  | null {
 
         // Return the cache for this event's target element
@@ -112,12 +113,16 @@ export default class AjhMultiTouchManager {
         let foundRaycasterWithPoint = null;
 
         for (
+
             let index = 0; 
             index < this.raycastersWithPoints.length; 
             index++
+
         ) {
 
-            const element = this.raycastersWithPoints[index];
+            const element 
+            = 
+            this.raycastersWithPoints[index];
 
             if( itemId == element.id ){
 

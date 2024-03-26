@@ -1,12 +1,12 @@
 import AjhModel from './ajh/datamodels/AjhModel';
 
-import AjhThreeInit from './ajh/helpers/AjhThreeInit';
+import AjhInit from './ajh/helpers/AjhInit';
 
 // ============================================================ //
 
 let modelInstance = AjhModel.Instance;
 
-let initializer:AjhThreeInit = new AjhThreeInit();
+let initializer:AjhInit = new AjhInit();
 
 const CANVAS_ID = 'scene';
 

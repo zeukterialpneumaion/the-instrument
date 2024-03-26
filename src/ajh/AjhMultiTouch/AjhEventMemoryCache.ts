@@ -85,7 +85,7 @@ export default class AjhEventMemoryCache {
         
             if(foundEventMemoryCache == null){
                 
-                this.logEvents.log("cache handling :: found event == null", itemId);
+               this.logEvents.log("cache handling ::  no event found== null", itemId);
             }
         
             return foundEventMemoryCache;

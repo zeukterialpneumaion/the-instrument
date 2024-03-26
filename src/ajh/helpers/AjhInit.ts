@@ -42,7 +42,7 @@ import AjhFullScreenObject from "./AjhFullScreenObject";
 
 // ============================================================ //
 
-export default class AjhThreeInit{
+export default class AjhInit{
 
     // instance variables //
 
