@@ -50,21 +50,22 @@ export default class AjhColours {
     //
     private _spectrumArray: Array<Color>;
 
-    private _spectrumLightArray: Array<Color>;
-    public get spectrumLightArray(): Array<Color> {
-        return this._spectrumLightArray;
+    private _spectrumLightDarkArray: Array<Array<Color>> 
+    = new Array<Array<Color>>();
+    public get spectrumLightDarkArray(): Array<Array<Color>> {
+        return this._spectrumLightDarkArray;
     }
-    public set spectrumLightArray(value: Array<Color>) {
-        this._spectrumLightArray = value;
+    public set spectrumLightDarkArray(value: Array<Array<Color>>) {
+        this._spectrumLightDarkArray = value;
     }
 
-    private _spectrumDarkArray: Array<Color>;
-    public get spectrumDarkArray(): Array<Color> {
-        return this._spectrumDarkArray;
-    }
-    public set spectrumDarkArray(value: Array<Color>) {
-        this._spectrumDarkArray = value;
-    }
+    // private _spectrumDarkArray: Array<Color>;
+    // public get spectrumDarkArray(): Array<Color> {
+    //     return this._spectrumDarkArray;
+    // }
+    // public set spectrumDarkArray(value: Array<Color>) {
+    //     this._spectrumDarkArray = value;
+    // }
     
 
     ////////////////////////////////////////////////////////
@@ -72,35 +73,41 @@ export default class AjhColours {
     //
     constructor(
         id : number,
-        amountOfColours: number = 24
+        amountOfColours: number = 24,
+        octaves:number
     ) {
         
         this._id = id;
         this._amountOfColours = amountOfColours;
-        this._seedColour = this.seedColours[id]
-        this._lightdarkArray 
-        = this.generateLightToDarkArray(
-            amountOfColours, 
-            this.seedColours[id]
-        );
+       // this._seedColour = this.seedColours[id]
+        // this._lightdarkArray 
+        // = this.generateLightToDarkArray(
+        //     amountOfColours, 
+        //     this.seedColours[id]
+        // );
         this._spectrumArray 
         = this.generateSpectrumArray(
-            amountOfColours,0.2
+            amountOfColours,
+            0.2
         );
 
-        this._spectrumLightArray 
-        = this.generateSpectrumArray(
-            amountOfColours,0.4
-        );
 
-        this._spectrumDarkArray 
-        = this.generateSpectrumArray(
-            amountOfColours,0.04 //0.07
-        );
+        this.spectrumLightDarkArray = 
+        this.generateSpectrumLightToDarkArray(octaves);
 
-        this._light 
-        = this.lightdarkArray[this.lightdarkArray.length-1];
-        this._dark = this.lightdarkArray[0];
+        // this._spectrumLightArray 
+        // = this.generateSpectrumArray(
+        //     amountOfColours,0.4
+        // );
+
+        // this._spectrumDarkArray 
+        // = this.generateSpectrumArray(
+        //     amountOfColours,0.04 //0.07
+        // );
+
+        // this._light 
+        // = this.lightdarkArray[this.lightdarkArray.length-1];
+        // this._dark = this.lightdarkArray[0];
 
     }
 
@@ -128,81 +135,125 @@ export default class AjhColours {
     }
 
 
-    public generateSpectrumArray(amount:number, brightness:number = 0.5){
+        public generateSpectrumArray(
+            amount:number = 12, 
+            brightness:number = 0.5
+        ){
 
-        let h = Math.random()*1;
-        let s = 0.5;
-        let l = 0.3;
-    
-        let colourArray : Array<Color> = [];
+            amount = 12;
+
+            let h = Math.random()*1;
+            let s = 0.5;
+            let l = 0.3;
         
-        for (let index = 0; index < amount; index++) {
-          
-          let colour = new Color();
-          
-          h = 0.000 + ( (index / amount) * 1.00 );
-          
-          colour.setHSL(h,1,brightness);
-          
-          colourArray.push(colour)
-          
-        }
-
-    
-        return colourArray;
-    
-    }
-
-    public  generateLightToDarkArray(amount, seedcolour:Color = new Color(0x00ff00)){
-
-        let h = Math.random()*1;
-        let s = 1;
-        let l = 0.16;
-     
-        // create HSL object and populate from seed:
-        let seedhsl: any = { 
-        h: 0, 
-        s: 0, 
-        l: 0 
-        }; 
-        seedcolour.getHSL(seedhsl);
-    
-        let colourArray : Array<Color> = [];
-        
-        for (let index = 0; index < amount; index++) {
-          
+            let colourArray : Array<Color> = [];
+            
+            for (let index = 0; index < amount; index++) {
+            
             let colour = new Color();
             
-            l = 0.003 + ( (index / amount) * 0.9 );
-
-            // set hue and saturation from seed
-            // set lightness from array index value :
-            colour.setHSL(
-                    seedhsl.h,
-                    seedhsl.s,
-                    l
-            );
-          
+            h = 0.000 + ( (index / amount) * 1.00 );
+            
+            colour.setHSL(h,1,brightness);
+            
             colourArray.push(colour)
-          
+            
+            }
+
+        
+            return colourArray;
+        
         }
+
+        public  generateLightToDarkArray(
+            amount, 
+            seedcolour:Color
+        ) : Array<Color>
+        {
+            
+            //TODO:: GET THIS WORKING PROPERLY AND LOGICALLY::
+            // at the moment i am forcing it to the max possible rows plus the max scale offset
+            amount = 11;
+
+            let colourArray : Array<Color> = new Array<Color>();
+            
+            //dummy initial values
+            let h = Math.random()*1;
+            let s = 1;
+            let l = 0.16;
+        
+            // create HSL object and populate from seed:
+            let seedhsl: any = { 
+            h: 0, 
+            s: 0, 
+            l: 0 
+            }; 
+            seedcolour.getHSL(seedhsl);
+        
+        
+            /**TODO - sort out these hard wired values !!!*/ 
+            for (let index = 0; index < amount; index++) {
+            
+                let offsetLightness = -0.07;// -(amount/47.33)
+                let divisor = 19.33
+                let colour = new Color();
+                
+                l = offsetLightness + (( (index) / amount) * (amount/divisor));
+                s = (offsetLightness + (( (index) / amount) * (amount/divisor)))/4;
+                // set hue and saturation from seed
+                // set lightness from array index value :
+                colour.setHSL(
+                        seedhsl.h,
+                        seedhsl.s - s,
+                        seedhsl.l + l
+                );
+            
+                colourArray.push(colour)
+            
+            }
+
+            return colourArray;
+            
+        }
+
+
+        public  generateSpectrumLightToDarkArray(octaves:number): Array<Array<Color>> {
+
+            let spectrums = new Array<Array<Color>>();
+
+            console.log("GENERATING COLOURS FROM SPECTRUM :: LENGTH :: "+this.spectrumArray.length)
+            
+            for (
+                let index = 0; 
+                index < this._spectrumArray.length; 
+                index++
+            ) {
+
+
+                //spectrums[index] = new Array<Color>();
+                spectrums.push(
+                    this.generateLightToDarkArray(
+                        octaves,
+                        this.spectrumArray[index]
+                    )
+                );
+
+                console.log(
+                    "SPECTRUMLD::"
+                    +
+                    spectrums[spectrums.length-1].length
+                    +
+                    "::"
+                    +
+                    +
+                    spectrums[spectrums.length-1][0].toJSON()
+                )
     
-        // let colourOff = new Color();
-    
-        // colourOff.setHSL(h,s,l);
-    
-        // //h = 0.2;//r;
-        // s = 1;//g;
-        // l = 0.45;//b;
-    
-        // let colourOn = new Color();
-    
-        // colourOn.setHSL(h,s,l);
-    
-    
-        return colourArray;
-    
-    }
+            }
+
+            return spectrums
+
+        }
     
     ///////////////////////////////////////////////////////////////
 

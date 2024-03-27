@@ -263,30 +263,30 @@ populateGUI( drag:boolean = false )  {
         =  
         this.modelInstance.gui.addFolder('change display').close();
         
-        viewsFolder.add(
-            this._modelInstance.currentKeyBoard, 
-            'numberOfColumns', 
-            1,12,1
-        )
-        .name("number of keys")
-        .listen()
-        .onChange(function(evt){
+        // viewsFolder.add(
+        //     this._modelInstance.currentKeyBoard, 
+        //     'numberOfColumns', 
+        //     1,12,1
+        // )
+        // .name("number of keys")
+        // .listen()
+        // .onChange(function(evt){
 
         
-            console.log("setting key columns:"+ evt.value);
+        //     console.log("setting key columns:"+ evt.value);
 
-            this.modelInstance.currentKeyBoard
-                    .createKeys(
-                        ""
-                    );
+        //     this.modelInstance.currentKeyBoard
+        //             .createKeys(
+        //                 ""
+        //             );
 
-        }.bind(this));
+        // }.bind(this));
 
         viewsFolder.add(
             this._modelInstance.currentKeyBoard, 
             'numberOfRows', 
             1,6,1
-        ).name("number of rows").onChange(function(evt){
+        ).name("Number of Octaves to Play").onChange(function(evt){
 
         
             console.log("setting key rows:"+ evt.value);

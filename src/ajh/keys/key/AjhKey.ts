@@ -4,7 +4,7 @@ import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeom
 import { Filter } from "tone";
 import AjhEventMemoryCache from "../../AjhMultiTouch/AjhEventMemoryCache";
 import AjhModel from "../../datamodels/AjhModel";
-import { deepDispose } from "../../helpers/scene/ajhThreeDisposal";
+import { deepDispose } from "../../helpers/disposal/ajhThreeDisposal";
 import AjhNamedNote from "../../sonics/AjhNamedNote";
 import AjhKeys from "../keyboards/AjhKeyBoard";
 import AjhIntersectionInstances from "./AjhIntersectionInstances";
@@ -136,8 +136,7 @@ export default class AjhKey {
 
                     colId,// ColId,// : number,
                     rowId,// RowId, // : number,
-
-                    new AjhKeyColours(), // Colours, // : AjhKeyColours,
+// Colours, // : AjhKeyColours,
                     keyHeight,// Height, // : number, 
                     keyWidth,// Width, // : number,
                 
@@ -528,7 +527,7 @@ export default class AjhKey {
 
                 material.color 
                 = 
-                this.KeyState.View.Colours.highlightColour;
+                this.KeyState.View.Colours.accidentalsDarkLightColours[3];
 
                 material.needsUpdate = true;
         
@@ -536,7 +535,7 @@ export default class AjhKey {
 
                 material.color 
                 = 
-                this.KeyState.View.Colours.baseColour;
+                this.KeyState.View.Colours.accidentalsDarkLightColours[1];
 
                 material.needsUpdate = true;    
 
@@ -570,23 +569,43 @@ export default class AjhKey {
      * */
     // =================================================== //
   
-        changeIntersectedColour() {
+        playOrStopNoteAndChangeIntersectedColourToggle() {
 
             if( this.intersectedInstances.instances.length == 0 ){
                 
-                    
-                // ((this.KeyState.View.Body as Mesh).material as MeshMatcapMaterial).color 
-                // = 
-                // new Color( + this.name );
 
                  this.stopNote();
                 
-                (
-                    (this.KeyState.View.Body as Mesh)
-                        .material as MeshMatcapMaterial
-                ).color 
-                = 
-                this.KeyState.View.Colours.baseColour;
+                 let colour: Color;
+
+                //  if(this.KeyState.View.IsSharpOrFlat){
+
+                //     colour 
+                //     = 
+                //     this.KeyState.View.Colours
+                //     .accidentalsDarkLightColours[
+                //         this.KeyState.Sonics.Octave
+                //     ];
+
+                //  } else {
+                    // colour 
+                    // = 
+                    // this.KeyState.View.Colours
+                    // .naturalsDarkLightColours[
+                    //     this.KeyState.Sonics.Octave
+                    // ];
+
+                    this.repaintBody();
+
+                // }
+
+                // (
+                //     (this.KeyState.View.Body as Mesh)
+                //             .material as MeshMatcapMaterial
+                // ).color 
+                // = 
+                // colour;
+
                 (this.KeyState.View.Body as Mesh).position.y = 0.5;
 
                 //this.vibrate(0);
@@ -851,29 +870,39 @@ export default class AjhKey {
                 
             if(this.modelInstance.useSpectrumColours){
 
-                this.KeyState.View.Colours.baseColour
+                console.log(
+                    "SPECTRUM"
+                    +
+                    this.KeyState.KeyboardInstance
+                    .KeyColoursDef.spectrumDarkLightColours.length
+                );
+
+                this.KeyState.View.Colours.accidentalsBaseColour
                 =
                 material.color 
                 = 
-                this.modelInstance
-                    .colours
-                    .spectrumArray[
+                this.KeyState.View.Colours.spectrumDarkLightColours
+                    [
+                       // 0
                         this.modelInstance
-                        .scaleTypes
+                         .scaleTypes
                         .getNoteIndexFromName(this.KeyState.Sonics.NoteName)
                         
                         // this.KeyState.View.ColId%12
-                    ];
+                    ][ this.KeyState.Sonics.Octave ];
 
                 material.needsUpdate = true;
 
             } else {
 
-                this.KeyState.View.Colours.baseColour
-                =
+                //this.KeyState.View.Colours.
+                //=
                 material.color 
                 = 
-                this.KeyState.KeyboardInstance.KeyColoursDef.Naturals;
+                this.KeyState.KeyboardInstance.KeyColoursDef
+                .naturalsDarkLightColours[
+                    this.KeyState.Sonics.Octave
+                ];
                  //new Color('#408080');
             }
         
@@ -881,31 +910,41 @@ export default class AjhKey {
 
             if(this.modelInstance.useSpectrumColours){
                 
-                this.KeyState.View.Colours.baseColour
-                =
+               // this.KeyState.View.Colours.
+                //=
                 material.color 
                 =
-                this.modelInstance.colours.spectrumArray[this.KeyState.View.ColId%12];
-                
+                this.KeyState.View.Colours.spectrumDarkLightColours
+                [
+                   // 0
+                    this.modelInstance
+                     .scaleTypes
+                    .getNoteIndexFromName(this.KeyState.Sonics.NoteName)
+                    
+                    // this.KeyState.View.ColId%12
+                ][ this.KeyState.Sonics.Octave ];
+
                 material.needsUpdate = true;
 
             }
             else{
 
-                this.KeyState.View.Colours.baseColour
-                =
+                // this.KeyState.View.Colours.baseColour
+                // =
                 material.color 
                 = 
-                this.KeyState.KeyboardInstance.KeyColoursDef.Accidentals;
-                //new Color('#c18c3e');
+                this.KeyState.View.Colours.
+                accidentalsDarkLightColours[
+                    this.KeyState.Sonics.Octave
+                ];
 
             }
 
         }
 
-        this.KeyState.View.Colours.baseColour = material.color;
+       // this.KeyState.View.Colours.baseColour = material.color;
 
-        this.KeyState.View.Colours.createHighLightColourFromBaseColour();
+       // this.KeyState.View.Colours.createHighLightColourFromBaseColour();
  
     }
 
@@ -983,9 +1022,9 @@ export default class AjhKey {
 
 
 
-        public get colours(): AjhKeyColours {
-            return this.KeyState.View.Colours;
-        }
+        // public get colours(): AjhKeyColours {
+        //     return this.KeyState.View.Colours;
+        // }
     
         //  public get playing(): boolean {
         //     return this._playing;
@@ -1140,7 +1179,7 @@ export default class AjhKey {
         }
         public set muted(value: boolean) {
             this._muted = value;
-            this.setKeyColour(this.KeyState.View.Colours.inactiveColour)
+          //  this.setKeyColour(this.KeyState.View.Colours.inactiveColour)
         }
 
     ////////////////////////////////////////////////////////////////
@@ -1177,9 +1216,9 @@ export default class AjhKey {
 
     ////////////////////////////////////////////////////////////////
         
-        public set colours(value: AjhKeyColours) {
-            this.KeyState.View.Colours = value;
-        }
+        // public set colours(value: AjhKeyColours) {
+        //     this.KeyState.View.Colours = value;
+        // }
 
         public set touched(value: boolean) {
             this.KeyState.State.IsRayTouched = value;

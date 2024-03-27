@@ -1,5 +1,5 @@
 import { WebGLRenderer } from 'three';
-import AjhModel from '../datamodels/AjhModel';
+import AjhModel from '../../datamodels/AjhModel';
 
 const modelInstance = AjhModel.Instance;
 

@@ -395,7 +395,7 @@ export default class AjhMultiTouchManager {
     
         }
 
-        itemToCheck.changeIntersectedColour();
+        itemToCheck.playOrStopNoteAndChangeIntersectedColourToggle();
 
         return itemToCheck.intersectedInstances
     

@@ -38,13 +38,12 @@ import GUI from "lil-gui";
 import { DragControls } from "three/examples/jsm/controls/DragControls";
 import AjhCanvasInteraction from "../AjhMultiTouch/AjhCanvasInteraction";
 import AjhPointerEvents from "../ajhevents/AjhPointerEvents";
-import AjhColours from "../colours/AjhColours";
 import AjhColourSchemeOptions from "../configs/options/AjhColourSchemeOptions";
 import AjhInstrumentOptions from "../configs/options/AjhInstrumentOptions";
 import AjhScaleOptions from "../configs/options/AjhScaleOptions";
 import AjhInformationWindow from "../displays/AjhInformationWindow";
 import AjhInitialScreen from "../displays/AjhInitialScreen";
-import AjhFullScreenObject from "../helpers/AjhFullScreenObject";
+import AjhFullScreenObject from "../helpers/scene/AjhFullScreenObject";
 import AjhKeyInterfaceOptions from "../keys/key/AjhKeyInterfaceOptions";
 import AjhSelectedKeys from "../keys/key/AjhSelectedKeys";
 import AjhKeyboardTypes from "../keys/keyboards/AJhKeyBoardTypes";
@@ -182,7 +181,7 @@ export default class AjhModel {
 
     private _count: number = 0;
 
-    private _colours: AjhColours;
+   // private _colours: AjhColours;
 
     private _buffers: Array<any>;// = allBuffers;
 
@@ -223,47 +222,21 @@ export default class AjhModel {
 
         console.log("MODEL Instantiated");
 
-        this._colours 
-        = 
-        new AjhColours( 
+        // this._colours 
+        // = 
+        // new AjhColours( 
         
-            0,
-            this.ScalesCreation.noteNamesOneOctave.length
+        //     0,
+        //     this.ScalesCreation.noteNamesOneOctave.length
         
-        );
+        // );
 
-        this._colours
-        .generateSpectrumArray(
+        // this._colours
+        // .generateSpectrumArray(
         
-            this.ScalesCreation.noteNamesOneOctave.length, 0.3
+        //     this.ScalesCreation.noteNamesOneOctave.length, 0.3
         
-        );
-
-        // for (
-        //     let index = 0;
-        //     index < 4;
-        //     index++
-        // ) {
-
-            // this.colours.push(
-
-            //     new AjhColours(
-
-            //         index,
-            //         this.scales.noteNames.length
-
-            //     )
-
-            // );
-
-            // this.colours[index]
-            //     .generateSpectrumArray(
-            //         this.scales.noteNames.length, 0.3
-            //     )
-
-               
-
-       // }
+        // );
 
        //this.instruments = new AjhInstruments();
         this.musicalKeyEventEmitter = createInstrumentEventBroker();
@@ -462,12 +435,12 @@ export default class AjhModel {
 
 // =============================================================== //
 
-    public get colours()
-        : AjhColours {
+    // public get colours()
+    //     : AjhColours {
 
-        return this._colours;
+    //     return this._colours;
 
-    }
+    // }
 
     public get counter(): number {
 
@@ -571,11 +544,11 @@ export default class AjhModel {
         this._isTouchingSomething = value;
     }
 
-    public set colours(
-        value: AjhColours
-    ) {
-        this._colours = value;
-    }
+    // public set colours(
+    //     value: AjhColours
+    // ) {
+    //     this._colours = value;
+    // }
 
     public set counter(value: number) {
         this._counter = value;

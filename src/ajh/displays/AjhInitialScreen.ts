@@ -2,7 +2,7 @@ import { Mesh, MeshMatcapMaterial, Object3D, Raycaster, Vector2, WebGLRenderer }
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import "../../assets/css/AjhFonts.css";
 import AjhModel from "../datamodels/AjhModel";
-import AjhFullScreenObject from "../helpers/AjhFullScreenObject";
+import AjhFullScreenObject from "../helpers/scene/AjhFullScreenObject";
 
 import * as Tone from "tone";
 import AjhGUIControls from "../gui/AjhGUIControls";

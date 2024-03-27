@@ -54,7 +54,7 @@ export default class AjhInstruments{
         this.ajhReverb 
         = new Reverb( 
             {
-                decay: 1.5,
+                decay: 2.0,
                 wet: 0.90,
                 preDelay: 0.1
             })
@@ -106,7 +106,6 @@ export default class AjhInstruments{
         instrument
         .connect(this._lpFilter)
         .connect(this.ajhReverb)
-       // .connect(this.volume)
         .toDestination();
 
     }

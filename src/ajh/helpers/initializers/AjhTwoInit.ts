@@ -26,7 +26,7 @@ import { SSAOPass } from 'three/examples/jsm/postprocessing/SSAOPass.js';
 
 
 
-import { toggleFullScreen } from './AjhFullscreen';
+import { toggleFullScreen } from '../scene/AjhFullscreen';
 
 import Stats from 'three/examples/jsm/libs/stats.module';
 
@@ -37,11 +37,11 @@ import '../../assets/css/style.css';
 import { DragControls } from "three/examples/jsm/controls/DragControls";
 
 
-import AjhPointerEvents from "../ajhevents/AjhPointerEvents";
-import AjhModel from "../datamodels/AjhModel";
-import AjhInitialScreen from "../displays/AjhInitialScreen";
-import AjhKeys from "../keys/keyboards/AjhKeyBoard";
-import AjhFullScreenObject from "./AjhFullScreenObject";
+import AjhPointerEvents from "../../ajhevents/AjhPointerEvents";
+import AjhModel from "../../datamodels/AjhModel";
+import AjhInitialScreen from "../../displays/AjhInitialScreen";
+import AjhKeys from "../../keys/keyboards/AjhKeyBoard";
+import AjhFullScreenObject from "../scene/AjhFullScreenObject";
 
 // ============================================================ //
 

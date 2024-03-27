@@ -1,5 +1,5 @@
 import { BoxGeometry, Color, Material, Mesh, MeshStandardMaterial, WebGLRenderer } from "three";
-import AjhModel from "../datamodels/AjhModel";
+import AjhModel from "../../datamodels/AjhModel";
 
 export default class AjhFullScreenObject {
 

@@ -22,23 +22,23 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 
 
 
-import { toggleFullScreen } from './AjhFullscreen';
+import { toggleFullScreen } from '../scene/AjhFullscreen';
 
 import Stats from 'three/examples/jsm/libs/stats.module';
 
-import '../../assets/css/style.css';
+import '../../../assets/css/style.css';
 
 
 
 import { DragControls } from "three/examples/jsm/controls/DragControls";
 
 
-import AjhCanvasInteraction from "../AjhMultiTouch/AjhCanvasInteraction";
-import AjhModel from "../datamodels/AjhModel";
-import AjhInformationWindow from "../displays/AjhInformationWindow";
-import AjhInitialScreen from "../displays/AjhInitialScreen";
-import AjhKeys from "../keys/keyboards/AjhKeyBoard";
-import AjhFullScreenObject from "./AjhFullScreenObject";
+import AjhCanvasInteraction from "../../AjhMultiTouch/AjhCanvasInteraction";
+import AjhModel from "../../datamodels/AjhModel";
+import AjhInformationWindow from "../../displays/AjhInformationWindow";
+import AjhInitialScreen from "../../displays/AjhInitialScreen";
+import AjhKeyBoard from "../../keys/keyboards/AjhKeyBoard";
+import AjhFullScreenObject from "../scene/AjhFullScreenObject";
 
 // ============================================================ //
 
@@ -71,7 +71,7 @@ export default class AjhInit{
     directionalLight: DirectionalLight;
 
     //meshes
-    ajhkeys : AjhKeys;
+    ajhkeys : AjhKeyBoard;
     fullscreenobject : AjhFullScreenObject;
     cube : Mesh;
 
@@ -722,13 +722,14 @@ export default class AjhInit{
         
         
             this.ajhkeys 
-            = new AjhKeys(
-                2,
-                10,
-                this.modelInstance.keyboardTypes.HorizontalKeys,
+            = new AjhKeyBoard(
+                5,
+                7,
+                this.modelInstance.keyboardTypes.VerticalKeys,
                 this.modelInstance.scaleTypes.HarmonicicMinor,
                 0,
-                3
+                1
+                
             );
 
             this.modelInstance.informationWindow = new AjhInformationWindow();

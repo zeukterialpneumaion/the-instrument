@@ -1,10 +1,10 @@
-import { Mesh, MeshMatcapMaterial, Scene, Vector3, WebGLRenderer } from 'three';
+import { Color, Mesh, MeshMatcapMaterial, Scene, Vector3, WebGLRenderer } from 'three';
 import AjhModel from '../../datamodels/AjhModel';
-import { deepDispose } from '../../helpers/scene/ajhThreeDisposal';
+import { deepDispose } from '../../helpers/disposal/ajhThreeDisposal';
 import AjhScaleDefinition from '../../sonics/AjhScaleDefinition';
 import AjhKey from '../key/AjhKey';
-import AjhKeyColoursDefinition from '../key/AjhKeyColoursDefinition';
 import AjhKeyboardTypes from './AJhKeyBoardTypes';
+import AjhKeyColoursDefinition from './AjhKeyColoursDefinition';
 
 
 export default class AjhKeyBoard {
@@ -50,12 +50,17 @@ public BaseMaterial
 // roughness: 0.1,
     });
 
+    darkToLightColours:Array<Color>;
+
 //////////////////////////////////////////////////////////////
 
 
-    public KeyColoursDef : AjhKeyColoursDefinition 
-    = 
-    new AjhKeyColoursDefinition();
+    // public KeyColoursDef : AjhKeyColoursDefinition 
+    // = 
+    // new AjhKeyColoursDefinition();
+    
+    public KeyColoursDef : AjhKeyColoursDefinition;
+
 
     private _id: number;
     public get id(): number {
@@ -192,7 +197,9 @@ public BaseMaterial
         keysType : string = "pianogrid",
         scaleType : AjhScaleDefinition,
         semitoneOffset :number = 0,
-        octaveToStartFrom : number = 3
+        octaveToStartFrom : number = 3,
+        naturalsColour:string = "#408080",
+        accidentalsColour:string = "#c18c3e",
 
     ){
         
@@ -211,6 +218,16 @@ public BaseMaterial
 
         this.divisor = 100;
 
+        this.KeyColoursDef 
+        = 
+        new AjhKeyColoursDefinition(
+            accidentalsColour,
+            naturalsColour,
+            this.numberOfColumns,
+            this.numberOfRows
+        );
+        
+        
         this.KeyBoardTypeInstance = keysType
         
         this.routeToCorrectFunctionsForKeySetType();
@@ -341,17 +358,23 @@ createHorizontalKeys(){
 
              }
 
+             /**TODO - make this a more global parameter*/
+             let maxOctaves = 9;
              let octave 
-             = 
-             this.octaveToStartFrom 
-             +
-             rowIndex
-             +
-             Math.floor(
-                 ( colIndex )
-                 /
-                 this.scaleType.scale.length
-             );
+             =
+             maxOctaves
+             -
+             (
+                this.octaveToStartFrom 
+                +
+                rowIndex
+                +
+                Math.floor(
+                    ( colIndex )
+                    /
+                    this.scaleType.scale.length
+                )
+            );
 
              let keywidth = window.innerWidth;
             //  (window.innerWidth/this.numberOfColumns)
@@ -482,18 +505,19 @@ createVerticalKeys(){
              //     isBlackKey = true;
              // }
              
-
-             let octave 
-             = 
-             this.octaveToStartFrom 
-             +
-             rowIndex
-             +
-             Math.floor(
-                 ( colIndex )
-                 /
-                 this.scaleType.scale.length
-             );
+            /**TODO - make this a more global parameter*/
+            let maxOctaves = 5;
+            let octave 
+            =
+            this.octaveToStartFrom 
+            +
+            (this.numberOfRows-rowIndex)
+            +
+            Math.floor(
+                ( colIndex )
+                /
+                this.scaleType.scale.length
+            );
 
              let keywidth =
              (window.innerWidth/this.numberOfColumns)

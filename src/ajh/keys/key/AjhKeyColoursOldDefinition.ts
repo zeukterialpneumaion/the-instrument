@@ -1,24 +1,24 @@
 import { Color } from "three";
 
-export default class AjhKeyColoursDefinition {
+export default class AjhKeyColoursOldDefinition {
 
     Naturals : Color = new Color();
     Accidentals : Color = new Color();
 
     constructor(){
 
-        this.setAccidentalsColour(0xc18c3e );
-        this.setNaturalsColour( 0x408080 );
+        this.setAccidentalsColourByHex(0xc18c3e );
+        this.setNaturalsColourByHex( 0x408080 );
 
     };
 
-    setAccidentalsColour(colour:any){
+    setAccidentalsColourByHex(colour:any){
 
         this.Accidentals.setHex(colour);
 
     }
 
-    setNaturalsColour(colour:any){
+    setNaturalsColourByHex(colour:any){
         
         this.Naturals.setHex(colour);
         

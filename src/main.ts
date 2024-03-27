@@ -1,6 +1,6 @@
 import AjhModel from './ajh/datamodels/AjhModel';
 
-import AjhInit from './ajh/helpers/AjhInit';
+import AjhInit from './ajh/helpers/initializers/AjhInit';
 
 // ============================================================ //
 

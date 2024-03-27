@@ -1,7 +1,7 @@
 import { InstancedMesh, Mesh, Vector2, Vector3 } from "three";
 import AjhSynthDefinition from "../../sonics/AjhSynthDefinition";
 import AjhKeyBoard from "../keyboards/AjhKeyBoard";
-import AjhKeyColours from "./AjhKeyColours";
+import AjhKeyColoursDefinition from "../keyboards/AjhKeyColoursDefinition";
 
 // ============================================================================== //
 
@@ -44,8 +44,6 @@ import AjhKeyColours from "./AjhKeyColours";
 
                 ColId : number,
                 RowId : number,
-
-                Colours : AjhKeyColours,
 
                 Height : number,
                 Width : number,
@@ -173,7 +171,6 @@ import AjhKeyColours from "./AjhKeyColours";
             ColId : number,
             RowId : number,
 
-            Colours : AjhKeyColours,
 
             Height : number,
             Width : number,
@@ -213,7 +210,7 @@ import AjhKeyColours from "./AjhKeyColours";
                         this.View.ColId = ColId;
                         this.View.RowId = RowId;
 
-                        this.View.Colours = Colours;
+                        this.View.Colours = keyboardInstance.KeyColoursDef;
 
                         this.View.Height = Height;
                         this.View.Width = Width;
@@ -377,7 +374,7 @@ export interface IKeyView {
 
     IsSharpOrFlat : boolean;
 
-    Colours : AjhKeyColours;
+    Colours : AjhKeyColoursDefinition;
 
     setIsSelected(state:boolean) : void ;
     setIsActive(state:boolean) : void ;
@@ -390,7 +387,7 @@ export interface IKeyView {
         IsSharpOrFlat : boolean,
         ColId : number,
         RowId : number,
-        Colours : AjhKeyColours,
+        Colours : AjhKeyColoursDefinition,
         Height : number,
         Width : number,
         Length : number,
@@ -456,11 +453,11 @@ export class KeyView implements IKeyView {
         this._IsSharpOrFlat = value;
     }
     
-    private _Colours: AjhKeyColours;
-    public get Colours(): AjhKeyColours {
+    private _Colours: AjhKeyColoursDefinition;
+    public get Colours(): AjhKeyColoursDefinition {
         return this._Colours;
     }
-    public set Colours(value: AjhKeyColours) {
+    public set Colours(value: AjhKeyColoursDefinition) {
         this._Colours = value;
     }
     
@@ -553,7 +550,7 @@ export class KeyView implements IKeyView {
         IsSharpOrFlat : boolean,
         ColId : number,
         RowId : number,
-        Colours : AjhKeyColours,
+        Colours : AjhKeyColoursDefinition,
         Height : number,
         Width : number,
         Length : number,

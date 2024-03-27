@@ -65,13 +65,13 @@ export default class AjhSynths {
                 oscillator: {
                     type: "fatsawtooth",
                     count: 3,
-                    spread: 30
+                    spread: 43.2
                 },
                 envelope: {
-                    attack: 0.74,
-                    decay: 0.1,
-                    sustain: 0.5,
-                    release: 0.8,
+                    attack: 1.34,
+                    decay: 1.9,
+                    sustain: 0.8,
+                    release: 1.8,
                     attackCurve: "exponential"
                 },
             })
@@ -95,13 +95,13 @@ export default class AjhSynths {
                 oscillator: {
                     type: "fattriangle",
                     count: 5,
-                    spread: 60
+                    spread: 67
                 },
                 envelope: {
                     attack: 0.71,
                     decay: 0.1,
                     sustain: 0.5,
-                    release: 0.8,
+                    release: 1.8,
                     attackCurve: "exponential"
                 },
             })
@@ -128,10 +128,10 @@ export default class AjhSynths {
                     spread: 60
                 },
                 envelope: {
-                    attack: 0.71,
-                    decay: 0.1,
+                    attack: 0.11,
+                    decay: 1.1,
                     sustain: 0.5,
-                    release: 0.8,
+                    release: 1.8,
                     attackCurve: "exponential"
                 },
             })
@@ -166,27 +166,27 @@ export default class AjhSynths {
         new DuoSynth(
             {
                     vibratoAmount: 0.5,
-                    vibratoRate: 5,
+                    vibratoRate: 5.18,
                     portamento: 0.1,
-                    harmonicity: 1.005,
+                    harmonicity: 1.045,
                     volume: 5,
                     voice0: {
                         oscillator: {
                             type: "sawtooth"
                         },
                         filter: {
-                            Q: 1,
+                            Q: 2,
                             type: "lowpass",
                             rolloff: -24
                         },
                         envelope: {
-                            attack: 0.61,
+                            attack: 0.81,
                             decay: 0.25,
                             sustain: 0.8,
                             release: 1.2
                         },
                         filterEnvelope: {
-                            attack: 0.001,
+                            attack: 0.071,
                             decay: 0.05,
                             sustain: 0.3,
                             release: 2,
@@ -204,13 +204,13 @@ export default class AjhSynths {
                             rolloff: -12
                         },
                         envelope: {
-                            attack: 0.25,
+                            attack: 0.65,
                             decay: 4,
                             sustain: 0.1,
-                            release: 0.8
+                            release: 1.3
                         },
                         filterEnvelope: {
-                            attack: 0.05,
+                            attack: 0.35,
                             decay: 0.05,
                             sustain: 0.7,
                             release: 2,
@@ -249,7 +249,7 @@ export default class AjhSynths {
                     attack: 0.8,
                     decay: 0.1,
                     sustain: 0.5,
-                    release: 0.8,
+                    release: 1.3,
                     attackCurve: "exponential"
                 },
             }
@@ -273,14 +273,14 @@ export default class AjhSynths {
                 {
                     oscillator: {
                         type: "fattriangle",
-                        count: 1,
-                        spread: 30
+                        count: 3,
+                        spread: 70
                     },
                     envelope: {
-                        attack: 0.62,
+                        attack: 1.13,
                         decay: 0.1,
                         sustain: 0.5,
-                        release: 0.8,
+                        release: 1.3,
                         attackCurve: "exponential"
                     },
                 }

@@ -239,9 +239,16 @@ export default class AjhCanvasInteraction {
 
             );
 
-            let instrumenttype 
-            = 
-            this._modelInstance.instruments.currentInstrument.name;
+            let instrumenttype: string = "instrument";
+            
+            if(this._modelInstance.instruments != undefined){
+                
+                instrumenttype 
+                = 
+                this._modelInstance.instruments.currentInstrument.name;
+
+            }
+           
 
             let currentscale 
             = 
