@@ -305,7 +305,7 @@ routeToCorrectFunctionsForKeySetType(){
     }
 
 //////////////////////////////////////////////////////////////
-
+//NOT USED :: GO TO VERTICAL KEYS 
 createHorizontalKeys(){
 
     
@@ -348,7 +348,13 @@ createHorizontalKeys(){
 
              if( 
                  this.scaleType.scale[
-                     colIndex % this.scaleType.scale.length
+                    ( 
+                        ((this.numberOfColumns-1) + colIndex) 
+                        - 
+                        this.semitoneOffset
+                    )
+                    % 
+                    this.scaleType.scale.length 
                  ].length 
                  == 
                  2 
@@ -359,7 +365,30 @@ createHorizontalKeys(){
              }
 
              /**TODO - make this a more global parameter*/
-             let maxOctaves = 9;
+             let maxOctaves = 5;
+
+            
+
+             // the length of scale:
+             let lengthOfScale = this.scaleType.scale.length;
+             
+             // the number of notes chromatically in octave
+             let chromaticNumberOfNotes = 12;
+
+             //the maximum number of Octaves to Show
+             let maximumOctaves = 6;
+
+
+             // the octave to start from
+             let initialOctave = this.octaveToStartFrom;
+
+             // the semitone offset
+             let semitoneoffset = this.semitoneOffset;
+
+
+            //  let octave 
+            //  =  
+
              let octave 
              =
              maxOctaves
@@ -367,13 +396,19 @@ createHorizontalKeys(){
              (
                 this.octaveToStartFrom 
                 +
-                rowIndex
+                rowIndex 
                 +
-                Math.floor(
-                    ( colIndex )
-                    /
-                    this.scaleType.scale.length
-                )
+                this.scaleType.octaveOffsets[colIndex]
+                // +
+                // Math.floor(
+                //     ( 
+                //         ((this.numberOfColumns-1) + colIndex) 
+                //         + 
+                //         this.semitoneOffset
+                //     )
+                //     /
+                //     this.scaleType.scale.length
+                // )
             );
 
              let keywidth = window.innerWidth;
@@ -398,11 +433,14 @@ createHorizontalKeys(){
                      ( window.innerWidth/this.numberOfColumns )  / this.modelInstance.camera.position.y,
                      isBlackKey,
                      this.scaleType.scale[ 
-                         ( 
-                             colIndex 
-                         )
+                        //  ( 
+                        //      ((this.numberOfColumns-1) + colIndex) 
+                        //      + 
+                        //      this.semitoneOffset
+                        //  )
+                         colIndex 
                          % 
-                         this.scaleType.scale.length 
+                         this.scaleType.scale.length                               
                      ],
                      octave,
                      this,
@@ -504,7 +542,8 @@ createVerticalKeys(){
              // ){
              //     isBlackKey = true;
              // }
-             
+            
+             this.scaleType.transpose(this.semitoneOffset)
             /**TODO - make this a more global parameter*/
             let maxOctaves = 5;
             let octave 
@@ -517,7 +556,15 @@ createVerticalKeys(){
                 ( colIndex )
                 /
                 this.scaleType.scale.length
-            );
+            )
+            + 
+            this.scaleType.octaveOffsets[colIndex%this.scaleType.scale.length];
+
+                console.log(
+                    "OCTAVE OFFSET::"
+                    +
+                    this.scaleType.octaveOffsets[colIndex%this.scaleType.intervals.length]
+                    )
 
              let keywidth =
              (window.innerWidth/this.numberOfColumns)

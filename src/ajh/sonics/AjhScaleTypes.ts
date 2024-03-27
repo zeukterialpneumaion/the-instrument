@@ -135,6 +135,12 @@ export default class AjhScaleTypes {
 
         let notenames = new Array<string>();
 
+        
+        let newoffsets:Array<number> 
+            =
+            new Array<number>();
+
+           
         for (
             
             let index = 0; 
@@ -143,7 +149,11 @@ export default class AjhScaleTypes {
         
         ) {
 
-            const element = intervals[index];
+
+          const element = intervals[index];
+
+            
+         
 
             notenames.push( 
                 this._noteNamesOneOctave[
@@ -158,11 +168,26 @@ export default class AjhScaleTypes {
 
         }
 
+        intervals.forEach((element,index) => {
+            if(index > this.SemitoneOffset){
+            newoffsets.push(0);
+            } else {
+                newoffsets.push(1);
+            }
+        });
+
         synthDef.scale 
         =  notenames;
 
         synthDef.intervals 
         =  intervals;
+
+        synthDef.octaveOffsets 
+        = newoffsets;
+
+        console.log("scaleType octaveoffsets :: " 
+        +
+        synthDef.octaveOffsets.toString())
 
         return synthDef;
 
@@ -213,10 +238,23 @@ export default class AjhScaleTypes {
         
             let notenames = new Array<string>();
 
+            let newoffsets:Array<number> 
+            =
+            new Array<number>();
+
+
             for (let index = 0; index < foundScale.intervals.length; index++) {
 
                 const element = foundScale.intervals[index];
 
+                if(index < (foundScale.intervals.length-offset) ){
+                    newoffsets.push(1);
+                  }
+                  else{
+    
+                    newoffsets.push(0);
+    
+                  }
             
 
                 notenames.push( 
@@ -235,6 +273,8 @@ export default class AjhScaleTypes {
             }
 
             foundScale.scale = notenames;
+            
+            foundScale.octaveOffsets =  newoffsets;
 
            
 
