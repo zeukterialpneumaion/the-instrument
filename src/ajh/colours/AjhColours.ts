@@ -173,7 +173,7 @@ export default class AjhColours {
             
             //TODO:: GET THIS WORKING PROPERLY AND LOGICALLY::
             // at the moment i am forcing it to the max possible rows plus the max scale offset
-            amount = 11;
+            amount = 13;
 
             let colourArray : Array<Color> = new Array<Color>();
             
@@ -189,6 +189,13 @@ export default class AjhColours {
             l: 0 
             }; 
             seedcolour.getHSL(seedhsl);
+
+            let seedrgb: any = { 
+                r: 0, 
+                g: 0, 
+                b: 0 
+                }; 
+                seedcolour.getRGB(seedrgb);
         
         
             /**TODO - sort out these hard wired values !!!*/ 
@@ -202,13 +209,21 @@ export default class AjhColours {
                 s = (offsetLightness + (( (index) / amount) * (amount/divisor)))/4;
                 // set hue and saturation from seed
                 // set lightness from array index value :
-                colour.setHSL(
-                        seedhsl.h,
-                        seedhsl.s - s,
-                        seedhsl.l + l
-                );
-            
-                colourArray.push(colour)
+                // colour.setHSL(
+                //         seedhsl.h,
+                //         seedhsl.s - s,
+                //         seedhsl.l + l
+                // );
+                    //colour = this.shadeColor(colour, (index/amount)*1)
+                    let newCol :Color = new Color();
+                    newCol.r = seedrgb.r * ( ( index  ) / amount ) * 1
+                    newCol.g =  seedrgb.g * ( ( index  ) / amount ) * 1
+                    newCol.b = seedrgb.b * ( ( index  ) / amount ) * 1
+
+                    
+                colourArray.push(
+                    newCol
+                )
             
             }
 
@@ -255,6 +270,38 @@ export default class AjhColours {
 
         }
     
+        shadeColor(color:Color, percent) {
+
+            var R = color.r;
+            var G = color.g;
+            var B = color.b;
+        
+            // R = (R * (100 + percent) / 100);
+            // G = (G * (100 + percent) / 100);
+            // B = (B * (100 + percent) / 100);
+
+            R = color.r *(1/percent)
+            G= color.g *(1/percent)
+            B = color.b *(1/percent)
+
+            color.r = R;
+            color.g = G;
+            color.b = B;
+        
+            // R = (R<255)?R:255;  
+            // G = (G<255)?G:255;  
+            // B = (B<255)?B:255;  
+        
+            // R = Math.round(R)
+            // G = Math.round(G)
+            // B = Math.round(B)
+        
+            // var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+            // var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+            // var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+            let out:string = "rgb(" + (R) + "," + (G) + "," + (B) + ")";
+            return color;
+        }
     ///////////////////////////////////////////////////////////////
 
     private generateRandomColours(amount,colourArray){

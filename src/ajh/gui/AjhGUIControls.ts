@@ -282,11 +282,11 @@ populateGUI( drag:boolean = false )  {
 
         // }.bind(this));
 
-        viewsFolder.add(
+        soundsFolder.add(
             this._modelInstance.currentKeyBoard, 
             'numberOfRows', 
             1,6,1
-        ).name("Number of Octaves to Play").onChange(function(evt){
+        ).name("Octaves Amount").onChange(function(evt){
 
         
             console.log("setting key rows:"+ evt.value);
